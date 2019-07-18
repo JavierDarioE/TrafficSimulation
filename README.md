@@ -12,4 +12,4 @@ A small app made in Scala to simulate the traffic in the city of Medellín, made
 * Javier Dario E
 * Juan Pablo C
 * Sebastian Prada P
-* Santiago ...
+* Simon Alvarez V
