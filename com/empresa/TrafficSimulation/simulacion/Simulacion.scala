@@ -4,10 +4,10 @@ import json.Json
 
 class Simulacion extends Runnable{
   override def run(): Unit = {
-    var t = Json.getTRefresh
-    val dt = Json.getDt
-    println(s"camiones: ${Json.getCamiones}")
-    println(s"carros: ${Json.getCarros}")
+    var t = Json.tRefresh
+    val dt = Json.dt
+    println(s"camiones: ${Json.camiones}")
+    println(s"carros: ${Json.carros}")
     println(s"t: $t")
     println(s"dt: $dt")
 
