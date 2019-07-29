@@ -14,3 +14,5 @@ A small app made in Scala to simulate the traffic in the city of Medellín, made
 * Juan Pablo C
 * Sebastian Prada P
 * Simon Alvarez V
+
+#### this project follows the [basic Scala stylistic guidelines.](https://docs.scala-lang.org/style/)
