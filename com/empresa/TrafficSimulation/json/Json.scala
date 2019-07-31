@@ -21,16 +21,17 @@ object Json{
   val parametros:ParametrosSimulacion = jsonFile.extract[Data].parametrosSimulacion //convertimos el Json a case class
 
   //métodos de acceso:
-  def motos:Double = parametros.proporciones.motos
-  def carros:Double = parametros.proporciones.carros
-  def camiones:Double = parametros.proporciones.camiones
-  def motoTaxis:Double = parametros.proporciones.motoTaxis
-  def dt:Int = parametros.dt
-  def tRefresh:Int = parametros.tRefresh
-  def maximo:Int = parametros.vehiculos.maximo
-  def minimo:Int = parametros.vehiculos.minimo
-  def velMax:Int = parametros.velocidad.maximo
-  def velMin:Int = parametros.velocidad.minimo
+  def motos: Double = parametros.proporciones.motos
+  def carros: Double = parametros.proporciones.carros
+  def camiones: Double = parametros.proporciones.camiones
+  def buses: Double = parametros.proporcioens.buses
+  def motoTaxis: Double = parametros.proporciones.motoTaxis
+  def dt: Int = parametros.dt
+  def tRefresh: Int = parametros.tRefresh
+  def maximo: Int = parametros.vehiculos.maximo
+  def minimo: Int = parametros.vehiculos.minimo
+  def velMax: Int = parametros.velocidad.maximo
+  def velMin: Int = parametros.velocidad.minimo
 
 
   /* guardar resultados **/
@@ -127,7 +128,7 @@ object Json{
 
   case class Data(parametrosSimulacion: ParametrosSimulacion)
 
-  //para serializar los datos en un archivo Json con case classes:
+  //para serializar los datos en un archivo Json con case classes: (No prestar atención a esta parte)
 
   /*
 
