@@ -12,13 +12,4 @@ class Velocidad (private var _magnitud:Double,private var _angulo:Angulo){
   def angulo = _angulo
   
   def angulo_=(angulo:Angulo):Unit = _angulo = angulo
-  
-  def this(magnitud:Double){
-    this(magnitud,new Angulo(0))
-  }
-}
-
-object Velocidad{
-  def mpsTokph(v:Velocidad):Unit= v.magnitud_=(v.magnitud*3.6)
-  def kphTomps(v:Velocidad):Unit= v.magnitud_=(v.magnitud/3.6)
 }
