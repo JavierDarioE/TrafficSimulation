@@ -1,23 +1,60 @@
 package movimiento
 
+import json._
 import cartesiano._
+import vias._
+import scala.collection.mutable.ArrayBuffer
 
-class Vehiculo private (val placa:String, private var _p:Punto, private var _v:Velocidad) 
-extends Movil(_p, _v) with MovimientoUniforme {
+abstract class Vehiculo (val placa:String,val origen:Interseccion, val destino:Interseccion, private var _velocidad:Velocidad) 
+extends Movil(origen, _velocidad) with MovimientoUniforme {
+ private var _punto:Punto = origen
+ Vehiculo.Vehiculos + (this.placa->this)
+}
+
+object Vehiculo{
+  var Vehiculos:Map[String,Vehiculo]=Map() 
   
-  def p = _p
+  val r = scala.util.Random
   
-  def p_=(p:Punto): Unit = _p = p
+  val letras = ('A' to 'Z')
   
-  def v = _v
+  val digitos = ('0' to '9')
   
-  def v_=(v:Velocidad):Unit = _v = v
+  val proporcionCarros= Array.fill(Json.getCarros.toInt*100)("carro")
+  val proporcionMotos= Array.fill(Json.getMotos.toInt*100)("moto")
+  val proporcionMotoTaxis= Array.fill(Json.getMotoTaxis.toInt*100)("mototaxi")
+  val proporcionCamion= Array.fill(Json.getCamiones.toInt*100)("camion")
+  val proporcionBus= Array.fill(Json.getBuses.toInt*100)("bus")
+  //Se crea una lista de 100 tipos de automovil de acuerdo a las proporciones, para elegir el tipo de la instancia a crear
+  //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
+  val proporciones= proporcionCarros++proporcionMotos++proporcionMotoTaxis++proporcionCamion++proporcionBus
   
-  
-  def mover(dt:Double):Unit={
-    val dp = movimiento(dt, this.velocidad)
-    val nuevox = dp.x+this.p.x
-    val nuevoy = dp.y+this.p.y
-    this.p_=(Punto(nuevox,nuevoy))
+  def crearVehiculo:Vehiculo={
+    def definirTipo(n:String)= n match{
+      //se usa el constructor que no recibe placa, en cada clase estará definido como se crean
+      //y se envía una interseccion origen y una destino (no se verifica que sean diferentes)
+      //el angulo de la velocidad es 0 por defecto
+      case "carro" => new Carro(Carro.generarPlaca,
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            new Velocidad(Json.getVelMax+r.nextInt(Json.getVelMax-Json.getVelMin)))
+      case "moto" => new Moto(Moto.generarPlaca,
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            new Velocidad(Json.getVelMax+r.nextInt(Json.getVelMax-Json.getVelMin)))
+      case "mototaxi" => new Moto(Moto.generarPlaca,
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            new Velocidad(Json.getVelMax+r.nextInt(Json.getVelMax-Json.getVelMin)))
+      case "camion" => new Moto(Moto.generarPlaca,
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            new Velocidad(Json.getVelMax+r.nextInt(Json.getVelMax-Json.getVelMin)))
+      case "bus" => new Moto(Moto.generarPlaca,
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            Interseccion.intersecciones(r.nextInt(Interseccion.intersecciones.length)),
+            new Velocidad(Json.getVelMax+r.nextInt(Json.getVelMax-Json.getVelMin)))
+    }
+  definirTipo(proporciones(r.nextInt(100)))
   }
 }

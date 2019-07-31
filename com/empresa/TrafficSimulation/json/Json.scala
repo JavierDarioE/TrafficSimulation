@@ -33,6 +33,9 @@ object Json{
   def getCarros:Double = parametros.proporciones.carros
   def getCamiones:Double = parametros.proporciones.camiones
   def getMotoTaxis:Double = parametros.proporciones.motoTaxis
+  //faltaban los buses
+  def getBuses = parametros.proporciones.buses
+  //
   def getDt:Int = parametros.dt
   def getTRefresh:Int = parametros.tRefresh
   def getMaximo:Int = parametros.vehiculos.maximo
