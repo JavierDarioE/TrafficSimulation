@@ -24,7 +24,7 @@ object Json{
   def motos: Double = parametros.proporciones.motos
   def carros: Double = parametros.proporciones.carros
   def camiones: Double = parametros.proporciones.camiones
-  def buses: Double = parametros.proporcioens.buses
+  def buses: Double = parametros.proporciones.buses
   def motoTaxis: Double = parametros.proporciones.motoTaxis
   def dt: Int = parametros.dt
   def tRefresh: Int = parametros.tRefresh
@@ -62,6 +62,8 @@ object Json{
                   distMaxima: Int,
                   distPromedio: Int
                  ): Unit ={
+
+    println("Guardando datos... ")
 
     val jsonSave: JObject = ("resultadosSimulacion" -> (
       ("vehiculos" -> (
@@ -105,6 +107,8 @@ object Json{
     val pw = new PrintWriter(new File(s"$currentDirectory/resultados.json"))
     pw.write(FileRaw)
     pw.close
+
+    println("Datos guardados.")
   }
 
 
