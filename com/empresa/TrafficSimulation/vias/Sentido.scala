@@ -9,7 +9,7 @@ object Sentido{
     new Sentido("unaVia")
   }
   
-  def dobleVia(tipo:String): Sentido={
+  def dobleVia: Sentido={
     new Sentido("dobleVia")
   }
 }

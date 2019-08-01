@@ -5,6 +5,10 @@ package cartesiano
 
 class Velocidad (private var _magnitud:Double,private var _angulo:Angulo){
   
+  def this(magnitud:Double){
+    this(magnitud,new Angulo(0))
+  }
+  
   def magnitud = _magnitud
   
   def magnitud_=(magnitud:Double):Unit = _magnitud = magnitud

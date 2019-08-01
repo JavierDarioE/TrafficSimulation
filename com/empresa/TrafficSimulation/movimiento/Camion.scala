@@ -20,7 +20,6 @@ class Camion (val pl:String, val o:Interseccion, val d:Interseccion, private var
   
   def v_=(v:Velocidad):Unit = _v = v
   
-  
   def mover(dt:Double):Unit={
     val dp = movimiento(dt, this.velocidad)
     val nuevox = dp.x+this.p.x
