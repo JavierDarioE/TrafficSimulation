@@ -28,7 +28,7 @@ object Vehiculo{
   //Se crea una lista de 100 tipos de automovil de acuerdo a las proporciones, para elegir el tipo de la instancia a crear
   //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
   val proporciones= proporcionCarros++proporcionMotos++proporcionMotoTaxis++proporcionCamion++proporcionBus
-  
+  /*
   def crearVehiculo:Vehiculo={
     def definirTipo(n:String)= n match{
       //se usa el constructor que no recibe placa, en cada clase estará definido como se crean
@@ -56,5 +56,5 @@ object Vehiculo{
             new Velocidad(Json.velMax+r.nextInt(Json.velMax-Json.velMin)))
     }
   definirTipo(proporciones(r.nextInt(100)))
-  }
+  }*/
 }
