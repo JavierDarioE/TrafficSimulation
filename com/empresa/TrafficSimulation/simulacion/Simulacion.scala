@@ -19,9 +19,9 @@ object Simulacion extends Runnable{
   val velMax: Int = Json.velMax
   val velMin: Int = Json.velMin
   
-  val random=scala.util.Random
+  val random: scala.util.Random = scala.util.Random
   
-  var intersecciones=Array[Interseccion]()
+  var intersecciones: Array[Interseccion] = Array[Interseccion]()
   
   //Se instancian las Intersecciones(se añadirán a intersecciones al crearse):
   val niquia = new Interseccion(300, 12000, "Niquia")
@@ -194,9 +194,9 @@ object Simulacion extends Runnable{
     resultados.velocidadMaxima_=(50)
     resultados.velocidadMinima_=(20)
 
-    resultados.guardar()
+    //resultados.guardar()
     //end of test
-		*/
+*/
     
     /*test json loader*/
     var t = Json.tRefresh
@@ -208,24 +208,25 @@ object Simulacion extends Runnable{
     //end of test
 
 
-    while (true) {
-      //t += td
+
+    while (t < 5) {
+      t += dt
       //Grafico.graficar
       println("thread is running")
       Thread.sleep(1000)
     }
     val resultados = new ResultadosSimulacion
 //revisar unidades
-    resultados.buses_=(vehiculos.filter(_.isInstanceOf[Bus]).length)
-    resultados.camiones_=(vehiculos.filter(_.isInstanceOf[Camion]).length)
-    resultados.carros_=(vehiculos.filter(_.isInstanceOf[Carro]).length)
+    resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
+    resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
+    resultados.carros_=(vehiculos.count(_.isInstanceOf[Carro]))
     resultados.distMaxima_=(7)
     resultados.distMinima_=(6)
     resultados.distPromedio_=(7)
     resultados.intersecciones_=(intersecciones.length)
-    resultados.longitudPromedio_=((vias.map(_.longitud.toInt).reduce(_+_))/vias.length)
-    resultados.motos_=(vehiculos.filter(_.isInstanceOf[Moto]).length)
-    resultados.motoTaxis_=(vehiculos.filter(_.isInstanceOf[MotoTaxi]).length)
+    resultados.longitudPromedio_=(vias.map(_.longitud.toInt).sum/vias.length)
+    resultados.motos_=(vehiculos.count(_.isInstanceOf[Moto]))
+    resultados.motoTaxis_=(vehiculos.count(_.isInstanceOf[MotoTaxi]))
     resultados.promedioDestino_=(10)
     resultados.promedioOrigen_=(2)
     resultados.realidad_=(6)
@@ -233,9 +234,9 @@ object Simulacion extends Runnable{
     resultados.sinDestino_=(20)
     resultados.sinOrigen_=(20)
     resultados.total_=(vehiculos.length)
-    resultados.viasUnSentido_=(vias.filter(_.sentido.tipo=="unaVia").length)
-    resultados.viasDobleSentido_=(vias.filter(_.sentido.tipo=="dobleVia").length)
-    resultados.velPromedio_=((vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_))/vehiculos.length)
+    resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
+    resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
+    resultados.velPromedio_=(vehiculos.map(_.velocidad.magnitud.toInt).sum/vehiculos.length)
     resultados.velMinima_=(vias.map(_.vMax).min)
     resultados.velMaxima_=(vias.map(_.vMax).max)
     resultados.vias_=(vias.length)
