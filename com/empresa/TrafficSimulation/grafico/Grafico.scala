@@ -3,6 +3,8 @@ package grafico
 import vias._ 
 import java.awt.BasicStroke
 import java.awt.Color
+import java.awt.Shape
+import java.awt.geom.Rectangle2D.Double
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart
@@ -29,13 +31,14 @@ object Grafico {
    
     var autoincremento = 0
     
+    // Crear un XYSeries por cada via y agregar al dataset
     arrayVias.foreach(via => {
       val serie = new XYSeries(autoincremento)
       serie.add(via.origenn.xx, via.origenn.yy)
       serie.add(via.finn.xx, via.finn.yy)
       dataset.addSeries(serie)
       autoincremento += 1
-    })
+      })
     
     chart.setBackgroundPaint(Color.WHITE)
     
@@ -50,10 +53,30 @@ object Grafico {
     plot.setBackgroundAlpha(1) //Quitar grid
     plot.setRenderer(new XYLineAndShapeRenderer()) // coso para poder graficar las lineas
     
-    // Esto se puede hacer sin el for con cosas chidas de Scala:
+    // Crear la etiqueta de cada interseccion
+    arrayVias.foreach(via => {
+      var etiqueta1 = new XYTextAnnotation(
+          via.origenn.nombre, via.origenn.xx, via.origenn.yy)
+      
+      // TODO En donde va el color se llamaria el atributo color de Interseccion
+      etiqueta1.setPaint(Color.MAGENTA)
+      
+      var etiqueta2 = new XYTextAnnotation(
+          via.finn.nombre, via.finn.xx, via.finn.yy)
+      
+      // TODO En donde va el color se llamaria el atributo color de Interseccion
+      etiqueta2.setPaint(Color.MAGENTA)
+      
+      plot.addAnnotation(etiqueta1); plot.addAnnotation(etiqueta2) 
+      })
+    
+    // Esto se puede hacer sin el for con cosas chidas de Scala pero meh:
+    // Personalizacion del grafico
     for(i <- 0 to dataset.getSeriesCount){
     plot.getRenderer.setSeriesStroke(i, new BasicStroke(4.0f))
-    plot.getRenderer.setSeriesPaint(i, Color.GRAY)
+    plot.getRenderer.setSeriesPaint(i, Color.LIGHT_GRAY)
+    plot.getRenderer.setSeriesShape(i, new Double)
+    
     }
     
     //nuevo frame (ventana) con titulo y con chart.
