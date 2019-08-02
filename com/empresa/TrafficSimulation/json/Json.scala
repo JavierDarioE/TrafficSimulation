@@ -1,7 +1,8 @@
 package json
 
 import java.io._
-import scala.io.Source
+
+import scala.io.{BufferedSource, Source}
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 
@@ -12,9 +13,13 @@ object Json{
 
   /* cargar parámetros **/
 
-  val currentDirectory:String = new java.io.File(".").getCanonicalPath //obetnemos el directorio de la app
-  val jsonRaw: String = Source.fromFile(s"$currentDirectory/parámetros.json").getLines.mkString //obtenemos el Json
-  val jsonFile:JValue = parse(jsonRaw)
+  val currentDirectory:String = new java.io.File(".").getCanonicalPath //obtenemos el directorio de la app
+  val bufferedSource: BufferedSource = Source.fromFile(s"$currentDirectory/parámetros.json") //abrimos el archivo Json
+  val rawText: String = bufferedSource.getLines.mkString //extraemos el texto del archivo
+  bufferedSource.close //cerramos Source
+
+  val jsonFile:JValue = parse(rawText) //Convertimos el texto a un JValue
+
 
   implicit val formats:Formats = DefaultFormats
 
@@ -79,7 +84,6 @@ object Json{
             ("intersecciones" -> intersecciones) ~
             ("viasUnSentido" -> viasUnSentido) ~
             ("viasDobleSentido" -> viasDobleSentido) ~
-            ("viasDobleSentido" -> viasDobleSentido) ~
             ("velocidadMinima" -> velocidadMinima) ~
             ("velocidadMaxima" -> velocidadMaxima) ~
             ("longitudPromedio" -> longitudPromedio) ~
@@ -106,7 +110,7 @@ object Json{
     val FileRaw: String = prettyRender(jsonSave)
     val pw = new PrintWriter(new File(s"$currentDirectory/resultados.json"))
     pw.write(FileRaw)
-    pw.close
+    pw.close()
 
     println("Datos guardados.")
   }
