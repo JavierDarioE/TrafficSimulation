@@ -4,6 +4,8 @@ import resultadosSimulacion._
 import json.Json
 import vias._
 import movimiento._
+import grafico._
+import scala.collection.mutable.ArrayBuffer
 
 object Simulacion extends Runnable{
   //Parámetros Simulación
@@ -69,7 +71,7 @@ object Simulacion extends Runnable{
 
   
   //Instanciamos la lista de vias:
-  val vias = Array(
+  val vias = ArrayBuffer(
     new Via(niquia, lauraAuto, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", "Auto Norte"),
     new Via(niquia, lauraReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
     new Via(lauraAuto, lauraReg, 60, TipoVia("Calle"), Sentido.dobleVia, "94", "Pte Madre Laura"),
@@ -142,6 +144,8 @@ object Simulacion extends Runnable{
     new Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", "37S"),
     new Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S"))
     
+  val grafoVia=grafico.GrafoVia.construir(vias)
+    
   var vehiculos=Array[Vehiculo]()
   
   //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende de la
@@ -206,14 +210,16 @@ object Simulacion extends Runnable{
     println(s"t: $t")
     println(s"dt: $dt")
     //end of test
-
-
     while (true) {
-      //t += td
+      //t = t + dt
       //Grafico.graficar
       println("thread is running")
       Thread.sleep(1000)
     }
+    
+  def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
+
+    
     val resultados = new ResultadosSimulacion
 //revisar unidades
     resultados.buses_=(vehiculos.filter(_.isInstanceOf[Bus]).length)
