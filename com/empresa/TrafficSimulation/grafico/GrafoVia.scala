@@ -1,3 +1,5 @@
+package grafico
+
 import vias._ 
 import scala.collection.mutable.Queue
 import scala.collection.mutable.ArrayBuffer
