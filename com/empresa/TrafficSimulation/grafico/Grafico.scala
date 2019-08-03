@@ -117,7 +117,7 @@ object Grafico {
   def graficarVehiculos(arrayVehiculos: Array[Vehiculo]) {
     
     // Igual al numero de series que ya hay
-    var autoincremento = dataset.getSeriesCount - 1
+    var autoincremento = dataset.getSeriesCount
     
     val numeroDeVias = dataset.getSeriesCount
     
