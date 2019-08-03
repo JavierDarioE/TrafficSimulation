@@ -200,20 +200,18 @@ object Simulacion extends Runnable {
 
   GrafoVia.construir(vias)
   Grafico.graficarVias(vias.toArray)
-  //Grafico.graficarVehiculos(vehiculos)
-  Thread.sleep(5000)
 
   var Running = 0
 
   override def run(): Unit = {
     
     /* testing class ResultadosSimulacion */
-    val resultados = new ResultadosSimulacion
-    var x = 0
-    while (x < 20) {
+
+    while (true) {
       Running match {
         case 1 =>
           mover(vehiculos)
+          Grafico.graficarVehiculos(vehiculos)
           t += dt
           println("thread is running")
           Thread.sleep(tRefresh)
@@ -226,11 +224,12 @@ object Simulacion extends Runnable {
           Running = 1
 
       }
-    x += 1
     }
 
 
     def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
+
+    val resultados = new ResultadosSimulacion
 
     resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
     resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
