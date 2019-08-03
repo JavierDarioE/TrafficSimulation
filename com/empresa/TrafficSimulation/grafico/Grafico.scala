@@ -2,6 +2,7 @@ package grafico
 
 import vias._
 import movimiento._
+import simulacion.Simulacion
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Shape
@@ -21,6 +22,8 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.chart.annotations.XYTextAnnotation
 import org.jfree.ui.RefineryUtilities
 
+import java.awt.event.KeyListener
+import java.awt.event.KeyEvent
 
 object Grafico {
   
@@ -92,6 +95,25 @@ object Grafico {
     RefineryUtilities.positionFrameRandomly(frame)
     frame.setVisible(true)
     frame.requestFocus()
+    
+    frame.addKeyListener(new KeyListener{
+      
+      override def keyPressed(evento: KeyEvent): Unit = {
+        if(evento.getKeyCode == KeyEvent.VK_F5){
+          
+          if(Simulacion.Running == 0) Simulacion.Running = 1
+          else if(Simulacion.Running ==1) Simulacion.Running = 2
+          
+        }
+        else if(evento.getKeyCode == KeyEvent.VK_F6){
+          Simulacion.Running=0
+        }
+      }
+      
+      override def keyReleased(evento: KeyEvent){}
+      
+      override def keyTyped(evento: KeyEvent){}
+    })
   }
   
   def graficarVehiculos(arrayVehiculos: Array[Vehiculo]) {
