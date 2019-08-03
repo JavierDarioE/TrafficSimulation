@@ -1,5 +1,7 @@
 package resultadosSimulacion
 
+import movimiento._
+
 import json.Json
 
 class ResultadosSimulacion {

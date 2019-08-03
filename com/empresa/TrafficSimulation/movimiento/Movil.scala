@@ -12,7 +12,8 @@ abstract class Movil (private var _posicion: Punto, private var _velocidad: Velo
   
   def velocidad_=(velocidad:Velocidad):Unit = _velocidad = velocidad
   
-  //Funcion que aumenta la posicion en un dt, está definida en el trait MovimientoUniforme
+  //Funcion que aumenta la posicion en un dt, está definida en la clase vehículo, en la clase MovimientoUniforme se define
+  //una función que representa como cambia la posición con una velocidad y en un tiempo dt
   def mover(dt:Double):Unit
   
   def angulo = this.velocidad.angulo.angulo
