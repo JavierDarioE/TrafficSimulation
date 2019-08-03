@@ -1,8 +1,6 @@
 # TrafficSimulation
 A small app made in Scala to simulate the traffic in the city of Medellín, made for the course "logic and funtional programming" of the National University of Colombia - Medellín.
 
-### To run this code you'll need to make the folder "TrafficSimulator" inside "com" as your sources root
-
 ## Tools used
 
 * [JFreechart](http://www.jfree.org/jfreechart/) A library to graph charts.
