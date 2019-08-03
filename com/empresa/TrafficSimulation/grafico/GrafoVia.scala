@@ -11,6 +11,7 @@ import scalax.collection.edge.Implicits._
 object GrafoVia {
   
   def construir(arregloVias: ArrayBuffer[Via]): 
+    
     Graph[Interseccion, WLDiEdge] = {
     
     var queueAristas = new Queue[WLDiEdge[Interseccion]]()    
