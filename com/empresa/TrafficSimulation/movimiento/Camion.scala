@@ -11,8 +11,8 @@ import vias._
 
 class Camion (val pl:String, val o:Interseccion, val d:Interseccion, private var _v:Velocidad, val color:Color = Color.WHITE/*, val figura:??*/) extends Vehiculo(pl, o, d, _v){
   
-  private var _p:Punto=o
-  
+   private var _p:Punto=o
+
   def p = _p
   
   def p_=(p:Punto): Unit = _p = p
@@ -20,6 +20,8 @@ class Camion (val pl:String, val o:Interseccion, val d:Interseccion, private var
   def v = _v
   
   def v_=(v:Velocidad):Unit = _v = v
+  //Indica el ángulo que deberá seguir entre el origen y la primer intersección de la ruta
+  if (ruta.length>1) actualizarAngulo(o,ruta(1),Velocidad.kphTomps(v))  
   
 //Indica el ángulo que deberá seguir entre el origen y la primer intersección de la ruta
   if (ruta.length>1) actualizarAngulo(o,ruta(1),v)  
@@ -30,18 +32,19 @@ class Camion (val pl:String, val o:Interseccion, val d:Interseccion, private var
       //se verifica que la distancia entre el vehículo y la intersección objetivo actual sea mayor que la distancia que se
       //mueve el vehículo en dt, si es menor se corrige poniendo el vehículo en la posición de la intersección objetivo actual
       //y como se alcanzó se actualiza el ángulo y se remueve esta intersección de la ruta
-      if(Punto.distancia(p, ruta(1))<=Punto.distancia(p,movimiento(dt,v))){
-        actualizarAngulo(ruta(0),ruta(1),v)
+      if(Punto.distancia(p, ruta(1))<=Punto.distancia(p,movimiento(dt,Velocidad.kphTomps(v)))){
+        actualizarAngulo(ruta(0),ruta(1),Velocidad.kphTomps(v))
         p=Punto(ruta(0).x,ruta(0).y)
         ruta=ruta.drop(1)
       }
     }
     //Verifica que aún no haya llegado a la intersección final
     if(ruta.length>0){
-      val dp = movimiento(dt,v)
+      val dp = movimiento(dt,Velocidad.kphTomps(v))
       val nuevox = dp.x+this.p.x
       val nuevoy = dp.y+this.p.y
-      this.p_=(Punto(nuevox,nuevoy))
+      p_=(Punto(nuevox,nuevoy))
+      distanciaRecorrida_=(distanciaRecorrida+Punto.distancia(dp,Punto(0,0)))
     }
   }
 }

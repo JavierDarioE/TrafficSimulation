@@ -29,6 +29,7 @@ object Simulacion extends Runnable {
   }
 
   //Parámetros de la Simulación
+
   val motos: Double = Json.motos
   val carros: Double = Json.carros
   val camiones: Double = Json.camiones
@@ -41,6 +42,7 @@ object Simulacion extends Runnable {
   val minimo: Int = Json.minimo
   val velMax: Int = Json.velMax
   val velMin: Int = Json.velMin
+
 
   val random: scala.util.Random = scala.util.Random
   val porcentaje: Int = minimo + random.nextInt(maximo-minimo)
@@ -201,7 +203,9 @@ object Simulacion extends Runnable {
   Running = start()
 
   override def run(): Unit = {
-
+    
+    /* testing class ResultadosSimulacion */
+    val resultados = new ResultadosSimulacion
     while (true) {
       Running match {
         case 1 =>
@@ -224,42 +228,38 @@ object Simulacion extends Runnable {
 
       }
     }
+    
+  def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
+    
+    val resultados = new ResultadosSimulacion
+//revisar unidades
+    resultados.buses_=(vehiculos.filter(_.isInstanceOf[Bus]).length)
+    resultados.camiones_=(vehiculos.filter(_.isInstanceOf[Camion]).length)
+    resultados.carros_=(vehiculos.filter(_.isInstanceOf[Carro]).length)
+    resultados.distMaxima_=(vehiculos.map(_.distanciaRecorrida.toInt).max)//
+    resultados.distMinima_=((vehiculos.map(_.distanciaRecorrida.toInt).min))//
+    resultados.distPromedio_=((vehiculos.map(_.distanciaRecorrida.toInt).reduce(_+_)/vehiculos.length))//
+    resultados.intersecciones_=(intersecciones.length)
+    resultados.longitudPromedio_=((vias.map(_.longitud.toInt).reduce(_+_))/vias.length)
+    resultados.motos_=(vehiculos.filter(_.isInstanceOf[Moto]).length)
+    resultados.motoTaxis_=(vehiculos.filter(_.isInstanceOf[MotoTaxi]).length)
+    resultados.promedioDestino_=(intersecciones.map(_.fin.length).reduce(_+_)/intersecciones.length)//
+    resultados.promedioOrigen_=(intersecciones.map(_.origenes.length).reduce(_+_)/intersecciones.length)//
+    resultados.realidad_=(6)//
+    resultados.simulacion_=(10)//
+    resultados.sinDestino_=(intersecciones.length-(vehiculos.map(_.destino).length))//
+    resultados.sinOrigen_=((intersecciones.length-(vehiculos.map(_.origen).length)))//
+    resultados.total_=(vehiculos.length)
+    resultados.viasUnSentido_=(vias.filter(_.sentido.tipo=="unaVia").length)
+    resultados.viasDobleSentido_=(vias.filter(_.sentido.tipo=="dobleVia").length)
+    resultados.velPromedio_=((vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_))/vehiculos.length)
+    resultados.velMinima_=(vias.map(_.vMax).min)
+    resultados.velMaxima_=(vias.map(_.vMax).max)
+    resultados.vias_=(vias.length)
+    resultados.velocidadMaxima_=(vehiculos.map(_.velocidad.magnitud.toInt).max)
+    resultados.velocidadMinima_=(vehiculos.map(_.velocidad.magnitud.toInt).min)
 
-      /* Añadir un evento que retorne false cuando se cierre la ventana
-      o alguna joda así.
-       */
-      def n(outer: Interseccion): Simulacion.grafoVia.NodeT = Simulacion.grafoVia get outer
-
-      val resultados = new ResultadosSimulacion
-
-      //revisar unidades
-
-      resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
-      resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
-      resultados.carros_=(vehiculos.count(_.isInstanceOf[Carro]))
-      resultados.distMaxima_=(7) //valores temporales
-      resultados.distMinima_=(6) //valores temporales
-      resultados.distPromedio_=(7) //valores temporales
-      resultados.intersecciones_=(intersecciones.length)
-      resultados.longitudPromedio_=(vias.map(_.longitud.toInt).sum / vias.length)
-      resultados.motos_=(vehiculos.count(_.isInstanceOf[Moto]))
-      resultados.motoTaxis_=(vehiculos.count(_.isInstanceOf[MotoTaxi]))
-      resultados.promedioDestino_=(10) //valores temporales
-      resultados.promedioOrigen_=(2) //valores temporales
-      resultados.realidad_=(6) //valores temporales
-      resultados.simulacion_=(10) //valores temporales
-      resultados.sinDestino_=(20) //valores temporales
-      resultados.sinOrigen_=(20) //valores temporales
-      resultados.total_=(vehiculos.length)
-      resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
-      resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
-      resultados.velPromedio_=(vehiculos.map(_.velocidad.magnitud.toInt).sum / vehiculos.length)
-      resultados.velMinima_=(vias.map(_.vMax).min)
-      resultados.velMaxima_=(vias.map(_.vMax).max)
-      resultados.vias_=(vias.length)
-      resultados.velocidadMaxima_=(vehiculos.map(_.velocidad.magnitud.toInt).max)
-      resultados.velocidadMinima_=(vehiculos.map(_.velocidad.magnitud.toInt).min)
-
-      resultados.guardar()
-    }
+    resultados.guardar()
+  }
 }
+  
