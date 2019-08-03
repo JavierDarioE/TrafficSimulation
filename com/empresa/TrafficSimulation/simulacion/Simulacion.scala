@@ -37,9 +37,9 @@ object Simulacion extends Runnable {
   val camiones: Double = Json.camiones
   val buses: Double = Json.buses
   val motoTaxis: Double = Json.motoTaxis
-  val dt = Json.dt
+  val dt: Int = Json.dt
   var t = 0
-  val tRefresh = Json.tRefresh * 1000
+  val tRefresh = Json.tRefresh
   val maximo: Int = Json.maximo
   val minimo: Int = Json.minimo
   val velMax: Int = Json.velMax
