@@ -65,15 +65,15 @@ object Vehiculo{
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
             new Velocidad(vMin+r.nextInt((vMax-vMin))))
-      case "mototaxi" => new Moto(Moto.generarPlaca,
+      case "mototaxi" => new MotoTaxi(MotoTaxi.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
             new Velocidad(vMin+r.nextInt((vMax-vMin))))
-      case "camion" => new Moto(Moto.generarPlaca,
+      case "camion" => new Camion(Camion.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
             new Velocidad(vMin+r.nextInt((vMax-vMin))))
-      case "bus" => new Moto(Moto.generarPlaca,
+      case "bus" => new Bus(Bus.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
             new Velocidad(vMin+r.nextInt((vMax-vMin))))

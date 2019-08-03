@@ -206,7 +206,8 @@ object Simulacion extends Runnable {
     
     /* testing class ResultadosSimulacion */
     val resultados = new ResultadosSimulacion
-    while (true) {
+    var x = 0
+    while (x < 20) {
       Running match {
         case 1 =>
           mover(vehiculos)
@@ -228,7 +229,9 @@ object Simulacion extends Runnable {
 
 
       }
+    x += 1
     }
+
 
     def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
 
