@@ -1,5 +1,7 @@
 package movimiento
 
+import java.awt.Color
+
 import json._
 import cartesiano._
 import vias._
@@ -11,13 +13,12 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
  private var _punto:Punto = origen
  
  def punto=_punto
- 
+
  private var _distanciaRecorrida:Double=0
   
   def distanciaRecorrida=_distanciaRecorrida
   
   def distanciaRecorrida_=(d:Double): Unit = _distanciaRecorrida = d
- 
  //para obtener la ruta
   def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
   //ruta es una lista de intersecciones
@@ -51,7 +52,7 @@ object Vehiculo{
   
   val digitos = ('0' to '9')  
   
-  def crearVehiculo(vMin:Int, vMax:Int, proporciones:Array[String], intersecciones:Array[Interseccion]):Vehiculo={
+  def crearVehiculo(vMin:Int, vMax:Int, tipo: String, intersecciones:Array[Interseccion]):Vehiculo={
     def definirTipo(n:String)= n match{
       //se usa el constructor que no recibe placa, en cada clase estará definido como se crean
       //y se envía una interseccion origen y una destino (no se verifica que sean diferentes)
@@ -78,6 +79,6 @@ object Vehiculo{
             new Velocidad(vMin+r.nextInt((vMax-vMin))))
     }
   //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
-  definirTipo(proporciones(r.nextInt(1000)))
+  definirTipo(tipo)
   }
 }

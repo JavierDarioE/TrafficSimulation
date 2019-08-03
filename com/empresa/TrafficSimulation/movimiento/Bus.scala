@@ -1,14 +1,15 @@
 package movimiento
 
-import cartesiano._
+import java.awt.Color
 
+import cartesiano._
 import vias._
 
 //falta definir el modelo para representarlos*****/
 
 //para poner los get y los set se debe de copiar todo el código, no vi como dejarlo en vehículo
 
-class Bus (val pl:String, val o:Interseccion, val d:Interseccion, private var _v:Velocidad/*,val color:??, val figura:??*/) extends Vehiculo(pl, o, d, _v){
+class Bus (val pl:String, val o:Interseccion, val d:Interseccion, private var _v:Velocidad, val color:Color = Color.WHITE/*, val figura:??*/) extends Vehiculo(pl, o, d, _v){
   
    private var _p:Punto=o
 
@@ -21,6 +22,9 @@ class Bus (val pl:String, val o:Interseccion, val d:Interseccion, private var _v
   def v_=(v:Velocidad):Unit = _v = v
   //Indica el ángulo que deberá seguir entre el origen y la primer intersección de la ruta
   if (ruta.length>1) actualizarAngulo(o,ruta(1),Velocidad.kphTomps(v))  
+  
+//Indica el ángulo que deberá seguir entre el origen y la primer intersección de la ruta
+  if (ruta.length>1) actualizarAngulo(o,ruta(1),v)  
   
   def mover(dt:Double):Unit={
     //se verifica que aún no se haya llegado a la via final
