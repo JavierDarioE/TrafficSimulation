@@ -1,5 +1,7 @@
 package movimiento
 
+import java.awt.Color
+
 import json._
 import cartesiano._
 import vias._

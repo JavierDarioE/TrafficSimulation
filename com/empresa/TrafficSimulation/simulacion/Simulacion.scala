@@ -1,11 +1,27 @@
 package simulacion
 
+import java.awt.Color
+
+import grafico.{Grafico, GrafoVia}
 import resultadosSimulacion._
 import json.Json
 import vias._
 import movimiento._
 
+import scala.collection.mutable
+import scala.collection.mutable.ArrayBuffer
+
 object Simulacion extends Runnable{
+
+  def start(): Int = 1
+  def restart(): Int = {0
+  //vehiculos.restart
+  }
+  def pause(): Int = 0
+
+  def mover(movil: Array[Vehiculo]): Unit ={
+    for (m <- movil) m.mover(dt)
+  }
 
   //Parámetros de la Simulación
   val motos: Double = Json.motos
@@ -13,8 +29,8 @@ object Simulacion extends Runnable{
   val camiones: Double = Json.camiones
   val buses: Double = Json.buses
   val motoTaxis: Double = Json.motoTaxis
-  val dt: Int = Json.dt
-  val tRefresh: Int = Json.tRefresh
+  val dt = Json.dt
+  val tRefresh = Json.tRefresh*1000
   val maximo: Int = Json.maximo
   val minimo: Int = Json.minimo
   val velMax: Int = Json.velMax
@@ -25,48 +41,48 @@ object Simulacion extends Runnable{
   var intersecciones: Array[Interseccion] = Array[Interseccion]()
   
   //Se instancian las Intersecciones(se añadirán a intersecciones al crearse):
-  val niquia = new Interseccion(300, 12000, "Niquia")
-  val lauraAuto = new Interseccion(2400, 11400, "M. Laura Auto")
-  val lauraReg = new Interseccion(2400, 12600, "M. Laura Reg")
-  val ptoCero = new Interseccion(5400, 12000, "Pto 0")
-  val mino = new Interseccion(6300, 15000, "Minorista")
-  val villa = new Interseccion(6300, 19500, "Villanueva")
-  val ig65 = new Interseccion(5400, 10500, "65 Igu")
-  val robledo = new Interseccion(5400, 1500, "Exito Rob")
-  val colReg = new Interseccion(8250, 12000, "Col Reg")
-  val colFerr = new Interseccion(8250, 15000, "Col Ferr")
-  val col65 = new Interseccion(8250, 10500, "Col 65")
-  val col80 = new Interseccion(8250, 1500, "Col 80")
-  val juanOr = new Interseccion(10500, 19500, "Sn Juan Ori")
-  val maca = new Interseccion(10500, 12000, "Macarena")
-  val expo = new Interseccion(12000, 13500, "Exposiciones")
-  val reg30 = new Interseccion(13500, 15000, "Reg 30")
-  val monte = new Interseccion(16500, 15000, "Monterrey")
-  val agua = new Interseccion(19500, 15000, "Aguacatala")
-  val viva = new Interseccion(21000, 15000, "Viva Env")
-  val mayor = new Interseccion(23400, 15000, "Mayorca")
-  val ferrCol = new Interseccion(8250, 15000, "Ferr Col")
-  val ferrJuan = new Interseccion(10500, 15000, "Alpujarra")
-  val sanDiego = new Interseccion(12000, 19500, "San Diego")
-  val premium = new Interseccion(13500, 19500, "Premium")
-  val pp = new Interseccion(16500, 19500, "Parque Pob")
-  val santafe = new Interseccion(19500, 18750, "Santa Fe")
-  val pqEnv = new Interseccion(21000, 18000, "Envigado")
-  val juan65 = new Interseccion(10500, 10500, "Juan 65")
-  val juan80 = new Interseccion(10500, 1500, "Juan 80")
-  val _33_65 = new Interseccion(12000, 10500, "33 con 65")
-  val bule = new Interseccion(12000, 7500, "Bulerias")
-  val gema = new Interseccion(12000, 1500, "St Gema")
-  val _30_65 = new Interseccion(13500, 10500, "30 con 65")
-  val _30_70 = new Interseccion(13500, 4500, "30 con 70")
-  val _30_80 = new Interseccion(13500, 1500, "30 con 80")
-  val bol65 = new Interseccion(11100, 10500, "Boliv con 65")
-  val gu10 = new Interseccion(16500, 12000, "Guay con 10")
-  val terminal = new Interseccion(16500, 10500, "Term Sur")
-  val gu30 = new Interseccion(13500, 12000, "Guay 30")
-  val gu80 = new Interseccion(19500, 12000, "Guay 80")
-  val _65_80 = new Interseccion(19500, 10500, "65 con 30")
-  val gu_37S = new Interseccion(21000, 12000, "Guay con 37S")
+  val niquia = new Interseccion(300, 12000, "Niquia", Color.BLUE)
+  val lauraAuto = new Interseccion(2400, 11400, "M. Laura Auto", Color.RED)
+  val lauraReg = new Interseccion(2400, 12600, "M. Laura Reg", Color.MAGENTA)
+  val ptoCero = new Interseccion(5400, 12000, "Pto 0", Color.CYAN)
+  val mino = new Interseccion(6300, 15000, "Minorista", Color.DARK_GRAY)
+  val villa = new Interseccion(6300, 19500, "Villanueva", Color.GRAY)
+  val ig65 = new Interseccion(5400, 10500, "65 Igu", Color.GREEN)
+  val robledo = new Interseccion(5400, 1500, "Exito Rob", Color.ORANGE)
+  val colReg = new Interseccion(8250, 12000, "Col Reg", Color.PINK)
+  val colFerr = new Interseccion(8250, 15000, "Col Ferr", Color.YELLOW)
+  val col65 = new Interseccion(8250, 10500, "Col 65", Color.BLACK)
+  val col80 = new Interseccion(8250, 1500, "Col 80", Color.BLUE)
+  val juanOr = new Interseccion(10500, 19500, "Sn Juan Ori", Color.RED)
+  val maca = new Interseccion(10500, 12000, "Macarena", Color.MAGENTA)
+  val expo = new Interseccion(12000, 13500, "Exposiciones", Color.CYAN)
+  val reg30 = new Interseccion(13500, 15000, "Reg 30", Color.DARK_GRAY)
+  val monte = new Interseccion(16500, 15000, "Monterrey", Color.GRAY)
+  val agua = new Interseccion(19500, 15000, "Aguacatala", Color.GREEN)
+  val viva = new Interseccion(21000, 15000, "Viva Env", Color.ORANGE)
+  val mayor = new Interseccion(23400, 15000, "Mayorca", Color.PINK)
+  val ferrCol = new Interseccion(8250, 15000, "Ferr Col", Color.YELLOW)
+  val ferrJuan = new Interseccion(10500, 15000, "Alpujarra", Color.BLACK)
+  val sanDiego = new Interseccion(12000, 19500, "San Diego", Color.BLUE)
+  val premium = new Interseccion(13500, 19500, "Premium", Color.RED)
+  val pp = new Interseccion(16500, 19500, "Parque Pob", Color.MAGENTA)
+  val santafe = new Interseccion(19500, 18750, "Santa Fe", Color.CYAN)
+  val pqEnv = new Interseccion(21000, 18000, "Envigado", Color.DARK_GRAY)
+  val juan65 = new Interseccion(10500, 10500, "Juan 65", Color.GRAY)
+  val juan80 = new Interseccion(10500, 1500, "Juan 80", Color.GREEN)
+  val _33_65 = new Interseccion(12000, 10500, "33 con 65", Color.ORANGE)
+  val bule = new Interseccion(12000, 7500, "Bulerias", Color.PINK)
+  val gema = new Interseccion(12000, 1500, "St Gema", Color.YELLOW)
+  val _30_65 = new Interseccion(13500, 10500, "30 con 65", Color.BLACK)
+  val _30_70 = new Interseccion(13500, 4500, "30 con 70", Color.BLUE)
+  val _30_80 = new Interseccion(13500, 1500, "30 con 80", Color.RED)
+  val bol65 = new Interseccion(11100, 10500, "Boliv con 65", Color.MAGENTA)
+  val gu10 = new Interseccion(16500, 12000, "Guay con 10", Color.CYAN)
+  val terminal = new Interseccion(16500, 10500, "Term Sur", Color.GREEN)
+  val gu30 = new Interseccion(13500, 12000, "Guay 30", Color.ORANGE)
+  val gu80 = new Interseccion(19500, 12000, "Guay 80", Color.PINK)
+  val _65_80 = new Interseccion(19500, 10500, "65 con 30", Color.YELLOW)
+  val gu_37S = new Interseccion(21000, 12000, "Guay con 37S", Color.BLACK)
 
   
   //Instanciamos la lista de vias:
@@ -170,18 +186,39 @@ object Simulacion extends Runnable{
   //Se instancian los vehículos
   for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
   //falta hacer que verifique que el origen no sea igual al destino
+
+  GrafoVia.construir(vias.to[ArrayBuffer])
+  Grafico.graficarVias(vias)
+  Thread.sleep(5000)
+  var t = 0
+  var Running = 0
+  Running = start()
   
   override def run(): Unit = {
 
-    var t = 0
-    val dt = Json.dt
-    val tRefresh = Json.tRefresh*1000
+    while (true) {
+      Running match {
+        case 1 =>
+          mover(vehiculos)
+          Grafico.graficarMovil(vehiculos)
+          t+=dt
+          println("thread is running")
+          Thread.sleep(tRefresh)
 
-    while (t < 3) {
-      t += dt
-      //Grafico.graficar
-      println("thread is running")
-      Thread.sleep(tRefresh)
+
+        case 0 =>
+          println("paused")
+
+
+        case _ =>
+          println("restarted")
+          /* poner codigo para reiniciar posición de vehiculos*/
+
+
+      }
+      /* Añadir un evento que retorne false cuando se cierre la ventana
+      o alguna joda así.
+       */
     }
 
     val resultados = new ResultadosSimulacion

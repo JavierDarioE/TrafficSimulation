@@ -1,8 +1,10 @@
 package grafico
 
-import vias._ 
+import vias._
 import java.awt.BasicStroke
 import java.awt.Color
+
+import movimiento.Vehiculo
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart
@@ -20,10 +22,12 @@ import org.jfree.ui.RefineryUtilities
 object Grafico {
   
   val dataset = new XYSeriesCollection
+  val dataset1 = new XYSeriesCollection
   var frame: ChartFrame = _
   
   //chart con titulo, label para eje x, label para eje y, y dataset
-  val chart = ChartFactory.createScatterPlot("titulo", "", "", dataset) 
+  val chart = ChartFactory.createScatterPlot("titulo", "", "", dataset)
+  var chart1 = ChartFactory.createScatterPlot("titulo", "", "", dataset1)
   
   def graficarVias(arrayVias: Array[Via]){
    
@@ -58,10 +62,15 @@ object Grafico {
     
     //nuevo frame (ventana) con titulo y con chart.
     frame = new ChartFrame("TrafficSimulation", chart)
-    
     frame.pack()
+    frame.setSize(1000, 500)
     RefineryUtilities.positionFrameRandomly(frame)
     frame.setVisible(true)
     frame.requestFocus()
   }
+
+  def graficarMovil(movil: Array[Vehiculo]): Unit ={
+    println("test Grafica vehiculos")
+  }
+
 }
