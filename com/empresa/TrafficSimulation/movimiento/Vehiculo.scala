@@ -6,7 +6,7 @@ import cartesiano._
 import vias._
 import simulacion.Simulacion
 
-abstract class Vehiculo (val placa:String,val origen:Interseccion, val destino:Interseccion, private var _velocidad:Velocidad, color: Color)
+abstract class Vehiculo (val placa:String,val origen:Interseccion, val destino:Interseccion, private var _velocidad:Velocidad, var color: Color)
 extends Movil(origen, _velocidad) with MovimientoUniforme {
  
  private var _punto:Punto = origen

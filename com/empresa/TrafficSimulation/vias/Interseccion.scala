@@ -6,7 +6,7 @@ import cartesiano.Punto
 import movimiento.Vehiculo
 import simulacion.Simulacion
 
-class Interseccion (val xx:Double, val yy:Double, val nombre:String, color: Color) extends Punto(xx, yy){
+class Interseccion (val xx:Double, val yy:Double, val nombre:String, val color: Color) extends Punto(xx, yy){
   
   var origenes=Array[Vehiculo]()
   

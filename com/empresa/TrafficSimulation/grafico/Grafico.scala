@@ -67,14 +67,12 @@ object Grafico {
       var etiqueta1 = new XYTextAnnotation(
           via.origenn.nombre, via.origenn.xx, via.origenn.yy)
       
-      // TODO En donde va el color se llamaria el atributo color de Interseccion
-      etiqueta1.setPaint(Color.MAGENTA)
+      etiqueta1.setPaint(via.origenn.color)
       
       var etiqueta2 = new XYTextAnnotation(
           via.finn.nombre, via.finn.xx, via.finn.yy)
       
-      // TODO En donde va el color se llamaria el atributo color de Interseccion
-      etiqueta2.setPaint(Color.MAGENTA)
+      etiqueta2.setPaint(via.finn.color)
       
       plot.addAnnotation(etiqueta1); plot.addAnnotation(etiqueta2) 
       })
@@ -131,14 +129,16 @@ object Grafico {
             vehiculo.asInstanceOf[Movil].posicion.y)
       dataset.addSeries(serie)
       autoincremento += 1
-      })
+    })
+    
+    val indice = 0
     
     // Esto se puede hacer sin el for con cosas chidas de Scala pero meh:
     // Personalizacion del grafico  
     for(i <- numeroDeVias to dataset.getSeriesCount){
       
       // TODO En donde va el color se llamaria el atributo color de Vehiculo
-      plot.getRenderer.setSeriesPaint(i, Color.GREEN)
+      plot.getRenderer.setSeriesPaint(i, arrayVehiculos(indice).color)
       
       // TODO En donde esta el new Double se llamaria al atributo figura de Vehiculo
       plot.getRenderer.setSeriesShape(i, new Double(0,0,7,7))
