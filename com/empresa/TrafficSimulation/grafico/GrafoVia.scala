@@ -14,7 +14,8 @@ import scala.collection.mutable
 
 object GrafoVia {
   
-  def construir(arregloVias: ArrayBuffer[Via]):
+  def construir(arregloVias: ArrayBuffer[Via]): 
+    
     Graph[Interseccion, WLDiEdge] = {
     
     var queueAristas = new mutable.Queue[WLDiEdge[Interseccion]]()
