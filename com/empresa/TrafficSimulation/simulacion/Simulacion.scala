@@ -200,12 +200,12 @@ object Simulacion extends Runnable {
   Grafico.graficarVias(vias.toArray)
 
   var Running = 0
-
+  var active = true
   override def run(): Unit = {
     
     /* testing class ResultadosSimulacion */
 
-    while (true) {
+    while (active) {
       Running match {
         case 1 =>
           for (m <- vehiculos) m.mover(dt)

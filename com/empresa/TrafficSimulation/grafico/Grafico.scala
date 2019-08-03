@@ -21,9 +21,7 @@ import org.jfree.data.xy.XYSeriesCollection
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.chart.annotations.XYTextAnnotation
 import org.jfree.ui.RefineryUtilities
-
-import java.awt.event.KeyListener
-import java.awt.event.KeyEvent
+import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener, WindowStateListener}
 
 object Grafico {
   
@@ -93,7 +91,23 @@ object Grafico {
     RefineryUtilities.positionFrameRandomly(frame)
     frame.setVisible(true)
     frame.requestFocus()
-    
+    frame.addWindowListener(new WindowListener {
+      override def windowOpened(e: WindowEvent){}
+
+      override def windowClosing(e: WindowEvent){}
+
+      override def windowClosed(e: WindowEvent): Unit = {
+        Simulacion.active = false
+      }
+
+      override def windowIconified(e: WindowEvent){}
+
+      override def windowDeiconified(e: WindowEvent){}
+
+      override def windowActivated(e: WindowEvent){}
+
+      override def windowDeactivated(e: WindowEvent){}
+    })
     frame.addKeyListener(new KeyListener{
       
       override def keyPressed(evento: KeyEvent): Unit = {
