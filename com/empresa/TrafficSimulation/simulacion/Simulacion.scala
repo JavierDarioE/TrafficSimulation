@@ -220,6 +220,7 @@ object Simulacion extends Runnable {
         case _ =>
           println("restarted")
         /* poner codigo para reiniciar posición de vehiculos*/
+          Running = 1
 
 
       }
