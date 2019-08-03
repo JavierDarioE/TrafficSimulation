@@ -170,7 +170,7 @@ object Simulacion extends Runnable {
 
   val grafoVia = grafico.GrafoVia.construir(vias)
 
-  var vehiculos = Array[Vehiculo]()
+  var vehiculos: Array[Vehiculo] = Array[Vehiculo]()
 
   //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende de la
   //proporción de cada vehiculo, cada lista indica la cantidad de cada vehiculo que habrá en la simulación
@@ -229,30 +229,28 @@ object Simulacion extends Runnable {
 
       }
     }
-    
-  def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
-    
-    val resultados = new ResultadosSimulacion
-//revisar unidades
-    resultados.buses_=(vehiculos.filter(_.isInstanceOf[Bus]).length)
-    resultados.camiones_=(vehiculos.filter(_.isInstanceOf[Camion]).length)
-    resultados.carros_=(vehiculos.filter(_.isInstanceOf[Carro]).length)
+
+    def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
+
+    resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
+    resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
+    resultados.carros_=(vehiculos.count(_.isInstanceOf[Carro]))
     resultados.distMaxima_=(vehiculos.map(_.distanciaRecorrida.toInt).max)//
     resultados.distMinima_=((vehiculos.map(_.distanciaRecorrida.toInt).min))//
-    resultados.distPromedio_=((vehiculos.map(_.distanciaRecorrida.toInt).reduce(_+_)/vehiculos.length))//
+    resultados.distPromedio_=((vehiculos.map(_.distanciaRecorrida.toInt).sum/vehiculos.length))//
     resultados.intersecciones_=(intersecciones.length)
-    resultados.longitudPromedio_=((vias.map(_.longitud.toInt).reduce(_+_))/vias.length)
-    resultados.motos_=(vehiculos.filter(_.isInstanceOf[Moto]).length)
-    resultados.motoTaxis_=(vehiculos.filter(_.isInstanceOf[MotoTaxi]).length)
+    resultados.longitudPromedio_=(vias.map(_.longitud.toInt).sum/vias.length)
+    resultados.motos_=(vehiculos.count(_.isInstanceOf[Moto]))
+    resultados.motoTaxis_=(vehiculos.count(_.isInstanceOf[MotoTaxi]))
     resultados.promedioDestino_=(intersecciones.map(_.fin.length).reduce(_+_)/intersecciones.length)//
     resultados.promedioOrigen_=(intersecciones.map(_.origenes.length).reduce(_+_)/intersecciones.length)//
     resultados.realidad_=(6)//
-    resultados.simulacion_=(10)//
+    resultados.simulacion_=(t)//
     resultados.sinDestino_=(intersecciones.length-(vehiculos.map(_.destino).length))//
     resultados.sinOrigen_=((intersecciones.length-(vehiculos.map(_.origen).length)))//
     resultados.total_=(vehiculos.length)
-    resultados.viasUnSentido_=(vias.filter(_.sentido.tipo=="unaVia").length)
-    resultados.viasDobleSentido_=(vias.filter(_.sentido.tipo=="dobleVia").length)
+    resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
+    resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
     resultados.velPromedio_=((vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_))/vehiculos.length)
     resultados.velMinima_=(vias.map(_.vMax).min)
     resultados.velMaxima_=(vias.map(_.vMax).max)
@@ -263,4 +261,3 @@ object Simulacion extends Runnable {
     resultados.guardar()
   }
 }
-  
