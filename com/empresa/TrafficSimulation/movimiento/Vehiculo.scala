@@ -13,7 +13,12 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
  private var _punto:Punto = origen
  
  def punto=_punto
- 
+
+ private var _distanciaRecorrida:Double=0
+  
+  def distanciaRecorrida=_distanciaRecorrida
+  
+  def distanciaRecorrida_=(d:Double): Unit = _distanciaRecorrida = d
  //para obtener la ruta
   def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
   //ruta es una lista de intersecciones
@@ -32,6 +37,10 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
  }
  
  Simulacion.vehiculos :+=this
+ 
+ origen.origenes :+=this
+ 
+ destino.fin:+=this
 
 }
 
@@ -51,25 +60,25 @@ object Vehiculo{
       case "carro" => new Carro(Carro.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt(vMax-vMin)))
+            new Velocidad(vMin+r.nextInt((vMax-vMin))))
       case "moto" => new Moto(Moto.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt(vMax-vMin)))
-      case "mototaxi" => new MotoTaxi(MotoTaxi.generarPlaca,
+            new Velocidad(vMin+r.nextInt((vMax-vMin))))
+      case "mototaxi" => new Moto(Moto.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt(vMax-vMin)))
-      case "camion" => new Camion(Camion.generarPlaca,
+            new Velocidad(vMin+r.nextInt((vMax-vMin))))
+      case "camion" => new Moto(Moto.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt(vMax-vMin)))
-      case "bus" => new Bus(Bus.generarPlaca,
+            new Velocidad(vMin+r.nextInt((vMax-vMin))))
+      case "bus" => new Moto(Moto.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt(vMax-vMin)))
+            new Velocidad(vMin+r.nextInt((vMax-vMin))))
     }
-  //se genera un vehículo dependiendo del tipo.
+  //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
   definirTipo(tipo)
   }
 }
