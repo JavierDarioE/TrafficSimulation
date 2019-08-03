@@ -5,6 +5,8 @@ import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Shape
 import java.awt.geom.Rectangle2D.Double
+
+import movimiento.Vehiculo
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart

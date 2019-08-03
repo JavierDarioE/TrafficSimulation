@@ -43,7 +43,7 @@ object Vehiculo{
   
   val digitos = ('0' to '9')  
   
-  def crearVehiculo(vMin:Int, vMax:Int, proporciones:Array[String], intersecciones:Array[Interseccion]):Vehiculo={
+  def crearVehiculo(vMin:Int, vMax:Int, tipo: String, intersecciones:Array[Interseccion]):Vehiculo={
     def definirTipo(n:String)= n match{
       //se usa el constructor que no recibe placa, en cada clase estará definido como se crean
       //y se envía una interseccion origen y una destino (no se verifica que sean diferentes)
