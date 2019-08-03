@@ -8,8 +8,10 @@ import json.Json
 import vias._
 import movimiento._
 import grafico._
-import scala.collection.mutable.ArrayBuffer
+import scalax.collection.Graph
+import scalax.collection.edge.WLDiEdge
 
+import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
@@ -168,7 +170,8 @@ object Simulacion extends Runnable {
     Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", "37S"),
     Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S"))
 
-  val grafoVia = grafico.GrafoVia.construir(vias)
+  val grafoVia: Graph[Interseccion, WLDiEdge] = grafico.GrafoVia.construir(vias)
+
 
   var vehiculos: Array[Vehiculo] = Array[Vehiculo]()
 
@@ -197,10 +200,10 @@ object Simulacion extends Runnable {
 
   GrafoVia.construir(vias)
   Grafico.graficarVias(vias.toArray)
+  //Grafico.graficarVehiculos(vehiculos)
   Thread.sleep(5000)
 
   var Running = 0
-  Running = start()
 
   override def run(): Unit = {
     
@@ -211,22 +214,16 @@ object Simulacion extends Runnable {
       Running match {
         case 1 =>
           mover(vehiculos)
-
-          //Grafico.graficarMovil(vehiculos)
           t += dt
           println("thread is running")
           Thread.sleep(tRefresh)
 
-
-        case 0 =>
-          println("paused")
-
+        case 0 => println("pausado")
 
         case _ =>
           println("restarted")
         /* poner codigo para reiniciar posición de vehiculos*/
           Running = 1
-
 
       }
     x += 1
