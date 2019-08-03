@@ -131,17 +131,18 @@ object Grafico {
       autoincremento += 1
     })
     
-    val indice = 0
+    var indice = 0
     
     // Esto se puede hacer sin el for con cosas chidas de Scala pero meh:
     // Personalizacion del grafico  
-    for(i <- numeroDeVias to dataset.getSeriesCount){
+    for(i <- numeroDeVias to dataset.getSeriesCount-1){
       
       // TODO En donde va el color se llamaria el atributo color de Vehiculo
-      plot.getRenderer.setSeriesPaint(i, arrayVehiculos(indice).color)
+      plot.getRenderer.setSeriesPaint(i, arrayVehiculos(indice).destino.color)
       
       // TODO En donde esta el new Double se llamaria al atributo figura de Vehiculo
       plot.getRenderer.setSeriesShape(i, new Double(0,0,7,7))
+      indice += 1
     }
   }
 }
