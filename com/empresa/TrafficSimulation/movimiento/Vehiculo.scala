@@ -1,12 +1,18 @@
 package movimiento
 
-import java.awt.Color
+import java.awt.{Color, Shape}
+
 import json._
 import cartesiano._
 import vias._
 import simulacion.Simulacion
 
-abstract class Vehiculo (val placa:String,val origen:Interseccion, val destino:Interseccion, private var _velocidad:Velocidad, var color: Color)
+abstract class Vehiculo (val placa:String,
+                         val origen:Interseccion,
+                         val destino:Interseccion,
+                         private var _velocidad:Velocidad,
+                         var color: Color,
+                         val forma: java.awt.geom.Rectangle2D.Double)
 extends Movil(origen, _velocidad) with MovimientoUniforme {
  
  private var _punto:Punto = origen

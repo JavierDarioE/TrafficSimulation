@@ -26,9 +26,7 @@ object Simulacion extends Runnable {
 
   def pause(): Int = 0
 
-  def mover(movil: Array[Vehiculo]): Unit = {
-    for (m <- movil) m.mover(dt)
-  }
+
 
   //Parámetros de la Simulación
 
@@ -210,7 +208,7 @@ object Simulacion extends Runnable {
     while (true) {
       Running match {
         case 1 =>
-          mover(vehiculos)
+          for (m <- vehiculos) m.mover(dt)
           Grafico.graficarVehiculos(vehiculos)
           t += dt
           println("thread is running")

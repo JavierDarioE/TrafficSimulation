@@ -141,7 +141,7 @@ object Grafico {
       plot.getRenderer.setSeriesPaint(i, arrayVehiculos(indice).destino.color)
       
       // TODO En donde esta el new Double se llamaria al atributo figura de Vehiculo
-      plot.getRenderer.setSeriesShape(i, new Double(0,0,7,7))
+      plot.getRenderer.setSeriesShape(i, arrayVehiculos(indice).forma)
       indice += 1
     }
   }
