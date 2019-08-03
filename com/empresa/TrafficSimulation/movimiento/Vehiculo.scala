@@ -49,25 +49,25 @@ object Vehiculo{
       case "carro" => new Carro(Carro.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt((vMax-vMin))))
+            new Velocidad(vMin+r.nextInt(vMax-vMin)))
       case "moto" => new Moto(Moto.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt((vMax-vMin))))
-      case "mototaxi" => new Moto(Moto.generarPlaca,
+            new Velocidad(vMin+r.nextInt(vMax-vMin)))
+      case "mototaxi" => new MotoTaxi(MotoTaxi.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt((vMax-vMin))))
-      case "camion" => new Moto(Moto.generarPlaca,
+            new Velocidad(vMin+r.nextInt(vMax-vMin)))
+      case "camion" => new Camion(Camion.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt((vMax-vMin))))
-      case "bus" => new Moto(Moto.generarPlaca,
+            new Velocidad(vMin+r.nextInt(vMax-vMin)))
+      case "bus" => new Bus(Bus.generarPlaca,
             intersecciones(r.nextInt(intersecciones.length)),
             intersecciones(r.nextInt(intersecciones.length)),
-            new Velocidad(vMin+r.nextInt((vMax-vMin))))
+            new Velocidad(vMin+r.nextInt(vMax-vMin)))
     }
-  //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
-  definirTipo(proporciones(r.nextInt(1000)))
+  //se genera un vehículo dependiendo del tipo.
+  definirTipo(tipo)
   }
 }

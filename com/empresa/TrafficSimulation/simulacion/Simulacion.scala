@@ -8,7 +8,8 @@ import grafico._
 import scala.collection.mutable.ArrayBuffer
 
 object Simulacion extends Runnable{
-  //Parámetros Simulación
+
+  //Parámetros de la Simulación
   val motos: Double = Json.motos
   val carros: Double = Json.carros
   val camiones: Double = Json.camiones
@@ -21,9 +22,9 @@ object Simulacion extends Runnable{
   val velMax: Int = Json.velMax
   val velMin: Int = Json.velMin
   
-  val random=scala.util.Random
+  val random: scala.util.Random = scala.util.Random
   
-  var intersecciones=Array[Interseccion]()
+  var intersecciones: Array[Interseccion] = Array[Interseccion]()
   
   //Se instancian las Intersecciones(se añadirán a intersecciones al crearse):
   val niquia = new Interseccion(300, 12000, "Niquia")
@@ -149,61 +150,31 @@ object Simulacion extends Runnable{
   var vehiculos=Array[Vehiculo]()
   
   //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende de la
-  //proporción de cada vehiculo
-  val proporcionCarros= Array.fill((carros*1000).toInt)("carro")
-  val proporcionMotos= Array.fill((motos*1000).toInt)("moto")
-  val proporcionMotoTaxis= Array.fill((motoTaxis*1000).toInt)("mototaxi")
-  val proporcionCamion= Array.fill((camiones*1000).toInt)("camion")
-  val proporcionBus= Array.fill((buses*1000).toInt)("bus")
+  //proporción de cada vehiculo, cada lista indica la cantidad de cada vehiculo que habrá en la simulación
+  val proporcionCarros: Array[String] = Array.fill((carros*porcentaje).toInt)("carro")
+  val proporcionMotos: Array[String] = Array.fill((motos*porcentaje).toInt)("moto")
+  val proporcionMotoTaxis: Array[String] = Array.fill((motoTaxis*porcentaje).toInt)("mototaxi")
+  val proporcionCamion: Array[String] = Array.fill((camiones*porcentaje).toInt)("camion")
+  val proporcionBus: Array[String] = Array.fill((buses*porcentaje).toInt)("bus")
   
   //Se concatenan los arrays creando un array de
-  //1000 string que indican el tipo de automovil de acuerdo a las 
-  //proporciones enviadas y así elegir el tipo de la instancia a crear,
-  //las proporciones deben sumar 1 y no deben de ser menores a 0.001
-  val proporciones= proporcionCarros++proporcionMotos++proporcionMotoTaxis++proporcionCamion++proporcionBus  
-      
-  //Se instancian los vehículos, se realiza un número al azar de veces entre el mínimo y
-  //el máximo número de vehículos
-  for (i<- 1 to minimo+random.nextInt(maximo-minimo)) Vehiculo.crearVehiculo(velMin, velMax, proporciones, intersecciones)
-//falta hacer que verifique que el origen no sea igual al destino
+  //la cantidad total de vehiculos que habrá
+
+  val proporciones: Array[String] = {
+    proporcionCarros++
+    proporcionMotos++
+    proporcionMotoTaxis++
+    proporcionCamion++
+    proporcionBus
+  }
+
+  //Se instancian los vehículos
+  for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
+  //falta hacer que verifique que el origen no sea igual al destino
   
   override def run(): Unit = {
-    /*
-    /* testing class ResultadosSimulacion */
-    val resultados = new ResultadosSimulacion
 
-    resultados.buses_=(1)
-    resultados.camiones_=(2)
-    resultados.carros_=(3)
-    resultados.distMaxima_=(4)
-    resultados.distMinima_=(6)
-    resultados.distPromedio_=(7)
-    resultados.intersecciones_=(8)
-    resultados.longitudPromedio_=(7)
-    resultados.motos_=(4)
-    resultados.motoTaxis_=(7)
-    resultados.promedioDestino_=(10)
-    resultados.promedioOrigen_=(2)
-    resultados.realidad_=(6)
-    resultados.simulacion_=(10)
-    resultados.sinDestino_=(20)
-    resultados.sinOrigen_=(20)
-    resultados.total_=(20)
-    resultados.viasUnSentido_=(10)
-    resultados.viasDobleSentido_=(10)
-    resultados.velPromedio_=(90)
-    resultados.velMinima_=(90)
-    resultados.velMaxima_=(20)
-    resultados.vias_=(4)
-    resultados.velocidadMaxima_=(50)
-    resultados.velocidadMinima_=(20)
-
-    resultados.guardar()
-    //end of test
-		*/
-    
-    /*test json loader*/
-    var t = Json.tRefresh
+    var t = 0
     val dt = Json.dt
     println(s"camiones: ${Json.camiones}")
     println(s"carros: ${Json.carros}")
@@ -214,34 +185,36 @@ object Simulacion extends Runnable{
       //t = t + dt
       //Grafico.graficar
       println("thread is running")
-      Thread.sleep(1000)
+      Thread.sleep(tRefresh)
     }
     
   def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
 
     
     val resultados = new ResultadosSimulacion
-//revisar unidades
-    resultados.buses_=(vehiculos.filter(_.isInstanceOf[Bus]).length)
-    resultados.camiones_=(vehiculos.filter(_.isInstanceOf[Camion]).length)
-    resultados.carros_=(vehiculos.filter(_.isInstanceOf[Carro]).length)
-    resultados.distMaxima_=(7)
-    resultados.distMinima_=(6)
-    resultados.distPromedio_=(7)
+
+    //revisar unidades
+
+    resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
+    resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
+    resultados.carros_=(vehiculos.count(_.isInstanceOf[Carro]))
+    resultados.distMaxima_=(7) //valores temporales
+    resultados.distMinima_=(6)  //valores temporales
+    resultados.distPromedio_=(7)  //valores temporales
     resultados.intersecciones_=(intersecciones.length)
-    resultados.longitudPromedio_=((vias.map(_.longitud.toInt).reduce(_+_))/vias.length)
-    resultados.motos_=(vehiculos.filter(_.isInstanceOf[Moto]).length)
-    resultados.motoTaxis_=(vehiculos.filter(_.isInstanceOf[MotoTaxi]).length)
-    resultados.promedioDestino_=(10)
-    resultados.promedioOrigen_=(2)
-    resultados.realidad_=(6)
-    resultados.simulacion_=(10)
-    resultados.sinDestino_=(20)
-    resultados.sinOrigen_=(20)
+    resultados.longitudPromedio_=(vias.map(_.longitud.toInt).sum/vias.length)
+    resultados.motos_=(vehiculos.count(_.isInstanceOf[Moto]))
+    resultados.motoTaxis_=(vehiculos.count(_.isInstanceOf[MotoTaxi]))
+    resultados.promedioDestino_=(10)  //valores temporales
+    resultados.promedioOrigen_=(2)  //valores temporales
+    resultados.realidad_=(6)  //valores temporales
+    resultados.simulacion_=(10) //valores temporales
+    resultados.sinDestino_=(20) //valores temporales
+    resultados.sinOrigen_=(20)  //valores temporales
     resultados.total_=(vehiculos.length)
-    resultados.viasUnSentido_=(vias.filter(_.sentido.tipo=="unaVia").length)
-    resultados.viasDobleSentido_=(vias.filter(_.sentido.tipo=="dobleVia").length)
-    resultados.velPromedio_=((vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_))/vehiculos.length)
+    resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
+    resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
+    resultados.velPromedio_=(vehiculos.map(_.velocidad.magnitud.toInt).sum/vehiculos.length)
     resultados.velMinima_=(vias.map(_.vMax).min)
     resultados.velMaxima_=(vias.map(_.vMax).max)
     resultados.vias_=(vias.length)
@@ -251,4 +224,3 @@ object Simulacion extends Runnable{
     resultados.guardar()
   }
 }
-  
