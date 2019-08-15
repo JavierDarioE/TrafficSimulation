@@ -168,7 +168,11 @@ object Simulacion extends Runnable {
     Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", "37S"),
     Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S"))
 
-  val grafoVia: Graph[Interseccion, WLDiEdge] = GrafoVia.construir(vias)
+  val viasBackup: ArrayBuffer[Via] = vias
+
+  //GrafoVia.construir(vias)
+
+  //val grafoVia: Graph[Interseccion, WLDiEdge] = GrafoVia.construir(vias)
 
 
   var vehiculos: Array[Vehiculo] = Array[Vehiculo]()
