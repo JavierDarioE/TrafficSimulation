@@ -1,6 +1,6 @@
 package com.simulata.TrafficSimulation.vias
 
-class Sentido private (val tipo:String) {
+case class Sentido private (val tipo:String) {
   
 }
 
@@ -10,6 +10,6 @@ object Sentido{
   }
   
   def dobleVia: Sentido={
-    new Sentido("dobleVia")
+    Sentido("dobleVia")
   }
 }

@@ -1,6 +1,7 @@
 
 
 package com.simulata.TrafficSimulation.cartesiano
+//El gráfico estará en unidades de m y el tiempo dt en seg
 
 case class Punto (val x:Double, val y:Double) {
 }
