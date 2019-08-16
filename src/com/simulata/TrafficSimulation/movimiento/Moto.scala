@@ -16,41 +16,31 @@ class Moto (val pl:String,
             val c : Color = Color.WHITE,
             val figura: java.awt.geom.Rectangle2D.Double = new java.awt.geom.Rectangle2D.Double(0,0,1,3))
   extends Vehiculo(pl, o, d, _v, c, figura){
-  
-   private var _p:Punto=o
 
-  def p = _p
+ private var _p:Punto = punto
+ 
+ def punto=_p
+ 
+ def p_=(p:Punto): Unit = _p = p
+ 
+ def v= _v
   
-  def p_=(p:Punto): Unit = _p = p
+ def v_=(vv:Velocidad):Unit = _v = vv
+//Distancia Recorrida
+ private var _dR:Double=0
   
-  def v = _v
+ def dR=_dR
   
-  def v_=(v:Velocidad):Unit = _v = v
-  //Indica el ángulo que deberá seguir entre el origen y la primer intersección de la ruta
-  if (ruta.length>1) actualizarAngulo(o,ruta(1),Velocidad.kphTomps(v))  
-  
-  def mover(dt:Double):Unit={
-    //se verifica que aún no se haya llegado a la via final
-    if (ruta.length>1){
-      //se verifica que la distancia entre el vehículo y la intersección objetivo actual sea mayor que la distancia que se
-      //mueve el vehículo en dt, si es menor se corrige poniendo el vehículo en la posición de la intersección objetivo actual
-      //y como se alcanzó se actualiza el ángulo y se remueve esta intersección de la ruta
+ def dR_=(dR:Double): Unit = _dR = dR
 
-      if(Punto.distancia(p, ruta(1))<=Punto.distancia(p,movimiento(dt,Velocidad.kphTomps(v)))){
-        actualizarAngulo(ruta(0),ruta(1),Velocidad.kphTomps(v))
-        p=Punto(ruta(0).x,ruta(0).y)
-        ruta=ruta.drop(1)
-      }
-    }
-    //Verifica que aún no haya llegado a la intersección final
-    if(ruta.length>0){
-      val dp = movimiento(dt,Velocidad.kphTomps(v))
-      val nuevox = dp.x+this.p.x
-      val nuevoy = dp.y+this.p.y
-      p_=(Punto(nuevox,nuevoy))
-      distanciaRecorrida_=(distanciaRecorrida+Punto.distancia(dp,Punto(0,0)))
-    }
-  }
+ def mover(dt:Double):Unit={
+   move(dt)
+   //Estos me parece son los únicos que vale la pena "actualizar"
+   punto_=(punto)
+   v_=(velocidad)
+   dR_=(distanciaRecorrida)
+ }
+ 
 }
 object Moto{
   val r = scala.util.Random

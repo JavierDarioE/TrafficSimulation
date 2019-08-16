@@ -1,12 +1,12 @@
 package com.simulata.TrafficSimulation.cartesiano
 
 //están como variables por si luego ponen que no es constante la velocidad
+//las velocidades serán en m/s, sólo se usará km/h cuando se necesite devolver resultados
 
-
-class Velocidad (private var _magnitud:Double,private var _angulo:Angulo){
+case class Velocidad (private var _magnitud:Double,private var _angulo:Angulo){
   
   def this(magnitud:Double){
-    this(magnitud,new Angulo(0))
+    this(magnitud,Angulo(0))
   }
   
   def magnitud = _magnitud
@@ -19,10 +19,10 @@ class Velocidad (private var _magnitud:Double,private var _angulo:Angulo){
 }
 
 object Velocidad{
-  def kphTomps(v:Velocidad):Velocidad={
-    new Velocidad((v.magnitud/3.6),v._angulo)
+  def kphTomps(v:Double):Double={
+    v/3.6
   }
-  def mpsTokph(v:Velocidad):Velocidad={
-    new Velocidad((v.magnitud*3.6),v._angulo)
+  def mpsTokph(v:Double):Int={
+    (v*3.6).toInt
   }
 }

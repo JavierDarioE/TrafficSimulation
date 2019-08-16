@@ -8,7 +8,7 @@ import com.simulata.TrafficSimulation.json.Json
 import com.simulata.TrafficSimulation.vias._
 import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.grafico._
-
+import com.simulata.TrafficSimulation.cartesiano._
 import scalax.collection.Graph
 import scalax.collection.edge.WLDiEdge
 import scala.collection.mutable.ArrayBuffer
@@ -40,8 +40,8 @@ object Simulacion extends Runnable {
   val tRefresh = Json.tRefresh
   val maximo: Int = Json.maximo
   val minimo: Int = Json.minimo
-  val velMax: Int = Json.velMax
-  val velMin: Int = Json.velMin
+  val velMax: Double = Velocidad.kphTomps(Json.velMax)
+  val velMin: Double = Velocidad.kphTomps(Json.velMin)
 
 
   val random: scala.util.Random = scala.util.Random
@@ -228,9 +228,10 @@ object Simulacion extends Runnable {
       }
     }
 
-
+/*
+ 		se puede borrar(?)
     def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
-
+*/
     val resultados = new ResultadosSimulacion
 
     resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
@@ -253,11 +254,11 @@ object Simulacion extends Runnable {
     resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
     resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
     resultados.velPromedio_=((vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_))/vehiculos.length)
-    resultados.velMinima_=(vias.map(_.vMax).min)
-    resultados.velMaxima_=(vias.map(_.vMax).max)
+    resultados.velMinima_=((vias.map(_.v).min))
+    resultados.velMaxima_=(vias.map(_.v).max)
     resultados.vias_=(vias.length)
-    resultados.velocidadMaxima_=(vehiculos.map(_.velocidad.magnitud.toInt).max)
-    resultados.velocidadMinima_=(vehiculos.map(_.velocidad.magnitud.toInt).min)
+    resultados.velocidadMaxima_=(Velocidad.mpsTokph((vehiculos.map(_.velocidad.magnitud.toInt).max)))
+    resultados.velocidadMinima_=(Velocidad.mpsTokph((vehiculos.map(_.velocidad.magnitud.toInt).min)))
 
     resultados.guardar()
   }
