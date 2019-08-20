@@ -39,9 +39,9 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
  
  def punto_=(p:Punto): Unit = _punto = p
  
- def velocidad = _velocidad
+ override def velocidad = _velocidad
   
- def velocidad_=(v:Velocidad):Unit = _velocidad = v
+ override def velocidad_=(v:Velocidad):Unit = _velocidad = v
 
  private var _distanciaRecorrida:Double=0
   

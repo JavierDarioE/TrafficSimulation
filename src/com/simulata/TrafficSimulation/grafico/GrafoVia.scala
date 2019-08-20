@@ -13,17 +13,27 @@ import scala.collection.mutable
 
 object GrafoVia {
 
-  val grafo = Graph[Interseccion, WLDiEdge]()
+  val grafo: Graph[Interseccion, WLDiEdge] = Graph[Interseccion, WLDiEdge]()
   val listaAristas = new ArrayBuffer[Interseccion]()
 
   def construir(arregloVias: ArrayBuffer[Via]): Unit={
-    arregloVias.foreach {
-      case v@Via(_, _, _, _, Sentido.unaVia, _, _) =>
+    arregloVias.foreach { v => {
+      if ((v.sentido.tipo).equalsIgnoreCase("unaVia")){
         grafo += WLDiEdge(v.origenn, v.finn)(v.longitud, v)
-      case v@Via(_, _, _, _, Sentido.dobleVia, _, _) =>
+      }
+      else if ((v.sentido.tipo).equalsIgnoreCase("dobleVia")){
         grafo += WLDiEdge(v.origenn, v.finn)(v.longitud, v)
         grafo += WLDiEdge(v.finn, v.origenn)(v.longitud, v)
+      }
     }
+
+
+      /*case v@Via(_, _, _, _, Sentido(unaVia), _, _) =>
+        grafo += WLDiEdge(v.origenn, v.finn)(v.longitud, v)
+      case v@Via(_, _, _, _, Sentido(dobleVia), _, _) =>
+        grafo += WLDiEdge(v.origenn, v.finn)(v.longitud, v)
+        grafo += WLDiEdge(v.finn, v.origenn)(v.longitud, v)
+    */}
     grafo.nodes.foreach(v => listaAristas += v.value)
   }
 

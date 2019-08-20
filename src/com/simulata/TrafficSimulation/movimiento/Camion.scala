@@ -19,7 +19,7 @@ class Camion (val pl:String,
   
    private var _p:Punto = punto
  
- def punto=_p
+ override def punto=_p
  
  def p_=(p:Punto): Unit = _p = p
  
