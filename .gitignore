@@ -255,3 +255,13 @@ $RECYCLE.BIN/
 # intellij
 idea/
 TrafficSimulation.iml
+
+.idea/inspectionProfiles/Project_Default.xml
+
+.idea/misc.xml
+
+.idea/modules.xml
+
+.idea/vcs.xml
+
+resultados.json
