@@ -9,7 +9,7 @@ trait Recta {
   
   def angulo():Angulo={
     //se haya el ángulo entre el vector (fin-origen) y el vector (1,0), se devuelve en grados
-    val vector = new Punto(fin.x-origen.x,origen.y-fin.y)
+    val vector = new Punto(fin.x-origen.x,fin.y-origen.y)
     if(vector.y>0){ 
       return new Angulo((scala.math.acos(vector.x/Punto.distancia(vector,Punto(0,0))))*180/math.Pi)    
       }

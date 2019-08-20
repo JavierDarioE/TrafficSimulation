@@ -139,8 +139,10 @@ object Grafico {
     arrayVehiculos.foreach(vehiculo => {
       val serie = new XYSeries(autoincremento)
       serie.add(
-            vehiculo.asInstanceOf[Movil].posicion.x, 
-            vehiculo.asInstanceOf[Movil].posicion.y)
+          vehiculo.punto.x,
+          vehiculo.punto.y)
+            /*vehiculo.asInstanceOf[Movil].posicion.x, 
+            vehiculo.asInstanceOf[Movil].posicion.y)*/
       dataset.addSeries(serie)
       autoincremento += 1
     })
