@@ -19,7 +19,7 @@ class Camion (val pl:String,
   
    private var _p:Punto = punto
  
- override def punto=_p
+  def p=_p
  
  def p_=(p:Punto): Unit = _p = p
  
@@ -36,7 +36,7 @@ class Camion (val pl:String,
  def mover(dt:Double):Unit={
    move(dt)
    //Estos me parece son los únicos que vale la pena "actualizar"
-   punto_=(punto)
+   p_=(punto)
    v_=(velocidad)
    dR_=(distanciaRecorrida)
  }

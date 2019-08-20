@@ -35,7 +35,7 @@ object Simulacion extends Runnable {
   val camiones: Double = Json.camiones
   val buses: Double = Json.buses
   val motoTaxis: Double = Json.motoTaxis
-  val dt: Int = Json.dt
+  val dt:Int = 10//Json.dt
   var t = 0
   val tRefresh = Json.tRefresh
   val maximo: Int = Json.maximo
@@ -189,7 +189,7 @@ object Simulacion extends Runnable {
   //la cantidad total de vehiculos que habrá
 
   val proporciones: Array[String] = {
-    proporcionCarros ++
+      proporcionCarros ++
       proporcionMotos ++
       proporcionMotoTaxis ++
       proporcionCamion ++
@@ -219,7 +219,7 @@ object Simulacion extends Runnable {
           println("thread is running")
           Thread.sleep(tRefresh)
 
-        case 0 => println("pausado")
+        case 0 => println(s"pausado")
 
         case _ =>
           println("restarted")

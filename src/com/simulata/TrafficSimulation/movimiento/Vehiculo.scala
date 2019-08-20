@@ -35,15 +35,15 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
  
   def via_=(vi:Via): Unit = _via = vi
   //posicion inicial
-  private var _punto:Punto = colaIntersecciones.dequeue
+  private var _punto:Punto = origen//hay que revisar si get.nodes incluye el nodo origen, si si lo incluye entonces es => colaIntersecciones.dequeue
  
   def punto=_punto
  
   def punto_=(p:Punto): Unit = _punto = p
  
-  override def velocidad = _velocidad
+  def velocidad = _velocidad
   
-  override def velocidad_=(v:Velocidad):Unit = _velocidad = v
+  def velocidad_=(v:Velocidad):Unit = _velocidad = v
 
   private var _distanciaRecorrida:Double=0
   
@@ -51,11 +51,11 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
   
   def distanciaRecorrida_=(d:Double): Unit = _distanciaRecorrida = d
 
-  def actualizarAngulo(via:Via,v:Velocidad):Unit={
-    v.angulo = via.angulo()
+  def actualizarAngulo(viaActual:Via):Unit={
+    velocidad_=(Velocidad(velocidad.magnitud,viaActual.angulo()))
   }
   //Indica el ángulo inicial
-  actualizarAngulo(via,velocidad)
+  actualizarAngulo(via)
   ////////////////////////////////////////
 
   def move(dt:Double):Unit={
@@ -64,16 +64,16 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
       //se verifica que la distancia entre el vehículo y la intersección objetivo actual sea mayor que la distancia que se
       //mueve el vehículo en dt, si es menor se corrige poniendo el vehículo en la posición de la intersección objetivo actual
       //y como se alcanzó se actualiza el ángulo y se remueven tanto la intersección actual como la via actual de sus respectivas colas
-      if(Punto.distancia(punto, colaIntersecciones.head)<=Punto.distancia(Punto(0,0),movimiento(dt,velocidad))){
-        actualizarAngulo(colaVias.dequeue,velocidad)
-        punto=colaIntersecciones.dequeue
+      if(Punto.distancia(punto, colaIntersecciones.head)<=(Punto.distancia(Punto(0,0),movimiento(dt,velocidad))+10)){
+        actualizarAngulo(colaVias.dequeue)
+        punto_=(colaIntersecciones.dequeue)
         }
     }
     //Verifica que aún no haya llegado a la intersección final
     if(colaIntersecciones.length>0){
       val dp = movimiento(dt,velocidad)
-      val nuevox = dp.x+this.punto.x
-      val nuevoy = dp.y+this.punto.y
+      val nuevox = dp.x+punto.x
+      val nuevoy = dp.y+punto.y
       punto_=(Punto(nuevox,nuevoy))
       distanciaRecorrida_=(distanciaRecorrida+Punto.distancia(dp,Punto(0,0)))
     }
