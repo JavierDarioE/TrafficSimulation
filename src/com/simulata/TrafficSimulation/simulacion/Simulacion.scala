@@ -195,13 +195,14 @@ object Simulacion extends Runnable {
       proporcionCamion ++
       proporcionBus
   }
+  
 
-  //Se instancian los vehículos
-  for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
   //falta hacer que verifique que el origen no sea igual al destino
 
   GrafoVia.construir(vias)
   Grafico.graficarVias(vias.toArray)
+  //Se instancian los vehículos
+  for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
 
   var Running = 0
   var active = true

@@ -14,49 +14,51 @@ abstract case class Vehiculo (val placa:String,
                          var color: Color,
                          val forma: java.awt.geom.Rectangle2D.Double)
 extends Movil(origen, _velocidad) with MovimientoUniforme {
-   
- val caminoMasCorto = (GrafoVia.interseccion(origen)).shortestPathTo(GrafoVia.interseccion(destino))
+
+  println(origen.nombre)
+  println(destino.nombre)
+  val caminoMasCorto = (GrafoVia.interseccion(origen)).shortestPathTo(GrafoVia.interseccion(destino))
     
- val interseccionesCaminoMasCorto = caminoMasCorto.get.nodes.map(_.value).toArray
+  val interseccionesCaminoMasCorto = caminoMasCorto.get.nodes.map(_.value).toArray
     
- val colaIntersecciones = new Queue[Interseccion]()
+  val colaIntersecciones = new Queue[Interseccion]()
     interseccionesCaminoMasCorto.foreach(i => colaIntersecciones += i)
    
- val viasCaminoMasCorto = caminoMasCorto.get.edges.map(_.label.asInstanceOf[Via]).toArray
+  val viasCaminoMasCorto = caminoMasCorto.get.edges.map(_.label.asInstanceOf[Via]).toArray
   
- val colaVias = new Queue[Via]()
+  val colaVias = new Queue[Via]()
     viasCaminoMasCorto.foreach(i => colaVias += i)
- //via inicial
- private var _via:Via = colaVias.dequeue
+  //via inicial
+  private var _via:Via = colaVias.dequeue
  
- def via=_via
+  def via=_via
  
- def via_=(vi:Via): Unit = _via = vi
- //posicion inicial
- private var _punto:Punto = colaIntersecciones.dequeue
+  def via_=(vi:Via): Unit = _via = vi
+  //posicion inicial
+  private var _punto:Punto = colaIntersecciones.dequeue
  
- def punto=_punto
+  def punto=_punto
  
- def punto_=(p:Punto): Unit = _punto = p
+  def punto_=(p:Punto): Unit = _punto = p
  
- override def velocidad = _velocidad
+  override def velocidad = _velocidad
   
- override def velocidad_=(v:Velocidad):Unit = _velocidad = v
+  override def velocidad_=(v:Velocidad):Unit = _velocidad = v
 
- private var _distanciaRecorrida:Double=0
+  private var _distanciaRecorrida:Double=0
   
- def distanciaRecorrida=_distanciaRecorrida
+  def distanciaRecorrida=_distanciaRecorrida
   
- def distanciaRecorrida_=(d:Double): Unit = _distanciaRecorrida = d
+  def distanciaRecorrida_=(d:Double): Unit = _distanciaRecorrida = d
 
- def actualizarAngulo(via:Via,v:Velocidad):Unit={
-        v.angulo = via.angulo()
- }
- //Indica el ángulo inicial
- actualizarAngulo(via,velocidad)
- ////////////////////////////////////////
+  def actualizarAngulo(via:Via,v:Velocidad):Unit={
+    v.angulo = via.angulo()
+  }
+  //Indica el ángulo inicial
+  actualizarAngulo(via,velocidad)
+  ////////////////////////////////////////
 
- def move(dt:Double):Unit={
+  def move(dt:Double):Unit={
     //se verifica que aún no se haya llegado a la via final
     if (colaVias.length>1){
       //se verifica que la distancia entre el vehículo y la intersección objetivo actual sea mayor que la distancia que se
@@ -77,18 +79,17 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
     }
   }
 
- ////////////////////////////////////////
+  ////////////////////////////////////////
  
- Simulacion.vehiculos :+=this
+  Simulacion.vehiculos :+=this
  
- origen.origenes :+=this
+  origen.origenes :+=this
  
- destino.fin:+=this
+  destino.fin:+=this
 
 }
 
 object Vehiculo{
-  
   val r = scala.util.Random
   
   val letras = ('A' to 'Z')
@@ -99,7 +100,7 @@ object Vehiculo{
     //Para verificar que el origen y el destino no sean iguales
     val a:Int = r.nextInt(intersecciones.length)
     var b:Int = r.nextInt(intersecciones.length)
-    while(b == a) b=r.nextInt
+    while(b == a) b=r.nextInt(intersecciones.length)
     def definirTipo(n:String)= n match{
       //se usa el constructor que no recibe placa, en cada clase estará definido como se crean
       //y se envía una interseccion origen y una destino 
