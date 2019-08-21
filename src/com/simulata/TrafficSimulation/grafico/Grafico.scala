@@ -1,38 +1,39 @@
 package com.simulata.TrafficSimulation.grafico
 
 import com.simulata.TrafficSimulation.vias._
-import com.simulata.TrafficSimulation.movimiento._
+//import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.simulacion.Simulacion
 import com.simulata.TrafficSimulation.movimiento.Vehiculo
 
 import java.awt.BasicStroke
 import java.awt.Color
-import java.awt.Shape
+//import java.awt.Shape
 import java.awt.geom.Rectangle2D.Double
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart
-import org.jfree.chart.axis.NumberAxis
-import org.jfree.chart.plot.PlotOrientation
+//import org.jfree.chart.axis.NumberAxis
+//import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.plot.XYPlot
-import org.jfree.data.xy.XYDataset
+//import org.jfree.data.xy.XYDataset
 import org.jfree.data.xy.XYSeries
 import org.jfree.data.xy.XYSeriesCollection
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.chart.annotations.XYTextAnnotation
 import org.jfree.ui.RefineryUtilities
-import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener, WindowStateListener}
+import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener/*, WindowStateListener*/}
 
 object Grafico {
+  var cantVias: Int = _
   
   val dataset = new XYSeriesCollection
   val dataset1 = new XYSeriesCollection
   var frame: ChartFrame = _
   
   //chart con titulo, label para eje x, label para eje y, y dataset
-  val chart = ChartFactory.createScatterPlot("titulo", "", "", dataset)
+  val chart: JFreeChart = ChartFactory.createScatterPlot("titulo", "", "", dataset)
   
-  val plot = chart.getXYPlot
+  val plot: XYPlot = chart.getXYPlot
   
   def graficarVias(arrayVias: Array[Via]){
    
@@ -77,7 +78,7 @@ object Grafico {
     
     // Esto se puede hacer sin el for con cosas chidas de Scala pero meh:
     // Personalizacion del grafico
-    for(i <- 0 to dataset.getSeriesCount - 1){
+    for(i <- 0 until dataset.getSeriesCount){
     plot.getRenderer.setSeriesStroke(i, new BasicStroke(4.0f))
     plot.getRenderer.setSeriesPaint(i, Color.LIGHT_GRAY)
     plot.getRenderer.setSeriesShape(i, new Double)
@@ -126,9 +127,26 @@ object Grafico {
       
       override def keyTyped(evento: KeyEvent){}
     })
+    cantVias = dataset.getSeriesCount
   }
-  
-  def graficarVehiculos(arrayVehiculos: Array[Vehiculo]) {
+
+  def limpiarVehiculos(arrayVehiculos: Array[Vehiculo]): Unit ={
+    arrayVehiculos.foreach(vehiculo => {
+      while (dataset.getSeriesCount > cantVias){
+        dataset.removeSeries(dataset.getSeriesIndex(vehiculo.placa))
+      }
+    })
+  }
+
+  def moverVehiculos(arrayVehiculos: Array[Vehiculo]): Unit = {
+    arrayVehiculos.foreach(vehiculo => {
+      val puntos: XYSeries = dataset.getSeries(vehiculo.placa)
+      puntos.clear()
+      puntos.add(vehiculo.punto.x, vehiculo.punto.y)
+    })
+  }
+
+  def graficarVehiculos(arrayVehiculos: Array[Vehiculo]): Unit = {
     
     // Igual al numero de series que ya hay
     var autoincremento = dataset.getSeriesCount
@@ -137,7 +155,7 @@ object Grafico {
     
     // Crear un XYSeries por cada vehiculo y agregar al dataset
     arrayVehiculos.foreach(vehiculo => {
-      val serie = new XYSeries(autoincremento)
+      val serie = new XYSeries(vehiculo.placa)
       serie.add(
           vehiculo.punto.x,
           vehiculo.punto.y)
@@ -145,13 +163,15 @@ object Grafico {
             vehiculo.asInstanceOf[Movil].posicion.y)*/
       dataset.addSeries(serie)
       autoincremento += 1
+      plot.getRenderer.setSeriesPaint(this.dataset.getSeriesCount-1, vehiculo.destino.color)
+      plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, vehiculo.forma)
     })
     
     var indice = 0
     
     // Esto se puede hacer sin el for con cosas chidas de Scala pero meh:
     // Personalizacion del grafico  
-    for(i <- numeroDeVias to dataset.getSeriesCount-1){
+    /*for(i <- numeroDeVias until dataset.getSeriesCount){
       
       // TODO En donde va el color se llamaria el atributo color de Vehiculo
       plot.getRenderer.setSeriesPaint(i, arrayVehiculos(indice).destino.color)
@@ -159,6 +179,6 @@ object Grafico {
       // TODO En donde esta el new Double se llamaria al atributo figura de Vehiculo
       plot.getRenderer.setSeriesShape(i, arrayVehiculos(indice).forma)
       indice += 1
-    }
+    }*/
   }
 }

@@ -204,7 +204,7 @@ object Simulacion extends Runnable {
   //Se instancian los vehículos
   for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
 
-  var Running = 0
+  var Running = 3
   var active = true
   override def run(): Unit = {
     
@@ -212,9 +212,13 @@ object Simulacion extends Runnable {
 
     while (active) {
       Running match {
+        case 3 => Grafico.graficarVehiculos(vehiculos)
+          Running = 0
+
         case 1 =>
+          //Grafico.limpiarVehiculos(vehiculos)
           for (m <- vehiculos) m.mover(dt)
-          Grafico.graficarVehiculos(vehiculos)
+          Grafico.moverVehiculos(vehiculos)
           t += dt
           println("thread is running")
           Thread.sleep(tRefresh)

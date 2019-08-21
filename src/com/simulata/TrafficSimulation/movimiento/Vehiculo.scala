@@ -127,6 +127,6 @@ object Vehiculo{
             Velocidad(vMin+r.nextInt((vMax-vMin).toInt),Angulo(0)))
     }
   //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
-  definirTipo(tipo)
+    definirTipo(tipo)
   }
 }
