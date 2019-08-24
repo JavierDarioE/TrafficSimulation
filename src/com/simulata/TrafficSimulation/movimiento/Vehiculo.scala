@@ -108,23 +108,28 @@ object Vehiculo{
       case "carro" => new Carro(Carro.generarPlaca,
             intersecciones(a),
             intersecciones(b),
-            Velocidad(vMin+r.nextInt((vMax-vMin).toInt),Angulo(0)))
+            Velocidad(vMin+r.nextInt((vMax-vMin).toInt))
+            )
       case "moto" => new Moto(Moto.generarPlaca,
             intersecciones(a),
             intersecciones(b),
-            Velocidad(vMin+r.nextInt((vMax-vMin).toInt),Angulo(0)))
+            Velocidad(vMin+r.nextInt((vMax-vMin).toInt))
+            )
       case "mototaxi" => new MotoTaxi(MotoTaxi.generarPlaca,
             intersecciones(a),
             intersecciones(b),
-            Velocidad(vMin+r.nextInt((vMax-vMin).toInt),Angulo(0)))
+            Velocidad(vMin+r.nextInt((vMax-vMin).toInt))
+            )
       case "camion" => new Camion(Camion.generarPlaca,
             intersecciones(a),
             intersecciones(b),
-            Velocidad(vMin+r.nextInt((vMax-vMin).toInt),Angulo(0)))
+            Velocidad(vMin+r.nextInt((vMax-vMin).toInt))
+            )
       case "bus" => new Bus(Bus.generarPlaca,
             intersecciones(a),
             intersecciones(b),
-            Velocidad(vMin+r.nextInt((vMax-vMin).toInt),Angulo(0)))
+            Velocidad(vMin+r.nextInt((vMax-vMin).toInt))
+            )
     }
   //se escoge un indice al azar y dependiendo del tipo de este se crea un vehículo
     definirTipo(tipo)

@@ -16,40 +16,32 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 object Simulacion extends Runnable {
-
-  def start(): Int = 1
-
-  def restart(): Int = {
-    0
-    //vehiculos.restart
-  }
-
-  def pause(): Int = 0
-
-
-
-  //Parámetros de la Simulación
+  //los metodos start, stop, running están al final.
 
   val motos: Double = Json.motos
   val carros: Double = Json.carros
   val camiones: Double = Json.camiones
   val buses: Double = Json.buses
   val motoTaxis: Double = Json.motoTaxis
-  val dt:Int = 10//Json.dt
+  val dt:Int = Json.dt
   var t = 0
-  val tRefresh = Json.tRefresh
+  val tRefresh: Int = Json.tRefresh
   val maximo: Int = Json.maximo
   val minimo: Int = Json.minimo
   val velMax: Double = Velocidad.kphTomps(Json.velMax)
   val velMin: Double = Velocidad.kphTomps(Json.velMin)
 
-
   val random: scala.util.Random = scala.util.Random
-  val porcentaje: Int = minimo + random.nextInt(maximo-minimo)
+
+  val porcentaje: Int = minimo + random.nextInt(maximo-minimo) //cantidad aleatoria de autos dentro de los límites.
+
+  /*
+    TODO la instanciación de vias e intersecciones van dentro de un método el cual llama al objeto que maneja la conexion
+    con neo4j
+  */
 
   var intersecciones: Array[Interseccion] = Array[Interseccion]()
 
-  //Se instancian las Intersecciones(se añadirán a intersecciones al crearse):
   val niquia = new Interseccion(300, 12000, "Niquia", Color.BLUE)
   val lauraAuto = new Interseccion(2400, 11400, "M. Laura Auto", Color.RED)
   val lauraReg = new Interseccion(2400, 12600, "M. Laura Reg", Color.MAGENTA)
@@ -168,17 +160,13 @@ object Simulacion extends Runnable {
     Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", "37S"),
     Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S"))
 
-  val viasBackup: ArrayBuffer[Via] = vias
+  val viasBackup: ArrayBuffer[Via] = vias //un backup de las vias, lol.
 
-  //GrafoVia.construir(vias)
+  var vehiculos: Array[Vehiculo] = Array[Vehiculo]() //un array donde estarám todos los vehiculos de la simulación.
 
-  //val grafoVia: Graph[Interseccion, WLDiEdge] = GrafoVia.construir(vias)
+  //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende del porcentaje del tipo de vahiculo
+  //presente en la simulación, cada lista indica la cantidad de cada vehiculo que habrá en la simulación.
 
-
-  var vehiculos: Array[Vehiculo] = Array[Vehiculo]()
-
-  //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende de la
-  //proporción de cada vehiculo, cada lista indica la cantidad de cada vehiculo que habrá en la simulación
   val proporcionCarros: Array[String] = Array.fill((carros * porcentaje).toInt)("carro")
   val proporcionMotos: Array[String] = Array.fill((motos * porcentaje).toInt)("moto")
   val proporcionMotoTaxis: Array[String] = Array.fill((motoTaxis * porcentaje).toInt)("mototaxi")
@@ -195,20 +183,21 @@ object Simulacion extends Runnable {
       proporcionCamion ++
       proporcionBus
   }
-  
 
-  //falta hacer que verifique que el origen no sea igual al destino
+  //TODO? hacer que verifique que el origen no sea igual al destino <- creo que esto ya está
 
-  GrafoVia.construir(vias)
-  Grafico.graficarVias(vias.toArray)
-  //Se instancian los vehículos
+  GrafoVia.construir(vias) //construir el grafo representando el sistema de vías.
+  Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
+
+  //Se instancian los vehículos con las proporciones definidas más arriba:
   for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
 
   var Running = 3
   var active = true
+
   override def run(): Unit = {
     
-    /* testing class ResultadosSimulacion */
+    //TODO cambiar la logica para que las operaciones de los case se hagan desde los metodos start, stop, restart
 
     while (active) {
       Running match {
@@ -233,38 +222,45 @@ object Simulacion extends Runnable {
       }
     }
 
-/*
- 		se puede borrar(?)
-    def n(outer:Interseccion):Simulacion.grafoVia.NodeT=Simulacion.grafoVia get outer
-*/
     val resultados = new ResultadosSimulacion
 
     resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
     resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
     resultados.carros_=(vehiculos.count(_.isInstanceOf[Carro]))
-    resultados.distMaxima_=(vehiculos.map(_.distanciaRecorrida.toInt).max)//
-    resultados.distMinima_=((vehiculos.map(_.distanciaRecorrida.toInt).min))//
-    resultados.distPromedio_=((vehiculos.map(_.distanciaRecorrida.toInt).sum/vehiculos.length))//
+    resultados.distMaxima_=(vehiculos.map(_.distanciaRecorrida.toInt).max)
+    resultados.distMinima_=(vehiculos.map(_.distanciaRecorrida.toInt).min)
+    resultados.distPromedio_=(vehiculos.map(_.distanciaRecorrida.toInt).sum/vehiculos.length)
     resultados.intersecciones_=(intersecciones.length)
     resultados.longitudPromedio_=(vias.map(_.longitud.toInt).sum/vias.length)
     resultados.motos_=(vehiculos.count(_.isInstanceOf[Moto]))
     resultados.motoTaxis_=(vehiculos.count(_.isInstanceOf[MotoTaxi]))
-    resultados.promedioDestino_=(intersecciones.map(_.fin.length).reduce(_+_)/intersecciones.length)//
-    resultados.promedioOrigen_=(intersecciones.map(_.origenes.length).reduce(_+_)/intersecciones.length)//
-    resultados.realidad_=(6)//
-    resultados.simulacion_=(t)//
-    resultados.sinDestino_=(intersecciones.length-(vehiculos.map(_.destino).length))//
-    resultados.sinOrigen_=((intersecciones.length-(vehiculos.map(_.origen).length)))//
+    resultados.promedioDestino_=(intersecciones.map(_.fin.length).reduce(_+_)/intersecciones.length)
+    resultados.promedioOrigen_=(intersecciones.map(_.origenes.length).reduce(_+_)/intersecciones.length)
+    resultados.realidad_=(6)
+    resultados.simulacion_=(t)
+    resultados.sinDestino_=(intersecciones.length-vehiculos.map(_.destino).length)
+    resultados.sinOrigen_=(intersecciones.length-vehiculos.map(_.origen).length)
     resultados.total_=(vehiculos.length)
     resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
     resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
-    resultados.velPromedio_=((vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_))/vehiculos.length)
-    resultados.velMinima_=((vias.map(_.v).min))
+    resultados.velPromedio_=(vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_)/vehiculos.length)
+    resultados.velMinima_=(vias.map(_.v).min)
     resultados.velMaxima_=(vias.map(_.v).max)
     resultados.vias_=(vias.length)
-    resultados.velocidadMaxima_=(Velocidad.mpsTokph((vehiculos.map(_.velocidad.magnitud.toInt).max)))
-    resultados.velocidadMinima_=(Velocidad.mpsTokph((vehiculos.map(_.velocidad.magnitud.toInt).min)))
+    resultados.velocidadMaxima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidad.magnitud.toInt).max))
+    resultados.velocidadMinima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidad.magnitud.toInt).min))
 
     resultados.guardar()
   }
+
+  def start(): Int = 1
+  //TODO hacer que cambie los valores de la variable running
+
+  def restart(): Int = {
+    0
+    //TODO hacer que cambie los valores de la variable running
+  }
+
+  def pause(): Int = 0 //TODO hacer que cambie los valores de  la variable running
+
 }

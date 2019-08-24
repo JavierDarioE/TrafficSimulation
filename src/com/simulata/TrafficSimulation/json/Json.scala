@@ -65,7 +65,7 @@ object Json{
 
     println("Guardando datos... ")
 
-    val jsonSave: JObject = ("resultadosSimulacion" -> (
+    val jsonSave: JObject = "resultadosSimulacion" -> (
       ("vehiculos" -> (
         ("total" -> total) ~
           ("carros" -> carros) ~
@@ -78,7 +78,6 @@ object Json{
           ("vias" -> vias) ~
             ("intersecciones" -> intersecciones) ~
             ("viasUnSentido" -> viasUnSentido) ~
-            ("viasDobleSentido" -> viasDobleSentido) ~
             ("viasDobleSentido" -> viasDobleSentido) ~
             ("velocidadMinima" -> velocidadMinima) ~
             ("velocidadMaxima" -> velocidadMaxima) ~
@@ -101,18 +100,15 @@ object Json{
         ("distancias"-> (
             ("minima" -> distMinima) ~
               ("maxima" -> distMaxima) ~
-              ("promedio" -> distPromedio)))))
+              ("promedio" -> distPromedio))))
 
     val FileRaw: String = prettyRender(jsonSave)
     val pw = new PrintWriter(new File(s"$currentDirectory/resultados.json"))
     pw.write(FileRaw)
-    pw.close
+    pw.close()
 
     println("Datos guardados.")
   }
-
-
-
 
   /** case classes* */
 
@@ -131,29 +127,4 @@ object Json{
   case class Proporciones(carros: Double, motos: Double, buses: Double, camiones: Double, motoTaxis: Double)
 
   case class Data(parametrosSimulacion: ParametrosSimulacion)
-
-  //para serializar los datos en un archivo Json con case classes: (No prestar atención a esta parte)
-
-  /*
-  case class SerializeData(resultadosSimulacion: ResultadosSimulacion)
-  case class ResultadosSimulacion(vehiculos: Vehiculos,
-                                  mallaVial: MallaVial,
-                                  tiempos: Tiempos,
-                                  velocidades: Velocidades,
-                                  istancias: Distancias)
-  case class Vehiculos(total: Int, carros: Int, motos: Int, buses: Int, camiones: Int, motoTaxis: Int)
-  case class MallaVial(vias: Int,
-                       intersecciones: Int,
-                       viasUnSentido: Int,
-                       viasDobleSentido: Int,
-                       velocidadMinima : Int,
-                       velocidadMaxima: Int,
-                       longitudPromedio: Int,
-                       vehiculosEnInterseccion: VehiculosEnIterseccion)
-  case class VehiculosEnIterseccion(promedioOrigen: Int, promedioDestino: Int, sinOrigen: Int, sinDestino: Int)
-  case class Tiempos(simulacion: Int, realidad: Int)
-  case class Velocidades(minima: Int, maxima: Int, promedio: Int)
-  case class Distancias(minima: Int, maxima: Int, promedio: Int)
-   */
-
 }

@@ -1,6 +1,5 @@
 package com.simulata.TrafficSimulation.resultadosSimulacion
 
-import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.json.Json
 
 class ResultadosSimulacion {

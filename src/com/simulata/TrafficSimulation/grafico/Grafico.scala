@@ -1,5 +1,6 @@
 package com.simulata.TrafficSimulation.grafico
 
+import com.simulata.TrafficSimulation.movimiento.{Bus, Camion, Carro, Moto, MotoTaxi}
 import com.simulata.TrafficSimulation.vias._
 //import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.simulacion.Simulacion
@@ -22,6 +23,10 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.chart.annotations.XYTextAnnotation
 import org.jfree.ui.RefineryUtilities
 import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener/*, WindowStateListener*/}
+
+import java.awt.geom.Ellipse2D
+import java.awt.Rectangle
+import java.awt.Polygon
 
 object Grafico {
   var cantVias: Int = _
@@ -159,26 +164,32 @@ object Grafico {
       serie.add(
           vehiculo.punto.x,
           vehiculo.punto.y)
-            /*vehiculo.asInstanceOf[Movil].posicion.x, 
-            vehiculo.asInstanceOf[Movil].posicion.y)*/
       dataset.addSeries(serie)
       autoincremento += 1
       plot.getRenderer.setSeriesPaint(this.dataset.getSeriesCount-1, vehiculo.destino.color)
-      plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, vehiculo.forma)
+
+      vehiculo match {
+        case vehiculo:Carro => {
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(-4,-4,8,8))
+        }
+        case vehiculo:Moto => {
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-4,4,6,0,-6),Array(-6,-6,0,6,0),5))
+        }
+        case vehiculo:MotoTaxi => {
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Ellipse2D.Double(0,0,8,8))
+        }
+        case vehiculo:Bus => {
+          val points1 = Array(-6, -2, -2, 2, 2, 6, 6, 2, 2, -2, -2, -6)
+          val points2 = Array(-2, -2, -6, -6,-2, -2, 2, 2, 6, 6, 2, 2)
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(points1,points2,12))
+        }
+        case vehiculo:Camion => {
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-5,0,5),Array(-5,5,-5),3))
+        }
+        case _ =>{
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(0,0,2,8))
+        }
+      }
     })
-    
-    var indice = 0
-    
-    // Esto se puede hacer sin el for con cosas chidas de Scala pero meh:
-    // Personalizacion del grafico  
-    /*for(i <- numeroDeVias until dataset.getSeriesCount){
-      
-      // TODO En donde va el color se llamaria el atributo color de Vehiculo
-      plot.getRenderer.setSeriesPaint(i, arrayVehiculos(indice).destino.color)
-      
-      // TODO En donde esta el new Double se llamaria al atributo figura de Vehiculo
-      plot.getRenderer.setSeriesShape(i, arrayVehiculos(indice).forma)
-      indice += 1
-    }*/
   }
 }
