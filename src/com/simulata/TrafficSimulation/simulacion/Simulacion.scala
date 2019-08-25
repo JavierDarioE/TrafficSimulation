@@ -9,6 +9,7 @@ import com.simulata.TrafficSimulation.vias._
 import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.grafico._
 import com.simulata.TrafficSimulation.cartesiano._
+import com.simulata.TrafficSimulation.semaforo._
 import scalax.collection.Graph
 import scalax.collection.edge.WLDiEdge
 import scala.collection.mutable.ArrayBuffer
@@ -162,7 +163,6 @@ object Simulacion extends Runnable {
 
   val viasBackup: ArrayBuffer[Via] = vias //un backup de las vias, lol.
   
-  /* TODO Descomentar cuando ya se lea bien los datos del json
   //Se crean los semaforos
   vias.foreach(via => {
     
@@ -175,8 +175,6 @@ object Simulacion extends Runnable {
     }
   })
   // Hasta aqui fue la creacion de los semaforos
-   * 
-   */
   
   //Deben de crearse es en el neo4j
   val camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()

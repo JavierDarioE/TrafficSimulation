@@ -5,8 +5,6 @@ package com.simulata.TrafficSimulation.semaforo
 import com.simulata.TrafficSimulation.vias._
 import com.simulata.TrafficSimulation.json._
 
-/* TODO Descomentar cuando se lean bien los datos de semaforos del json
-
 class Semaforo(via: Via) {
   
   // Tiempo en verde al azar dentro los limites establecidos
@@ -36,5 +34,3 @@ object Semaforo {
   var minTiempoVerde: Int = Json.minTiempoVerde
   var maxTiempoVerde: Int = Json.maxTiempoVerde
 }
-
-*/

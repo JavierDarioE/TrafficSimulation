@@ -32,16 +32,9 @@ object Json{
   def minimo: Int = parametros.vehiculos.minimo
   def velMax: Int = parametros.velocidad.maximo
   def velMin: Int = parametros.velocidad.minimo
-  
-  // TODO No sé porqué dice que no existen estos dato si ya los puse en el json
-  /*
-  def minTiempoVerde: Double = parametros.semaforos.minTiempoVerde
-  def maxTiempoVerde: Double = parametros.semaforos.maxTiempoVerde
-  def tiempoAmarillo: Double = parametros.semaforos.tiempoAmarillo
-  * 
-  */
-  
-
+  def minTiempoVerde: Int = parametros.semaforos.minTiempoVerde
+  def maxTiempoVerde: Int = parametros.semaforos.maxTiempoVerde
+  def tiempoAmarillo: Int = parametros.semaforos.tiempoAmarillo
 
   /* guardar resultados **/
 
@@ -127,13 +120,16 @@ object Json{
                                   tRefresh: Int,
                                   vehiculos:Vehiculo,
                                   velocidad:Velocidad,
-                                  proporciones:Proporciones)
+                                  proporciones:Proporciones,
+                                  semaforos:Semaforos)
 
   case class Vehiculo(minimo: Int, maximo: Int)
 
   case class Velocidad(minimo: Int, maximo: Int)
 
   case class Proporciones(carros: Double, motos: Double, buses: Double, camiones: Double, motoTaxis: Double)
+  
+  case class Semaforos(minTiempoVerde: Int, maxTiempoVerde: Int, tiempoAmarillo: Int)
 
   case class Data(parametrosSimulacion: ParametrosSimulacion)
 }
