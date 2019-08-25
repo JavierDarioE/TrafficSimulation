@@ -12,7 +12,8 @@ abstract case class Vehiculo (val placa:String,
                          val destino:Interseccion,
                          private var _velocidad:Velocidad,
                          var color: Color,
-                         val forma: java.awt.geom.Rectangle2D.Double)
+                         val forma: java.awt.geom.Rectangle2D.Double,
+                         val viaje:Option[Viaje])
 extends Movil(origen, _velocidad) with MovimientoUniforme {
 
   println(origen.nombre)
@@ -56,7 +57,6 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
   }
   //Indica el ángulo inicial
   actualizarAngulo(via)
-  ////////////////////////////////////////
 
   def move(dt:Double):Unit={
     //se verifica que aún no se haya llegado a la via final
@@ -76,10 +76,14 @@ extends Movil(origen, _velocidad) with MovimientoUniforme {
       val nuevoy = dp.y+punto.y
       punto_=(Punto(nuevox,nuevoy))
       distanciaRecorrida_=(distanciaRecorrida+Punto.distancia(dp,Punto(0,0)))
+      Simulacion.camaras.foreach(x=>
+      //Verifica que la distancia entre la posición actual y la de la cámara sea menor al movimiento 
+      //y que la velocidad sea menor a la velocidad permitida
+        if(Punto.distancia(x.posicion, punto)<=Punto.distancia(dp,Punto(0,0))&&(velocidad.magnitud>via.vMax))
+          (x.crearComparendo(this/*el vehiculo*/)))
     }
   }
 
-  ////////////////////////////////////////
  
   Simulacion.vehiculos :+=this
  
