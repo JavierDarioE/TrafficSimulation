@@ -12,9 +12,9 @@ Nota: Los datos de la aplicación se guardan cuando se cierra la ventana de la s
 
 ## Project members
 
-* Javier Dario E
+* Javier Darío E
 * Juan Pablo C
-* Sebastian Prada P
-* Simon Alvarez V
+* Sebastián Prada P
+* Simón Álvarez V
 
 #### this project follows the [basic Scala stylistic guidelines.](https://docs.scala-lang.org/style/)
