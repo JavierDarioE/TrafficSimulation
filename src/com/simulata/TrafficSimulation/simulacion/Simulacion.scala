@@ -35,13 +35,6 @@ object Simulacion extends Runnable {
 
   val porcentaje: Int = minimo + random.nextInt(maximo-minimo) //cantidad aleatoria de autos dentro de los límites.
   
-  //TODO Datos para los semaforos, descomentar cuando ya se puedan leer esos datos de semaforo del json
-  /*
-  val minTiempoVerde: Double = Json.minTiempoVerde
-  val maxTiempoVerde: Double = Json.maxTiempoVerde
-  val tiempoAmarillo: Double = Json.tiempoAmarillo
-  */
-
   /*
     TODO la instanciación de vias e intersecciones van dentro de un método el cual llama al objeto que maneja la conexion
     con neo4j
@@ -169,19 +162,21 @@ object Simulacion extends Runnable {
 
   val viasBackup: ArrayBuffer[Via] = vias //un backup de las vias, lol.
   
+  /* TODO Descomentar cuando ya se lea bien los datos del json
   //Se crean los semaforos
-  // TODO tiempoVerde debe ser cambiado, ver issue de clase Semaforo
   vias.foreach(via => {
     
     // Se crea semaforo en el nodo final de la via
-    via.finn.nodoSemaforo.agregarSemaforo(new Semaforo(via, tiempoVerde = 15))
+    via.finn.nodoSemaforo.agregarSemaforo(new Semaforo(via))
     
     // Si la via es de doble sentido se crea semaforo en el nodo origen de la misma 
     if(via.sentido.tipo.equals("dobleVia")){
-      via.origenn.nodoSemaforo.agregarSemaforo(new Semaforo(via, tiempoVerde = 15))
+      via.origenn.nodoSemaforo.agregarSemaforo(new Semaforo(via))
     }
   })
   // Hasta aqui fue la creacion de los semaforos
+   * 
+   */
   
   //Deben de crearse es en el neo4j
   val camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()
