@@ -32,6 +32,15 @@ object Json{
   def minimo: Int = parametros.vehiculos.minimo
   def velMax: Int = parametros.velocidad.maximo
   def velMin: Int = parametros.velocidad.minimo
+  
+  // TODO No sé porqué dice que no existen estos dato si ya los puse en el json
+  /*
+  def minTiempoVerde: Double = parametros.semaforos.minTiempoVerde
+  def maxTiempoVerde: Double = parametros.semaforos.maxTiempoVerde
+  def tiempoAmarillo: Double = parametros.semaforos.tiempoAmarillo
+  * 
+  */
+  
 
 
   /* guardar resultados **/
