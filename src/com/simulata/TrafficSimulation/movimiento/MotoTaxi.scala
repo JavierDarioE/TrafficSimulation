@@ -10,38 +10,12 @@ import com.simulata.TrafficSimulation.vias._
 //para poner los get y los set se debe de copiar todo el código, no vi como dejarlo en vehículo
 
 class MotoTaxi (val pl:String,
-                val o:Interseccion,
-                val d:Interseccion,
                 private var _v:Velocidad,
-                val c:Color = Color.WHITE,
-                val figura: java.awt.geom.Rectangle2D.Double = new java.awt.geom.Rectangle2D.Double(0, 0, 3, 3))
-  extends Vehiculo(pl, o, d, _v, c, figura){
-  
-  private var _p:Punto = punto
- 
- def p=_p
- 
- def p_=(p:Punto): Unit = _p = p
- 
- def v= _v
-  
- def v_=(vv:Velocidad):Unit = _v = vv
-//Distancia Recorrida
- private var _dR:Double=0
-  
- def dR=_dR
-  
- def dR_=(dR:Double): Unit = _dR = dR
+                val c:Color = Color.WHITE)
+  extends Vehiculo(pl, _v, c){
 
- def mover(dt:Double):Unit={
-   move(dt)
-   //Estos me parece son los únicos que vale la pena "actualizar"
-   p_=(punto)
-   v_=(velocidad)
-   dR_=(distanciaRecorrida)
- }
- 
 }
+
 object MotoTaxi{
   val r = scala.util.Random
 

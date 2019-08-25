@@ -2,28 +2,21 @@ package com.simulata.TrafficSimulation.grafico
 
 import com.simulata.TrafficSimulation.movimiento.{Bus, Camion, Carro, Moto, MotoTaxi}
 import com.simulata.TrafficSimulation.vias._
-//import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.simulacion.Simulacion
 import com.simulata.TrafficSimulation.movimiento.Vehiculo
-
 import java.awt.BasicStroke
 import java.awt.Color
-//import java.awt.Shape
 import java.awt.geom.Rectangle2D.Double
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart
-//import org.jfree.chart.axis.NumberAxis
-//import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.plot.XYPlot
-//import org.jfree.data.xy.XYDataset
 import org.jfree.data.xy.XYSeries
 import org.jfree.data.xy.XYSeriesCollection
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.chart.annotations.XYTextAnnotation
 import org.jfree.ui.RefineryUtilities
 import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener/*, WindowStateListener*/}
-
 import java.awt.geom.Ellipse2D
 import java.awt.Rectangle
 import java.awt.Polygon
@@ -147,7 +140,7 @@ object Grafico {
     arrayVehiculos.foreach(vehiculo => {
       val puntos: XYSeries = dataset.getSeries(vehiculo.placa)
       puntos.clear()
-      puntos.add(vehiculo.punto.x, vehiculo.punto.y)
+      puntos.add(vehiculo.posicion.x, vehiculo.posicion.y)
     })
   }
 
@@ -162,11 +155,11 @@ object Grafico {
     arrayVehiculos.foreach(vehiculo => {
       val serie = new XYSeries(vehiculo.placa)
       serie.add(
-          vehiculo.punto.x,
-          vehiculo.punto.y)
+          vehiculo.posicion.x,
+          vehiculo.posicion.y)
       dataset.addSeries(serie)
       autoincremento += 1
-      plot.getRenderer.setSeriesPaint(this.dataset.getSeriesCount-1, vehiculo.destino.color)
+      plot.getRenderer.setSeriesPaint(this.dataset.getSeriesCount-1, vehiculo.viaje.interseccionDestino.color)
 
       vehiculo match {
         case vehiculo:Carro => {
@@ -176,12 +169,12 @@ object Grafico {
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-4,4,6,0,-6),Array(-6,-6,0,6,0),5))
         }
         case vehiculo:MotoTaxi => {
-          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Ellipse2D.Double(0,0,8,8))
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Ellipse2D.Double(-4,-4,8,8))
         }
         case vehiculo:Bus => {
-          val points1 = Array(-6, -2, -2, 2, 2, 6, 6, 2, 2, -2, -2, -6)
-          val points2 = Array(-2, -2, -6, -6,-2, -2, 2, 2, 6, 6, 2, 2)
-          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(points1,points2,12))
+          val pointsx = Array(-6, -2, -2, 2, 2, 6, 6, 2, 2, -2, -2, -6)
+          val pointsy = Array(-2, -2, -6, -6,-2, -2, 2, 2, 6, 6, 2, 2)
+          plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(pointsx,pointsy,12))
         }
         case vehiculo:Camion => {
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-5,0,5),Array(-5,5,-5),3))

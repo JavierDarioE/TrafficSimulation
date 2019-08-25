@@ -4,18 +4,13 @@ package com.simulata.TrafficSimulation.cartesiano
 //las velocidades serán en m/s, sólo se usará km/h cuando se necesite devolver resultados
 
 case class Velocidad (private var _magnitud:Double, private var _angulo:Angulo = Angulo(0)){
-  //constructor auxiliar (no funciona)
-  def this(magnitud:Double){
-    this(magnitud, Angulo(0))
-  }
-  //accesores y mutadores (?)
-  def magnitud:Double = _magnitud
+
+  //getters y setters
+  def magnitud:Double = _magnitud //getter
+  def magnitud_=(magnitud:Double):Unit = _magnitud = magnitud //setter
   
-  def magnitud_=(magnitud:Double):Unit = _magnitud = magnitud
-  
-  def angulo: Angulo = _angulo
-  
-  def angulo_=(angulo:Angulo):Unit = _angulo = angulo
+  def angulo: Angulo = _angulo //getter
+  def angulo_=(angulo:Angulo):Unit = _angulo = angulo //setter
 }
 
 object Velocidad{
