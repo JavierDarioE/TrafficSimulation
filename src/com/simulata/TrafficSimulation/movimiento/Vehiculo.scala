@@ -7,6 +7,7 @@ import com.simulata.TrafficSimulation.simulacion.Simulacion
 import com.simulata.TrafficSimulation.grafico.GrafoVia
 import scala.collection.mutable.Queue
 
+
 abstract case class Vehiculo (placa:String,
                               private var _vel:Velocidad,
                               var color: Color)
@@ -48,7 +49,7 @@ extends Movil(Punto(0,0), _vel) with MovimientoUniforme {
       }
     }
   }
-
+  
   def tangenteInversa(x1:Double,x2:Double,y1:Double,y2:Double):Double ={
     val diferenciaX = x2 - x1
     val diferenciaY = y2 - y1

@@ -34,6 +34,13 @@ object Simulacion extends Runnable {
   val random: scala.util.Random = scala.util.Random
 
   val porcentaje: Int = minimo + random.nextInt(maximo-minimo) //cantidad aleatoria de autos dentro de los límites.
+  
+  //TODO Datos para los semaforos, descomentar cuando ya se puedan leer esos datos de semaforo del json
+  /*
+  val minTiempoVerde: Double = Json.minTiempoVerde
+  val maxTiempoVerde: Double = Json.maxTiempoVerde
+  val tiempoAmarillo: Double = Json.tiempoAmarillo
+  */
 
   /*
     TODO la instanciación de vias e intersecciones van dentro de un método el cual llama al objeto que maneja la conexion
@@ -88,79 +95,98 @@ object Simulacion extends Runnable {
 
   //Instanciamos la lista de vias:
   val vias: ArrayBuffer[Via] = ArrayBuffer(
-    Via(niquia, lauraAuto, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", "Auto Norte"),
-    Via(niquia, lauraReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(lauraAuto, lauraReg, 60, TipoVia("Calle"), Sentido.dobleVia, "94", "Pte Madre Laura"),
-    Via(lauraAuto, ptoCero, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", "Auto Norte"),
-    Via(lauraReg, ptoCero, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(ptoCero, mino, 60, TipoVia("Calle"), Sentido.dobleVia, "58", "Oriental"),
-    Via(mino, villa, 60, TipoVia("Calle"), Sentido.dobleVia, "58", "Oriental"),
-    Via(ptoCero, ig65, 60, TipoVia("Calle"), Sentido.dobleVia, "55", "Iguaná"),
-    Via(ig65, robledo, 60, TipoVia("Calle"), Sentido.dobleVia, "55", "Iguaná"),
-    Via(ptoCero, colReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(colReg, maca, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(maca, expo, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(expo, reg30, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(reg30, monte, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(monte, agua, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(agua, viva, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(viva, mayor, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional"),
-    Via(mino, ferrCol, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", "Ferrocarril"),
-    Via(ferrCol, ferrJuan, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", "Ferrocarril"),
-    Via(ferrJuan, expo, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", "Ferrocarril"),
-    Via(villa, juanOr, 60, TipoVia("Carrera"), Sentido.dobleVia, "46", "Oriental"),
-    Via(juanOr, sanDiego, 60, TipoVia("Carrera"), Sentido.dobleVia, "46", "Oriental"),
-    Via(sanDiego, premium, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob"),
-    Via(premium, pp, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob"),
-    Via(pp, santafe, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob"),
-    Via(santafe, pqEnv, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob"),
-    Via(pqEnv, mayor, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob"),
-    Via(ferrCol, colReg, 60, TipoVia("Calle"), Sentido.dobleVia, "450", "Colombia"),
-    Via(colReg, col65, 60, TipoVia("Calle"), Sentido.dobleVia, "450", "Colombia"),
-    Via(col65, col80, 60, TipoVia("Calle"), Sentido.dobleVia, "450", "Colombia"),
-    Via(juanOr, ferrJuan, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan"),
-    Via(ferrJuan, maca, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan"),
-    Via(maca, juan65, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan"),
-    Via(juan65, juan80, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan"),
-    Via(sanDiego, expo, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33"),
-    Via(expo, _33_65, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33"),
-    Via(_33_65, bule, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33"),
-    Via(bule, gema, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33"),
-    Via(premium, reg30, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30"),
-    Via(reg30, _30_65, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30"),
-    Via(_30_65, _30_70, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30"),
-    Via(_30_70, _30_80, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30"),
-    Via(maca, bol65, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", "Boliv"),
-    Via(bol65, bule, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", "Boliv"),
-    Via(bule, _30_70, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", "Boliv"),
-    Via(juan80, bule, 60, TipoVia("Transversal"), Sentido.dobleVia, "39B", "Nutibara"),
-    Via(pp, monte, 60, TipoVia("Calle"), Sentido.dobleVia, "10", "10"),
-    Via(monte, gu10, 60, TipoVia("Calle"), Sentido.dobleVia, "10", "10"),
-    Via(gu10, terminal, 60, TipoVia("Calle"), Sentido.dobleVia, "10", "10"),
-    Via(expo, gu30, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay"),
-    Via(gu30, gu10, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay"),
-    Via(gu10, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay"),
-    Via(gu80, gu_37S, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay"),
-    Via(lauraAuto, ig65, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", "65"),
-    Via(ig65, col65, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", "65"),
-    Via(juan65, col65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65"),
-    Via(bol65, juan65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65"),
-    Via(_33_65, bol65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65"),
-    Via(_30_65, _33_65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65"),
-    Via(_30_65, terminal, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", "65"),
-    Via(terminal, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "65"),
-    Via(robledo, col80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(col80, juan80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(juan80, gema, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(gema, _30_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(_30_80, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(_65_80, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(gu80, agua, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80"),
-    Via(agua, santafe, 60, TipoVia("Calle"), Sentido.dobleVia, "12S", "80"),
-    Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", "37S"),
-    Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S"))
+    Via(niquia, lauraAuto, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", "Auto Norte", None),
+    Via(niquia, lauraReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(lauraAuto, lauraReg, 60, TipoVia("Calle"), Sentido.dobleVia, "94", "Pte Madre Laura", None),
+    Via(lauraAuto, ptoCero, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", "Auto Norte", None),
+    Via(lauraReg, ptoCero, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(ptoCero, mino, 60, TipoVia("Calle"), Sentido.dobleVia, "58", "Oriental", None),
+    Via(mino, villa, 60, TipoVia("Calle"), Sentido.dobleVia, "58", "Oriental", None),
+    Via(ptoCero, ig65, 60, TipoVia("Calle"), Sentido.dobleVia, "55", "Iguaná", None),
+    Via(ig65, robledo, 60, TipoVia("Calle"), Sentido.dobleVia, "55", "Iguaná", None),
+    Via(ptoCero, colReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(colReg, maca, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(maca, expo, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(expo, reg30, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(reg30, monte, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(monte, agua, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(agua, viva, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(viva, mayor, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", "Regional", None),
+    Via(mino, ferrCol, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", "Ferrocarril", None),
+    Via(ferrCol, ferrJuan, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", "Ferrocarril", None),
+    Via(ferrJuan, expo, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", "Ferrocarril", None),
+    Via(villa, juanOr, 60, TipoVia("Carrera"), Sentido.dobleVia, "46", "Oriental", None),
+    Via(juanOr, sanDiego, 60, TipoVia("Carrera"), Sentido.dobleVia, "46", "Oriental", None),
+    Via(sanDiego, premium, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob", None),
+    Via(premium, pp, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob", None),
+    Via(pp, santafe, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob", None),
+    Via(santafe, pqEnv, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob", None),
+    Via(pqEnv, mayor, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", "Av Pob", None),
+    Via(ferrCol, colReg, 60, TipoVia("Calle"), Sentido.dobleVia, "450", "Colombia", None),
+    Via(colReg, col65, 60, TipoVia("Calle"), Sentido.dobleVia, "450", "Colombia", None),
+    Via(col65, col80, 60, TipoVia("Calle"), Sentido.dobleVia, "450", "Colombia", None),
+    Via(juanOr, ferrJuan, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan", None),
+    Via(ferrJuan, maca, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan", None),
+    Via(maca, juan65, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan", None),
+    Via(juan65, juan80, 60, TipoVia("Calle"), Sentido.dobleVia, "44", "Sn Juan", None),
+    Via(sanDiego, expo, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33", None),
+    Via(expo, _33_65, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33", None),
+    Via(_33_65, bule, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33", None),
+    Via(bule, gema, 60, TipoVia("Calle"), Sentido.dobleVia, "33", "33", None),
+    Via(premium, reg30, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30", None),
+    Via(reg30, _30_65, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30", None),
+    Via(_30_65, _30_70, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30", None),
+    Via(_30_70, _30_80, 60, TipoVia("Calle"), Sentido.dobleVia, "30", "30", None),
+    Via(maca, bol65, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", "Boliv", None),
+    Via(bol65, bule, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", "Boliv", None),
+    Via(bule, _30_70, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", "Boliv", None),
+    Via(juan80, bule, 60, TipoVia("Transversal"), Sentido.dobleVia, "39B", "Nutibara", None),
+    Via(pp, monte, 60, TipoVia("Calle"), Sentido.dobleVia, "10", "10", None),
+    Via(monte, gu10, 60, TipoVia("Calle"), Sentido.dobleVia, "10", "10", None),
+    Via(gu10, terminal, 60, TipoVia("Calle"), Sentido.dobleVia, "10", "10", None),
+    Via(expo, gu30, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay", None),
+    Via(gu30, gu10, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay", None),
+    Via(gu10, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay", None),
+    Via(gu80, gu_37S, 60, TipoVia("Carrera"), Sentido.dobleVia, "52", "Av Guay", None),
+    Via(lauraAuto, ig65, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", "65", None),
+    Via(ig65, col65, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", "65", None),
+    Via(juan65, col65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65", None),
+    Via(bol65, juan65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65", None),
+    Via(_33_65, bol65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65", None),
+    Via(_30_65, _33_65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", "65", None),
+    Via(_30_65, terminal, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", "65", None),
+    Via(terminal, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "65", None),
+    Via(robledo, col80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(col80, juan80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(juan80, gema, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(gema, _30_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(_30_80, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(_65_80, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(gu80, agua, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", "80", None),
+    Via(agua, santafe, 60, TipoVia("Calle"), Sentido.dobleVia, "12S", "80", None),
+    Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", "37S", None),
+    Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S", None))
 
   val viasBackup: ArrayBuffer[Via] = vias //un backup de las vias, lol.
+  
+  //Se crean los semaforos
+  // TODO tiempoVerde debe ser cambiado, ver issue de clase Semaforo
+  vias.foreach(via => {
+    
+    // Se crea semaforo en el nodo final de la via
+    via.finn.nodoSemaforo.agregarSemaforo(new Semaforo(via, tiempoVerde = 15))
+    
+    // Si la via es de doble sentido se crea semaforo en el nodo origen de la misma 
+    if(via.sentido.tipo.equals("dobleVia")){
+      via.origenn.nodoSemaforo.agregarSemaforo(new Semaforo(via, tiempoVerde = 15))
+    }
+  })
+  // Hasta aqui fue la creacion de los semaforos
+  
+  //Deben de crearse es en el neo4j
+  val camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()
+  
+  var comparendos: Array[Comparendo] = Array[Comparendo] ()
 
   var vehiculos: Array[Vehiculo] = Array[Vehiculo]() //un array donde estarám todos los vehiculos de la simulación.
 
@@ -252,6 +278,8 @@ object Simulacion extends Runnable {
     resultados.vias_=(vias.length)
     resultados.velocidadMaxima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidad.magnitud.toInt).max))
     resultados.velocidadMinima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidad.magnitud.toInt).min))
+    resultados.cantidad_=(comparendos.length)
+    resultados.promedioPorcentajeExceso_=(comparendos.map(x=>(x.vVehiculo*100/x.vMaxVia)-100).sum/comparendos.length)
 
     resultados.guardar()
 

@@ -18,5 +18,9 @@ trait Recta {
       return new Angulo(-((scala.math.acos(vector.x/Punto.distancia(vector,Punto(0,0))))*180/math.Pi))
     }
   }
-  
+  def puntoMedio():Punto={
+    val x=(origen.x+fin.x)/2
+    val y=(origen.y+fin.y)/2
+    Punto(x,y)
+  }
 }

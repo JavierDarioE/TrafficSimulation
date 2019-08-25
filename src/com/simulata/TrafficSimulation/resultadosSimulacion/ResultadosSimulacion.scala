@@ -78,6 +78,12 @@ class ResultadosSimulacion {
 
   private var _distPromedio: Int = _
   def distPromedio_=(distPromedio: Int){_distPromedio = distPromedio}
+  
+  private var _cantidad: Int = _
+  def cantidad_=(cantidad: Int){_cantidad = cantidad}
+
+  private var _promedioPorcentajeExceso: Double = _
+  def promedioPorcentajeExceso_=(promedioPorcentajeExceso: Double){_promedioPorcentajeExceso = promedioPorcentajeExceso}
 
   def guardar(): Unit = {
     Json.saveResults(_total,
@@ -104,7 +110,11 @@ class ResultadosSimulacion {
       _velPromedio,
       _distMinima,
       _distMaxima,
-      _distPromedio)
+      _distPromedio,
+      //falta ponerlos en el Json
+      _cantidad,
+      _promedioPorcentajeExceso
+      )
   }
 
 }
