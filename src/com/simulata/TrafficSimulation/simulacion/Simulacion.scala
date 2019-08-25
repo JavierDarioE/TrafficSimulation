@@ -216,7 +216,7 @@ object Simulacion extends Runnable {
   Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
 
   //Se instancian los vehículos con las proporciones definidas más arriba:
-  for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p, intersecciones)
+  for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p)
 
   var Running = 3
   var active = true
@@ -232,13 +232,14 @@ object Simulacion extends Runnable {
 
         case 1 =>
           //Grafico.limpiarVehiculos(vehiculos)
-          for (m <- vehiculos) m.mover(dt)
+          for (v <- vehiculos) v.move(dt)
           Grafico.moverVehiculos(vehiculos)
           t += dt
-          println("thread is running")
-          Thread.sleep(tRefresh)
+          //println("thread is running")
+          Thread.sleep(tRefresh*100)
 
-        case 0 => println(s"pausado")
+        case 0 => print(".")
+          Thread.sleep(100)
 
         case _ =>
           println("restarted")
@@ -248,6 +249,8 @@ object Simulacion extends Runnable {
       }
     }
 
+
+/*
     val resultados = new ResultadosSimulacion
 
     resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
@@ -279,6 +282,8 @@ object Simulacion extends Runnable {
     resultados.promedioPorcentajeExceso_=(comparendos.map(x=>(x.vVehiculo*100/x.vMaxVia)-100).sum/comparendos.length)
 
     resultados.guardar()
+
+ */
   }
 
   def start(): Int = 1
