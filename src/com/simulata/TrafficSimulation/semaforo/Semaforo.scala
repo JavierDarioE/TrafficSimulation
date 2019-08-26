@@ -25,7 +25,31 @@ class Semaforo(via: Via) {
     if(newEstado=="verde" || newEstado=="amarillo" || newEstado=="rojo") {
       _estado = newEstado
     }
-  }  
+  }
+  
+  // Segundos que lleva el semaforo en cada color, excepto en rojo
+  var segundosEnVerde: Int = 0
+  var segundosEnAmarillo: Int = 0
+  
+  // Cambia o no el estado del semaforo siguiendo ciertas reglas expuestas en el issue #41
+  def estadoFluye: Unit = estado match {
+    
+    case "verde" => {
+      if(segundosEnVerde < tiempoVerde) segundosEnVerde += 1
+      else {
+        estado = "amarillo" 
+        segundosEnVerde = 0
+      }
+    }
+    case "amarillo" => {
+      if(segundosEnAmarillo < Semaforo.tiempoAmarillo) segundosEnAmarillo += 1
+      else {
+        estado = "rojo"
+        segundosEnAmarillo = 0
+      }
+    }
+    case "rojo" => estado = "verde"    
+  }
 }
 
 object Semaforo {

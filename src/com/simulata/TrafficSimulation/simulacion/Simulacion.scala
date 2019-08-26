@@ -10,11 +10,13 @@ import com.simulata.TrafficSimulation.movimiento._
 import com.simulata.TrafficSimulation.grafico._
 import com.simulata.TrafficSimulation.cartesiano._
 import com.simulata.TrafficSimulation.semaforo._
+import com.simulata.TrafficSimulation.procesos._
 import scalax.collection.Graph
 import scalax.collection.edge.WLDiEdge
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import java.util.LinkedList
 
 object Simulacion extends Runnable {
   //los metodos start, stop, running están al final.
@@ -163,18 +165,30 @@ object Simulacion extends Runnable {
 
   val viasBackup: ArrayBuffer[Via] = vias //un backup de las vias, lol.
   
-  //Se crean los semaforos
+  // Se crean los semaforos
   vias.foreach(via => {
     
     // Se crea semaforo en el nodo final de la via
     via.finn.nodoSemaforo.agregarSemaforo(new Semaforo(via))
     
+    // Si este nodoSemaforo no esta en la lista se lo agrega
+    if(!NodoSemaforo.listaDeNodoSemaforo.contains(via.finn.nodoSemaforo)) {
+      NodoSemaforo.listaDeNodoSemaforo.add(via.finn.nodoSemaforo)
+    }
+    
     // Si la via es de doble sentido se crea semaforo en el nodo origen de la misma 
     if(via.sentido.tipo.equals("dobleVia")){
       via.origenn.nodoSemaforo.agregarSemaforo(new Semaforo(via))
+      
+      // Si este nodoSemaforo no esta en la lista se lo agrega
+      if(!NodoSemaforo.listaDeNodoSemaforo.contains(via.origenn.nodoSemaforo)) {
+        NodoSemaforo.listaDeNodoSemaforo.add(via.origenn.nodoSemaforo)
+      }
     }
   })
   // Hasta aqui fue la creacion de los semaforos
+  
+  ProcesoSemaforos.semaforosCompletos = true
   
   //Deben de crearse es en el neo4j
   val camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()
