@@ -7,6 +7,7 @@ import com.simulata.TrafficSimulation.movimiento.Vehiculo
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.geom.Rectangle2D.Double
+
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart
@@ -16,7 +17,7 @@ import org.jfree.data.xy.XYSeriesCollection
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.chart.annotations.XYTextAnnotation
 import org.jfree.ui.RefineryUtilities
-import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener/*, WindowStateListener*/}
+import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener}
 import java.awt.geom.Ellipse2D
 import java.awt.Rectangle
 import java.awt.Polygon
@@ -26,7 +27,7 @@ object Grafico {
   val dataset = new XYSeriesCollection
   val dataset1 = new XYSeriesCollection
   var frame: ChartFrame = _
-  
+
   //chart con titulo, label para eje x, label para eje y, y dataset
   val chart: JFreeChart = ChartFactory.createScatterPlot("titulo", "", "", dataset)
   
@@ -90,38 +91,26 @@ object Grafico {
     frame.setVisible(true)
     frame.requestFocus()
     frame.addWindowListener(new WindowListener {
-      override def windowOpened(e: WindowEvent){}
-
-      override def windowClosing(e: WindowEvent){}
-
+      override def windowOpened(e: WindowEvent) {}
+      override def windowClosing(e: WindowEvent) {}
       override def windowClosed(e: WindowEvent): Unit = {
         Simulacion.active = false
       }
-
-      override def windowIconified(e: WindowEvent){}
-
-      override def windowDeiconified(e: WindowEvent){}
-
-      override def windowActivated(e: WindowEvent){}
-
-      override def windowDeactivated(e: WindowEvent){}
+      override def windowIconified(e: WindowEvent) {}
+      override def windowDeiconified(e: WindowEvent) {}
+      override def windowActivated(e: WindowEvent) {}
+      override def windowDeactivated(e: WindowEvent) {}
     })
     frame.addKeyListener(new KeyListener{
-      
       override def keyPressed(evento: KeyEvent): Unit = {
         if(evento.getKeyCode == KeyEvent.VK_F5){
-          
-          if(Simulacion.Running == 0) Simulacion.Running = 1
-          else if(Simulacion.Running ==1) Simulacion.Running = 2
-          
+          Simulacion.eventoF5()
         }
         else if(evento.getKeyCode == KeyEvent.VK_F6){
-          Simulacion.Running=0
+          Simulacion.eventoF6()
         }
       }
-      
       override def keyReleased(evento: KeyEvent){}
-      
       override def keyTyped(evento: KeyEvent){}
     })
     cantVias = dataset.getSeriesCount
@@ -129,9 +118,7 @@ object Grafico {
 
   def limpiarVehiculos(arrayVehiculos: Array[Vehiculo]): Unit ={
     arrayVehiculos.foreach(vehiculo => {
-      while (dataset.getSeriesCount > cantVias){
         dataset.removeSeries(dataset.getSeriesIndex(vehiculo.placa))
-      }
     })
   }
 

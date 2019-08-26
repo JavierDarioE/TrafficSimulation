@@ -1,6 +1,7 @@
 package com.simulata.TrafficSimulation.simulacion
 
 import java.awt.Color
+import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener}
 
 import com.simulata.TrafficSimulation.grafico.{Grafico, GrafoVia}
 import com.simulata.TrafficSimulation.resultadosSimulacion._
@@ -13,14 +14,13 @@ import com.simulata.TrafficSimulation.semaforo._
 import com.simulata.TrafficSimulation.procesos._
 import scalax.collection.Graph
 import scalax.collection.edge.WLDiEdge
+
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 import java.util.LinkedList
 
 object Simulacion extends Runnable {
-  //los metodos start, stop, running están al final.
-
   //primero obtenemos los parámetros necesarios desde el json:
   val motos: Double = Json.motos
   val carros: Double = Json.carros
@@ -35,10 +35,6 @@ object Simulacion extends Runnable {
   val velMax: Double = Velocidad.kphTomps(Json.velMax)
   val velMin: Double = Velocidad.kphTomps(Json.velMin)
 
-  val random: scala.util.Random = scala.util.Random
-
-  val porcentaje: Int = minimo + random.nextInt(maximo-minimo) //cantidad aleatoria de autos dentro de los límites.
-  
   // TODO la instanciación de vias e intersecciones van dentro de un método
   var intersecciones: Array[Interseccion] = Array[Interseccion]()
 
@@ -84,7 +80,6 @@ object Simulacion extends Runnable {
   val gu80 = new Interseccion(19500, 12000, "Guay 80", Color.PINK)
   val _65_80 = new Interseccion(19500, 10500, "65 con 30", Color.YELLOW)
   val gu_37S = new Interseccion(21000, 12000, "Guay con 37S", Color.BLACK)
-
 
   //Instanciamos la lista de vias:
   val vias: ArrayBuffer[Via] = ArrayBuffer(
@@ -187,75 +182,117 @@ object Simulacion extends Runnable {
   
   ProcesoSemaforos.semaforosCompletos = true
   
-  //TODO crear las cámaras es en neo4j
-  val camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()
-  
+  //TODO instanciar cámaras desde neo4j
+  var camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()
+
   var comparendos: Array[Comparendo] = Array[Comparendo]()
 
   var viajes: Array[Viaje] = Array[Viaje]()
 
   var vehiculos: Array[Vehiculo] = Array[Vehiculo]() //un array donde estarán todos los vehiculos de la simulación.
 
-  //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende del porcentaje del tipo de vahiculo
-  //presente en la simulación, cada lista indica la cantidad de cada vehiculo que habrá en la simulación.
-
-  val proporcionCarros: Array[String] = Array.fill((carros * porcentaje).toInt)("carro")
-  val proporcionMotos: Array[String] = Array.fill((motos * porcentaje).toInt)("moto")
-  val proporcionMotoTaxis: Array[String] = Array.fill((motoTaxis * porcentaje).toInt)("mototaxi")
-  val proporcionCamion: Array[String] = Array.fill((camiones * porcentaje).toInt)("camion")
-  val proporcionBus: Array[String] = Array.fill((buses * porcentaje).toInt)("bus")
-
-  //Se concatenan los arrays creando un array de
-  //la cantidad total de vehiculos que habrá
-
-  val proporciones: Array[String] = {
-      proporcionCarros ++
-      proporcionMotos ++
-      proporcionMotoTaxis ++
-      proporcionCamion ++
-      proporcionBus
-  }
-
   GrafoVia.construir(vias) //construir el grafo representando el sistema de vías.
   Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
 
-  //Se instancian los vehículos con las proporciones definidas más arriba:
-  for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p)
-
-  vehiculos.foreach(new Viaje(_)) //a cada vehiculo se le asigna un viaje
-
-  var Running = 3
+  var running = 2
   var active = true
+
+  def prepararSimulacion(): Unit ={
+    val random: scala.util.Random = scala.util.Random
+    val porcentaje: Int = minimo + random.nextInt(maximo-minimo) //cantidad aleatoria de autos dentro de los límites.
+
+    //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende del porcentaje del tipo de vehiculo
+    //presente en la simulación, cada lista indica la cantidad de cada vehiculo que habrá en la simulación.
+    val proporcionCarros: Array[String] = Array.fill((carros * porcentaje).toInt)("carro")
+    val proporcionMotos: Array[String] = Array.fill((motos * porcentaje).toInt)("moto")
+    val proporcionMotoTaxis: Array[String] = Array.fill((motoTaxis * porcentaje).toInt)("mototaxi")
+    val proporcionCamion: Array[String] = Array.fill((camiones * porcentaje).toInt)("camion")
+    val proporcionBus: Array[String] = Array.fill((buses * porcentaje).toInt)("bus")
+
+    //Se concatenan los arrays creando un array de
+    //la cantidad total de vehiculos que habrá
+    val proporciones: Array[String] = {
+      proporcionCarros ++
+        proporcionMotos ++
+        proporcionMotoTaxis ++
+        proporcionCamion ++
+        proporcionBus
+    }
+
+    //Se instancian los vehículos con las proporciones definidas más arriba:
+    proporciones.foreach(Vehiculo.crearVehiculo(velMin, velMax, _))
+
+    vehiculos.foreach(new Viaje(_)) //a cada vehiculo se le asigna un viaje
+
+  }
+
+  def borrarDatosSimulacion(): Unit ={
+    comparendos = Array[Comparendo]()
+    viajes = Array[Viaje]()
+    vehiculos = Array[Vehiculo]()
+  }
+
+  def eventoF5(): Unit = {
+    running match {
+      case 2 => prepararSimulacion() //instanciar vehiculos y
+        Grafico.graficarVehiculos(vehiculos) //agregar un método que carga los datos desce cero
+        running = 1
+      case 0 => running = 1
+      case 1 => running = 0
+      case _ => println("\nno es posible esta acción en estos momentos")
+    }
+  }
+
+  def eventoF6(): Unit = {
+    running match {
+      case 1 | 0 => running = 3
+
+      case _ => println("\nno es posible esta acción en estos momentos")
+    }
+  }
+
+  def eventoF2(): Unit = {
+    running match {
+      case 1 => //guardar datos en neo4j
+        Grafico.limpiarVehiculos(vehiculos)
+        running = 2
+      case _ => println("\nno es posible realizar esta acción en estos momentos")
+    }
+  }
+
+  def eventoF1(): Unit = {
+    running match {
+      case 2 => //cargar los datos desde neo4j
+        Grafico.graficarVehiculos(vehiculos)
+        running = 1
+      case _ => println("\nno es posible realizar esta acción en estos momentos")
+    }
+  }
 
   override def run(): Unit = {
     
     //TODO cambiar la logica para que las operaciones de los case se hagan desde los metodos start, stop, restart
 
     while (active) {
-      Running match {
-        case 3 => Grafico.graficarVehiculos(vehiculos)
-          Running = 0
-
-        case 1 =>
-          //Grafico.limpiarVehiculos(vehiculos)
-          for (v <- viajes) v.mover(dt)
-          Grafico.moverVehiculos(vehiculos)
-          t += dt
-          //println("thread is running")
-          Thread.sleep(tRefresh*100)
-
+      running match {
         case 0 => print(".")
           Thread.sleep(100)
 
-        case _ =>
-          println("restarted")
-        /* poner codigo para reiniciar posición de vehiculos*/
-          Running = 1
+        case 1 => for (v <- viajes) v.mover(dt)
+          Grafico.moverVehiculos(vehiculos)
+          t += dt
+          Thread.sleep(tRefresh*100)
 
+        case 2 => print(".")
+          Thread.sleep(100)
+
+        case 3 => Grafico.limpiarVehiculos(vehiculos)
+          borrarDatosSimulacion()
+          running = 2
+
+        case _ => println("\nvalor de la variable running inválido")
       }
     }
-
-
 /*
     val resultados = new ResultadosSimulacion
 
@@ -288,18 +325,6 @@ object Simulacion extends Runnable {
     resultados.promedioPorcentajeExceso_=(comparendos.map(x=>(x.vVehiculo*100/x.vMaxVia)-100).sum/comparendos.length)
 
     resultados.guardar()
-
  */
   }
-
-  def start(): Int = 1
-  //TODO hacer que cambie los valores de la variable running
-
-  def restart(): Int = {
-    0
-    //TODO hacer que cambie los valores de la variable running
-  }
-
-  def pause(): Int = 0 //TODO hacer que cambie los valores de  la variable running
-
 }
