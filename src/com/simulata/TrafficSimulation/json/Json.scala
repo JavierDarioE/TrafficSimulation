@@ -62,7 +62,10 @@ object Json{
                   velPromedio: Int,
                   distMinima: Int,
                   distMaxima: Int,
-                  distPromedio: Int
+                  distPromedio: Int,
+                  //TODO añadir al metodo jsonSave
+                  cantidad: Int,
+                  promedioPorcentajeExceso: Double
                  ): Unit ={
 
     println("Guardando datos... ")

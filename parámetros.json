@@ -18,8 +18,8 @@
             "motoTaxis": 0.05
         },
         "semaforos": {
-            "minTiempoVerde": 40,
-            "maxTiempoVerde": 20,
+            "minTiempoVerde": 20,
+            "maxTiempoVerde": 40,
             "tiempoAmarillo": 3
         }
     }
