@@ -97,7 +97,7 @@ object Json{
         ("tiempos" -> (
           ("simulacion" -> simulacion) ~
             ("realidad" -> realidad)
-        )) ~
+          )) ~
         ("velocidades" -> (
           ("minima" -> velMinima) ~
             ("maxima" -> velMaxima)
@@ -105,7 +105,13 @@ object Json{
         ("distancias"-> (
             ("minima" -> distMinima) ~
               ("maxima" -> distMaxima) ~
-              ("promedio" -> distPromedio))))
+              ("promedio" -> distPromedio)
+          )) ~
+        ("comparendos" -> (
+          ("cantidad" -> cantidad) ~
+            ("promedioPorcentajeExceso" -> promedioPorcentajeExceso)
+          ))
+      )
 
     val FileRaw: String = prettyRender(jsonSave)
     val pw = new PrintWriter(new File(s"$currentDirectory/resultados.json"))

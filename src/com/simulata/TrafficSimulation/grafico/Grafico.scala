@@ -23,7 +23,6 @@ import java.awt.Polygon
 
 object Grafico {
   var cantVias: Int = _
-  
   val dataset = new XYSeriesCollection
   val dataset1 = new XYSeriesCollection
   var frame: ChartFrame = _
@@ -61,12 +60,12 @@ object Grafico {
     
     // Crear la etiqueta de cada interseccion
     arrayVias.foreach(via => {
-      var etiqueta1 = new XYTextAnnotation(
+      val etiqueta1 = new XYTextAnnotation(
           via.origenn.nombre, via.origenn.xx, via.origenn.yy)
       
       etiqueta1.setPaint(via.origenn.color)
       
-      var etiqueta2 = new XYTextAnnotation(
+      val etiqueta2 = new XYTextAnnotation(
           via.finn.nombre, via.finn.xx, via.finn.yy)
       
       etiqueta2.setPaint(via.finn.color)
@@ -159,29 +158,29 @@ object Grafico {
           vehiculo.posicion.y)
       dataset.addSeries(serie)
       autoincremento += 1
-      plot.getRenderer.setSeriesPaint(this.dataset.getSeriesCount-1, vehiculo.viaje.interseccionDestino.color)
+      plot.getRenderer.setSeriesPaint(this.dataset.getSeriesCount-1, vehiculo.color)
 
       vehiculo match {
-        case vehiculo:Carro => {
+        case _:Carro =>
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(-4,-4,8,8))
-        }
-        case vehiculo:Moto => {
+
+        case _:Moto =>
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-4,4,6,0,-6),Array(-6,-6,0,6,0),5))
-        }
-        case vehiculo:MotoTaxi => {
+
+        case _:MotoTaxi =>
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Ellipse2D.Double(-4,-4,8,8))
-        }
-        case vehiculo:Bus => {
+
+        case _:Bus =>
           val pointsx = Array(-6, -2, -2, 2, 2, 6, 6, 2, 2, -2, -2, -6)
           val pointsy = Array(-2, -2, -6, -6,-2, -2, 2, 2, 6, 6, 2, 2)
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(pointsx,pointsy,12))
-        }
-        case vehiculo:Camion => {
+
+        case _:Camion =>
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-5,0,5),Array(-5,5,-5),3))
-        }
-        case _ =>{
+
+        case _ =>
           plot.getRenderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(0,0,2,8))
-        }
+
       }
     })
   }

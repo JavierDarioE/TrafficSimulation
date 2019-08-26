@@ -21,6 +21,7 @@ import java.util.LinkedList
 object Simulacion extends Runnable {
   //los metodos start, stop, running están al final.
 
+  //primero obtenemos los parámetros necesarios desde el json:
   val motos: Double = Json.motos
   val carros: Double = Json.carros
   val camiones: Double = Json.camiones
@@ -38,11 +39,7 @@ object Simulacion extends Runnable {
 
   val porcentaje: Int = minimo + random.nextInt(maximo-minimo) //cantidad aleatoria de autos dentro de los límites.
   
-  /*
-    TODO la instanciación de vias e intersecciones van dentro de un método el cual llama al objeto que maneja la conexion
-    con neo4j
-  */
-
+  // TODO la instanciación de vias e intersecciones van dentro de un método
   var intersecciones: Array[Interseccion] = Array[Interseccion]()
 
   val niquia = new Interseccion(300, 12000, "Niquia", Color.BLUE)
@@ -186,16 +183,18 @@ object Simulacion extends Runnable {
       }
     }
   })
-  // Hasta aqui fue la creacion de los semaforos
+  // Hasta aqui fué la creacion de los semaforos
   
   ProcesoSemaforos.semaforosCompletos = true
   
-  //Deben de crearse es en el neo4j
+  //TODO crear las cámaras es en neo4j
   val camaras:Array[CamaraFotoDeteccion]=Array[CamaraFotoDeteccion]()
   
-  var comparendos: Array[Comparendo] = Array[Comparendo] ()
+  var comparendos: Array[Comparendo] = Array[Comparendo]()
 
-  var vehiculos: Array[Vehiculo] = Array[Vehiculo]() //un array donde estarám todos los vehiculos de la simulación.
+  var viajes: Array[Viaje] = Array[Viaje]()
+
+  var vehiculos: Array[Vehiculo] = Array[Vehiculo]() //un array donde estarán todos los vehiculos de la simulación.
 
   //Se crean arreglos de strings que indican el tipo de vehiculo, el tamaño depende del porcentaje del tipo de vahiculo
   //presente en la simulación, cada lista indica la cantidad de cada vehiculo que habrá en la simulación.
@@ -217,13 +216,13 @@ object Simulacion extends Runnable {
       proporcionBus
   }
 
-  //TODO? hacer que verifique que el origen no sea igual al destino <- creo que esto ya está
-
   GrafoVia.construir(vias) //construir el grafo representando el sistema de vías.
   Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
 
   //Se instancian los vehículos con las proporciones definidas más arriba:
   for (p <- proporciones) Vehiculo.crearVehiculo(velMin, velMax, p)
+
+  vehiculos.foreach(new Viaje(_)) //a cada vehiculo se le asigna un viaje
 
   var Running = 3
   var active = true
@@ -239,7 +238,7 @@ object Simulacion extends Runnable {
 
         case 1 =>
           //Grafico.limpiarVehiculos(vehiculos)
-          for (v <- vehiculos) v.move(dt)
+          for (v <- viajes) v.mover(dt)
           Grafico.moverVehiculos(vehiculos)
           t += dt
           //println("thread is running")
