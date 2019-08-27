@@ -6,8 +6,9 @@ import java.awt.Color
 
 class Bus (val pl:String,
            private var _v:Velocidad,
+           private var _tasaA: Double,
            val c:Color = Color.WHITE)
-  extends Vehiculo(pl, _v, c){
+  extends Vehiculo(pl, _v, _tasaA, c){
 
 }
 

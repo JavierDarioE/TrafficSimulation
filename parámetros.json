@@ -10,6 +10,10 @@
             "minimo": 40,
             "maximo": 80
         },
+        "tasaAceleracion": {
+            "minimo": 5,
+            "maximo": 20
+        },
         "proporciones": {
             "carros": 0.4,
             "motos": 0.3,

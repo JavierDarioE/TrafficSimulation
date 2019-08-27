@@ -32,6 +32,8 @@ object Json{
   def minimo: Int = parametros.vehiculos.minimo
   def velMax: Int = parametros.velocidad.maximo
   def velMin: Int = parametros.velocidad.minimo
+  def tasaAcelMax: Double = parametros.tasaAceleracion.maximo
+  def tasaAcelMin: Double = parametros.tasaAceleracion.minimo
   def minTiempoVerde: Int = parametros.semaforos.minTiempoVerde
   def maxTiempoVerde: Int = parametros.semaforos.maxTiempoVerde
   def tiempoAmarillo: Int = parametros.semaforos.tiempoAmarillo
@@ -129,12 +131,15 @@ object Json{
                                   tRefresh: Int,
                                   vehiculos:Vehiculo,
                                   velocidad:Velocidad,
+                                  tasaAceleracion: TasaAceleracion,
                                   proporciones:Proporciones,
-                                  semaforos:Semaforos)
+                                  semaforos: Semaforos)
 
   case class Vehiculo(minimo: Int, maximo: Int)
 
   case class Velocidad(minimo: Int, maximo: Int)
+  
+  case class TasaAceleracion(minimo: Double, maximo: Double)
 
   case class Proporciones(carros: Double, motos: Double, buses: Double, camiones: Double, motoTaxis: Double)
   
