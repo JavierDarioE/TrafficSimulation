@@ -3,7 +3,7 @@ package com.simulata.TrafficSimulation.vias
 import com.simulata.TrafficSimulation.cartesiano._
 //no estoy seguro de si poner la velocidad de la via como tipo int o tipo velocidad, creo que
 //es mas facil dejandola tipo Int por como se le mandan los parámetros
-case class Via(val origenn:Interseccion, val finn:Interseccion, v:Int , tipo:TipoVia, val sentido:Sentido, numero:String, val nombre:String, val camara: Option[CamaraFotoDeteccion])
+case class Via(val origenn:Interseccion, val finn:Interseccion, v:Int , tipo:TipoVia, val sentido:Sentido, numero:String, val nombre: Option[String] = None, val camara: Option[CamaraFotoDeteccion] = None)
   extends Recta(){
   type T = Interseccion
   origen = origenn

@@ -62,12 +62,12 @@ object Grafico {
     // Crear la etiqueta de cada interseccion
     arrayVias.foreach(via => {
       val etiqueta1 = new XYTextAnnotation(
-          via.origenn.nombre, via.origenn.xx, via.origenn.yy)
+          via.origenn.nombre.getOrElse("Sin nombre"), via.origenn.xx, via.origenn.yy)
       
       etiqueta1.setPaint(via.origenn.color)
       
       val etiqueta2 = new XYTextAnnotation(
-          via.finn.nombre, via.finn.xx, via.finn.yy)
+          via.finn.nombre.getOrElse("Sin nombre"), via.finn.xx, via.finn.yy)
       
       etiqueta2.setPaint(via.finn.color)
       
