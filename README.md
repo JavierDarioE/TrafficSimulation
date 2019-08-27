@@ -3,7 +3,7 @@ A small app made in Scala to simulate the traffic in the city of Medellín, made
 
 Note: The app data will be saved once you close the simulation window.
 
-* To launch the program you'll need to put the roads an intersections info in neo4j first, you can view the commands in this [link](https://pastebin.com/UELQ0d0w), or in the root folder as a file called "MallaVial Neo4j.txt".
+* To launch the program you'll need to put the roads and intersections info in neo4j first, you can view the commands in this [link](https://pastebin.com/UELQ0d0w), or in the root folder as a file called "MallaVial Neo4j.txt".
 
 
 ## Tools used
@@ -20,4 +20,4 @@ Note: The app data will be saved once you close the simulation window.
 * Juan Pablo C
 * Simón Álvarez V
 
-#### this project follows the [basic Scala stylistic guidelines.](https://docs.scala-lang.org/style/)
+##### this project follows the [basic Scala stylistic guidelines.](https://docs.scala-lang.org/style/)

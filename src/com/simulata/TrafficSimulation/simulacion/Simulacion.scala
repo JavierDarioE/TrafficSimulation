@@ -1,5 +1,6 @@
 package com.simulata.TrafficSimulation.simulacion
 
+import com.simulata.TrafficSimulation.neo4J.Neo4J
 import java.awt.Color
 import java.awt.event.{KeyEvent, KeyListener, WindowEvent, WindowListener}
 
@@ -248,14 +249,13 @@ object Simulacion extends Runnable {
   def eventoF6(): Unit = {
     running match {
       case 1 | 0 => running = 3
-
       case _ => println("\nno es posible esta acción en estos momentos")
     }
   }
 
   def eventoF2(): Unit = {
     running match {
-      case 1 => //guardar datos en neo4j
+      case 1 => Neo4J.guardarEstado()
         Grafico.limpiarVehiculos(vehiculos)
         running = 2
       case _ => println("\nno es posible realizar esta acción en estos momentos")
