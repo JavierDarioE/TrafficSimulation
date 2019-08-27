@@ -20,6 +20,6 @@ class CamaraFotoDeteccion (val via:Via){
    }
    Simulacion.comparendos.foreach(verificarComparendo(_))
    //si entre los comparendos no hay ninguno que cumpla crea la fotomulta
-   if (bool) new Comparendo(vehiculo,vehiculo.velocidad.magnitud,via.vMax, this)
+   if (bool) new Comparendo(vehiculo,vehiculo.velocidadActual.magnitud,via.vMax, this)
   }
 }

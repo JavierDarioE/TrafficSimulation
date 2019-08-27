@@ -27,10 +27,34 @@ class Viaje(vehiculo: Vehiculo) {
   var via: Via = colaVias.dequeue()
   var siguienteInterseccion: Interseccion = interseccionDestino
   var distanciaParaRecorrer = colaVias.map(_.longitud).sum
+  var yaLlego = false
+  // var estaEnPrimeraInterseccion = true
 
   Simulacion.viajes :+= this
 
   def mover(dt: Double): Unit = {
+    
+    /*
+    if (estaEnPrimeraInterseccion) {
+      vehiculo.velocidad.magnitud = 0
+      estaEnPrimeraInterseccion = false
+    }
+    * 
+    */
+    
+    // Si no ha llegado a su destino la rapidez del vehiculo cambia segun la aceleracion
+    if(!yaLlego) {
+      vehiculo.velocidadActual.magnitud += vehiculo.aceleracion * Simulacion.tRefresh
+    }
+    
+    // Si la rapidez del vehiculo queda negativa o cero, la vuelve cero
+    if(vehiculo.velocidadActual.magnitud <= 0) vehiculo.velocidadActual.magnitud = 0
+    
+    // Si la rapidez del vehiculo queda igual o mayor a la crucero, la vuelve igual a la crucero
+    else if(vehiculo.velocidadActual.magnitud >= vehiculo.velocidadCrucero.magnitud) {
+      vehiculo.velocidadActual.magnitud = vehiculo.velocidadCrucero.magnitud
+    }
+    
     if (vehiculo.posicion == via.origenn.copy()) {
       direccion = Angulo(tangenteInversa(via.origenn.xx, via.finn.xx, via.origenn.yy, via.finn.yy))
       siguienteInterseccion = via.finn
@@ -39,11 +63,15 @@ class Viaje(vehiculo: Vehiculo) {
       direccion = Angulo(tangenteInversa(via.finn.xx, via.origenn.xx, via.finn.yy, via.origenn.yy))
       siguienteInterseccion = via.origenn
     }
-    vehiculo.velocidad.angulo_=(direccion)
-    val (px, py) = vehiculo.movimiento(dt, vehiculo.velocidad)
+    vehiculo.velocidadActual.angulo_=(direccion)
+    val (px, py) = vehiculo.movimiento(dt, vehiculo.velocidadActual)
     vehiculo.posicion_=(new Punto(vehiculo.posicion.x + px, vehiculo.posicion.y + py))
+    
     val distancia = Punto.distancia(vehiculo.posicion, siguienteInterseccion.copy())
-    if (distancia <= (vehiculo.velocidad.magnitud * dt + 1)) {
+    
+    // si la distancia a la interseccion es menor o igual a la distancia que recorrera el vehiculo en 
+    // una unidad de tiempo mas uno, en metros todo
+    if (distancia <= (vehiculo.velocidadActual.magnitud * dt + 1)) {
       vehiculo.posicion_=(Punto(siguienteInterseccion.xx, siguienteInterseccion.yy))
       vehiculo.posicion.x = siguienteInterseccion.xx
       vehiculo.posicion.y = siguienteInterseccion.yy
@@ -51,7 +79,8 @@ class Viaje(vehiculo: Vehiculo) {
         via = colaVias.dequeue()
       }
       else {
-        vehiculo.velocidad.magnitud_=(0)
+        vehiculo.velocidadActual.magnitud_=(0)
+        yaLlego = true
       }
     }
   }
