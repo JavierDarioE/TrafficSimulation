@@ -195,8 +195,9 @@ object Simulacion extends Runnable {
   var vehiculos: Array[Vehiculo] = Array[Vehiculo]() //un array donde estarán todos los vehiculos de la simulación.
 
   GrafoVia.construir(vias) //construir el grafo representando el sistema de vías.
-  Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
-
+  //Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
+  Neo4J.guardarEstado(viajes)
+println("guardado")
   var running = 2
   var active = true
 
@@ -255,7 +256,7 @@ object Simulacion extends Runnable {
 
   def eventoF2(): Unit = {
     running match {
-      case 1 => Neo4J.guardarEstado()
+      case 1 => Neo4J.guardarEstado(viajes)
         Grafico.limpiarVehiculos(vehiculos)
         running = 2
       case _ => println("\nno es posible realizar esta acción en estos momentos")
@@ -274,7 +275,7 @@ object Simulacion extends Runnable {
   override def run(): Unit = {
     
     //TODO cambiar la logica para que las operaciones de los case se hagan desde los metodos start, stop, restart
-
+/*
     while (active) {
       running match {
         case 0 => print(".")
@@ -294,7 +295,7 @@ object Simulacion extends Runnable {
 
         case _ => println("\nvalor de la variable running inválido")
       }
-    }
+    }*/
 /*
     val resultados = new ResultadosSimulacion
 

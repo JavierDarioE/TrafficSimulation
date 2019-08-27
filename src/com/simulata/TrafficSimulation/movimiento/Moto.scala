@@ -9,7 +9,7 @@ class Moto (val pl:String,
             private var _v:Velocidad,
             private var _tasaA: Double,
             val c : Color = Color.WHITE)
-  extends Vehiculo(pl, _v, _tasaA, c){
+  extends Vehiculo(pl, _v, _tasaA, c, "moto"){
 
 }
 

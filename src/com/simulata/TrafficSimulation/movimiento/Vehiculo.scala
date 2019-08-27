@@ -12,11 +12,17 @@ import scala.collection.mutable.Queue
 import scala.util.Random
 
 // El atributo velocidad representara la velocidad crucero
-abstract case class Vehiculo (placa:String,
+abstract case class Vehiculo (private var _placa:String,
                               private var _vel:Velocidad,
                               private var _tasaAceleracion: Double,
-                              private var _color: Color)
+                              private var _color: Color,
+                              private val _tipo: String)
 extends Movil(Punto(0,0), _vel) with MovimientoUniforme {
+
+  def tipo:String = _tipo
+  def placa:String = _placa
+
+  def tasaAceleracion:Double = _tasaAceleracion
 
   def color: Color =_color
   def color_=(color: Color): Unit = _color = color
