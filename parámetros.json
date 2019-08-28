@@ -10,7 +10,7 @@
             "minimo": 40,
             "maximo": 80
         },
-        "tasaAceleracion": {
+        "aceleracion": {
             "minimo": 5,
             "maximo": 20
         },

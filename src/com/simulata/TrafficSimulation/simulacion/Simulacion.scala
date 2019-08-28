@@ -35,8 +35,8 @@ object Simulacion extends Runnable {
   val minimo: Int = Json.minimo
   val velMax: Double = Velocidad.kphTomps(Json.velMax)
   val velMin: Double = Velocidad.kphTomps(Json.velMin)
-  val tasaAcelMax: Double = Json.tasaAcelMax
-  val tasaAcelMin: Double = Json.tasaAcelMin
+  val acelMax: Double = Json.acelMax
+  val acelMin: Double = Json.acelMin
 
   // TODO la instanciación de vias e intersecciones van dentro de un método
   var intersecciones: Array[Interseccion] = Array[Interseccion]()
@@ -223,7 +223,7 @@ object Simulacion extends Runnable {
     }
 
     //Se instancian los vehículos con las proporciones definidas más arriba:
-    proporciones.foreach(Vehiculo.crearVehiculo(velMin, velMax, tasaAcelMin, tasaAcelMax, _))
+    proporciones.foreach(Vehiculo.crearVehiculo(velMin, velMax, acelMin, acelMax, _))
 
     vehiculos.foreach(new Viaje(_)) //a cada vehiculo se le asigna un viaje
 

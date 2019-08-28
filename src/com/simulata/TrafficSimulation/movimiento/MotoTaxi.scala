@@ -10,10 +10,10 @@ import com.simulata.TrafficSimulation.vias._
 //para poner los get y los set se debe de copiar todo el código, no vi como dejarlo en vehículo
 
 class MotoTaxi (val pl:String,
-                private var _v:Velocidad,
-                private var _tasaA: Double,
+                private var _vCrucero:Velocidad,
+                private var _a: Double,
                 val c:Color = Color.WHITE)
-  extends Vehiculo(pl, _v, _tasaA, c, "mototaxi"){
+  extends Vehiculo(pl, _vCrucero, _a, c, "mototaxi"){
 
 }
 

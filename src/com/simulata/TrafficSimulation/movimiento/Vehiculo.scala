@@ -13,16 +13,15 @@ import scala.util.Random
 
 // El atributo velocidad representara la velocidad crucero
 abstract case class Vehiculo (private var _placa:String,
-                              private var _vel:Velocidad,
-                              private var _tasaAceleracion: Double,
+                              private var _velCrucero:Velocidad,
+                              private var _acele: Double,
                               private var _color: Color,
+                              private var _velActual:Velocidad = new Velocidad(0)
                               private val _tipo: String)
-extends Movil(Punto(0,0), _vel) with MovimientoUniforme {
+extends Movil(Punto(0,0), _velCrucero, _velActual, _acele) with MovimientoUniforme {
 
   def tipo:String = _tipo
   def placa:String = _placa
-
-  def tasaAceleracion:Double = _tasaAceleracion
 
   def color: Color =_color
   def color_=(color: Color): Unit = _color = color
@@ -41,33 +40,30 @@ object Vehiculo{
   def crearVehiculo( 
       vMin:Double, 
       vMax:Double, 
-      tasaAMin: Double, 
-      tasaAMax: Double, 
+      aMin: Double, 
+      aMax: Double, 
       tipo: String): Vehiculo = tipo match {
     //se usa el constructor que no recibe placa, en cada clase estará definida la manera de crearlas
     //el angulo de la velocidad es 0 por defecto
     case "carro" => new Carro(Carro.generarPlaca,
           Velocidad(vMin+r.nextInt((vMax-vMin).toInt)),
-          tasaAMin + r.nextInt((tasaAMax - tasaAMin).toInt)
+          aMin + r.nextInt((aMax - aMin).toInt)
     )
     case "moto" => new Moto(Moto.generarPlaca,
           Velocidad(vMin+r.nextInt((vMax-vMin).toInt)),
-          tasaAMin + r.nextInt((tasaAMax - tasaAMin).toInt)
+          aMin + r.nextInt((aMax - aMin).toInt)
     )
     case "mototaxi" => new MotoTaxi(MotoTaxi.generarPlaca,
           Velocidad(vMin+r.nextInt((vMax-vMin).toInt)),
-          tasaAMin + r.nextInt((tasaAMax - tasaAMin).toInt)
+          aMin + r.nextInt((aMax - aMin).toInt)
     )
     case "camion" => new Camion(Camion.generarPlaca,
           Velocidad(vMin+r.nextInt((vMax-vMin).toInt)),
-          tasaAMin + r.nextInt((tasaAMax - tasaAMin).toInt)
+          aMin + r.nextInt((aMax - aMin).toInt)
     )
     case "bus" => new Bus(Bus.generarPlaca,
           Velocidad(vMin+r.nextInt((vMax-vMin).toInt)),
-          tasaAMin + r.nextInt((tasaAMax - tasaAMin).toInt)
+          aMin + r.nextInt((aMax - aMin).toInt)
     )
   }
-
-  //TODO simplificar gets y sets (suponiendo que sea posible)
-
 }
