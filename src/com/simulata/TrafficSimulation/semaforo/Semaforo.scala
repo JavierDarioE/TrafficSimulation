@@ -5,7 +5,7 @@ package com.simulata.TrafficSimulation.semaforo
 import com.simulata.TrafficSimulation.vias._
 import com.simulata.TrafficSimulation.json._
 
-class Semaforo(via: Via) {
+class Semaforo(val via: Via) {
   
   // Tiempo en verde al azar dentro los limites establecidos
   val tiempoVerde: Double = {
