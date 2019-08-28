@@ -1,5 +1,5 @@
 CREATE (niquia:Interseccion{xx: 300, yy:12000, nombre:'Niquia', color:'Color.BLUE'}),
-(lauraAuto:Interseccion{xx: 2400, yy:11400, nombre:'M. Laura Auto', color:'Color.Red'}),
+(lauraAuto:Interseccion{xx: 2400, yy:11400, nombre:'M. Laura Auto', color:'Color.RED'}),
 (lauraReg:Interseccion{xx: 2400, yy: 12600, nombre:'M. Laura Reg', color:'Color.MAGENTA'}),
 (ptoCero:Interseccion{xx: 5400, yy: 12000, nombre:'Pto 0', color:'Color.CYAN'}),
 (mino:Interseccion{xx: 6300, yy: 15000, nombre:'Minorista', color:'Color.DARK_GRAY'}),
@@ -32,7 +32,7 @@ CREATE (niquia:Interseccion{xx: 300, yy:12000, nombre:'Niquia', color:'Color.BLU
 (gema:Interseccion{xx: 12000, yy: 1500, nombre:'St Gema', color:'Color.YELLOW'}),
 (_30_65:Interseccion{xx: 13500, yy: 10500, nombre:'30 con 65', color:'Color.BLACK'}),
 (_30_70:Interseccion{xx: 13500, yy: 4500, nombre:'30 con 70', color:'Color.BLUE'}),
-(_30_80:Interseccion{xx: 13500, yy: 1500, nombre:'30 con 80’, color:’Color.RED'}),
+(_30_80:Interseccion{xx: 13500, yy: 1500, nombre:'30 con 80', color:'Color.RED'}),
 (bol65:Interseccion{xx: 11100, yy: 10500, nombre:'Boliv con 65', color:'Color.MAGENTA'}),
 (gu10:Interseccion{xx: 16500, yy: 12000, nombre:'Guay con 10', color:'Color.CYAN'}),
 (terminal:Interseccion{xx: 16500, yy: 10500, nombre:'Term Sur', color:'Color.GREEN'}),
@@ -111,14 +111,14 @@ CREATE (niquia:Interseccion{xx: 300, yy:12000, nombre:'Niquia', color:'Color.BLU
 (agua)-[:ORIGEN_DE]->(:Via{v:60 , tipoVia : 'Calle', sentido:'dobleVia', numero:'12S', nombre:'80'})<-[:FIN_DE]-(santafe),
 (viva)-[:ORIGEN_DE]->(:Via{v:60 , tipoVia : 'Calle', sentido:'dobleVia', numero:'37S', nombre:'37S'})<-[:FIN_DE]-(pqEnv),
 (viva)-[:ORIGEN_DE]->(:Via{v:60 , tipoVia : 'Calle', sentido:'dobleVia', numero:'63', nombre:'37S'})<-[:FIN_DE]-(gu_37S),
-(:CAMARA)-[:ESTA_EN]->(autoNorte),
-(:CAMARA)-[:ESTA_EN]->(regional),
-(:CAMARA)-[:ESTA_EN]->(pteMadreLaura),
-(:CAMARA)-[:ESTA_EN]->(oriental),
-(:CAMARA)-[:ESTA_EN]->(iguana),
-(:CAMARA)-[:ESTA_EN]->(ferrocarril),
-(:CAMARA)-[:ESTA_EN]->(avPob),
-(:CAMARA)-[:ESTA_EN]->(colombia)
+(:Camara)-[:ESTA_EN]->(autoNorte),
+(:Camara)-[:ESTA_EN]->(regional),
+(:Camara)-[:ESTA_EN]->(pteMadreLaura),
+(:Camara)-[:ESTA_EN]->(oriental),
+(:Camara)-[:ESTA_EN]->(iguana),
+(:Camara)-[:ESTA_EN]->(ferrocarril),
+(:Camara)-[:ESTA_EN]->(avPob),
+(:Camara)-[:ESTA_EN]->(colombia)
 
 
 
