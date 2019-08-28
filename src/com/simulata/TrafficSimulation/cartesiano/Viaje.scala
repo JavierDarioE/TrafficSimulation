@@ -8,32 +8,44 @@ import com.simulata.TrafficSimulation.vias.{Interseccion, Via}
 import scala.collection.mutable.Queue
 import scala.util.Random
 
-class Viaje(vehiculo: Vehiculo) {
-  val random: Random.type = scala.util.Random
-  val interseccionOrigen = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
-  var interseccionDestino = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
-  while (interseccionOrigen == interseccionDestino) {
-    interseccionDestino = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
+class Viaje(_vehiculo: Vehiculo) {
+  //constructor:
+  private val random: Random.type = scala.util.Random
+  private val _interseccionOrigen: Interseccion = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
+  private var _interseccionDestino = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
+  while (_interseccionOrigen == _interseccionDestino) {
+    _interseccionDestino = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
   }
-  val nodoOrigen = GrafoVia.grafo.get(interseccionOrigen)
-  val nodoDestino = GrafoVia.grafo.get(interseccionDestino)
-  val recorrido = nodoOrigen.shortestPathTo(nodoDestino).get.edges.map(_.toOuter.label.asInstanceOf[Via]).toArray
-  val colaVias = new Queue[Via]()
-  recorrido.foreach(i => colaVias += i)
 
-  vehiculo.posicion_=(new Punto(interseccionOrigen.xx, interseccionOrigen.yy))
-  vehiculo.color_=(interseccionDestino.color)
-  var direccion: Angulo = Angulo(0)
-  var via: Via = colaVias.dequeue()
-  var siguienteInterseccion: Interseccion = interseccionDestino
-  var distanciaParaRecorrer = colaVias.map(_.longitud).sum
+  private val nodoOrigen = GrafoVia.grafo.get(_interseccionOrigen)//se genera con el companion object **neo4j**
+  private val nodoDestino = GrafoVia.grafo.get(_interseccionDestino)
+  private val recorrido = nodoOrigen.shortestPathTo(nodoDestino).get.edges.map(_.toOuter.label.asInstanceOf[Via]).toArray
+  private val colaVias = new Queue[Via]()
+  recorrido.foreach(i => colaVias += i) //hasta acá se genera con el companion object **neo4j**
+  
+  _vehiculo.posicion_=(new Punto(_interseccionOrigen.xx, _interseccionOrigen.yy)) //se reasigna con el companion object
+  _vehiculo.color_=(_interseccionDestino.color)
+  private var _direccion: Angulo = Angulo(0)
+  private var _via: Via = colaVias.dequeue()
+  private var _siguienteInterseccion: Interseccion = interseccionDestino
+  private var _distanciaParaRecorrer = colaVias.map(_.longitud).sum
   var yaLlego = false
   // var estaEnPrimeraInterseccion = true
 
   Simulacion.viajes :+= this
+  //fin del constructor
 
+  //accesores:
+  def interseccionOrigen: Interseccion = _interseccionOrigen
+  def interseccionDestino: Interseccion = _interseccionDestino
+  def vehiculo: Vehiculo = _vehiculo
+  def direccion: Angulo = _direccion
+  def via: Via = _via
+  def siguienteInterseccion: Interseccion = _siguienteInterseccion
+  def distanciaParaRecorrer: Double = _distanciaParaRecorrer
+
+  //métodos de clase
   def mover(dt: Double): Unit = {
-    
     /*
     if (estaEnPrimeraInterseccion) {
       vehiculo.velocidad.magnitud = 0
@@ -44,11 +56,11 @@ class Viaje(vehiculo: Vehiculo) {
     
     // Si no ha llegado a su destino la rapidez del vehiculo cambia segun la aceleracion
     if(!yaLlego) {
-      vehiculo.velocidadActual.magnitud += vehiculo.aceleracion * Simulacion.tRefresh
+      _vehiculo.velocidadActual.magnitud += vehiculo.aceleracion * Simulacion.tRefresh
     }
     
     // Si la rapidez del vehiculo queda negativa o cero, la vuelve cero
-    if(vehiculo.velocidadActual.magnitud <= 0) vehiculo.velocidadActual.magnitud = 0
+    if(_vehiculo.velocidadActual.magnitud <= 0) vehiculo.velocidadActual.magnitud = 0
     
     // Si la rapidez del vehiculo queda igual o mayor a la crucero, la vuelve igual a la crucero
     else if(vehiculo.velocidadActual.magnitud >= vehiculo.velocidadCrucero.magnitud) {
@@ -58,28 +70,30 @@ class Viaje(vehiculo: Vehiculo) {
     if (vehiculo.posicion == via.origenn.copy()) {
       direccion = Angulo(tangenteInversa(via.origenn.xx, via.finn.xx, via.origenn.yy, via.finn.yy))
       siguienteInterseccion = via.finn
+
     }
-    else if (vehiculo.posicion == via.finn.copy()) {
-      direccion = Angulo(tangenteInversa(via.finn.xx, via.origenn.xx, via.finn.yy, via.origenn.yy))
-      siguienteInterseccion = via.origenn
+    else if (_vehiculo.posicion == _via.finn.copy()) {
+      _direccion = Angulo(tangenteInversa(_via.finn.xx, _via.origenn.xx, _via.finn.yy, _via.origenn.yy))
+      _siguienteInterseccion = _via.origenn
     }
-    vehiculo.velocidadActual.angulo_=(direccion)
-    val (px, py) = vehiculo.movimiento(dt, vehiculo.velocidadActual)
-    vehiculo.posicion_=(new Punto(vehiculo.posicion.x + px, vehiculo.posicion.y + py))
     
-    val distancia = Punto.distancia(vehiculo.posicion, siguienteInterseccion.copy())
+    _vehiculo.velocidadActual.angulo_=(_direccion)
+    val (px, py) = _vehiculo.movimiento(dt, _vehiculo.velocidadActual)
+    _vehiculo.posicion_=(new Punto(_vehiculo.posicion.x + px, _vehiculo.posicion.y + py))
+    
+    val distancia = Punto.distancia(_vehiculo.posicion, _siguienteInterseccion.copy())
     
     // si la distancia a la interseccion es menor o igual a la distancia que recorrera el vehiculo en 
     // una unidad de tiempo mas uno, en metros todo
-    if (distancia <= (vehiculo.velocidadActual.magnitud * dt + 1)) {
-      vehiculo.posicion_=(Punto(siguienteInterseccion.xx, siguienteInterseccion.yy))
-      vehiculo.posicion.x = siguienteInterseccion.xx
-      vehiculo.posicion.y = siguienteInterseccion.yy
+    if (distancia <= (_vehiculo.velocidadActual.magnitud * dt + 1)) {
+      _vehiculo.posicion_=(Punto(_siguienteInterseccion.xx, _siguienteInterseccion.yy))
+      _vehiculo.posicion.x = _siguienteInterseccion.xx
+      _vehiculo.posicion.y = _siguienteInterseccion.yy
       if (colaVias.nonEmpty) {
-        via = colaVias.dequeue()
+        _via = colaVias.dequeue()
       }
       else {
-        vehiculo.velocidadActual.magnitud_=(0)
+        _vehiculo.velocidadActual.magnitud_=(0)
         yaLlego = true
       }
     }

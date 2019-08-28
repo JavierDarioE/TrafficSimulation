@@ -255,7 +255,7 @@ object Simulacion extends Runnable {
 
   def eventoF2(): Unit = {
     running match {
-      case 1 => Neo4J.guardarEstado()
+      case 1 => Neo4J.guardarEstado(viajes)
         Grafico.limpiarVehiculos(vehiculos)
         running = 2
       case _ => println("\nno es posible realizar esta acción en estos momentos")
@@ -272,12 +272,9 @@ object Simulacion extends Runnable {
   }
 
   override def run(): Unit = {
-    
-    //TODO cambiar la logica para que las operaciones de los case se hagan desde los metodos start, stop, restart
-
     while (active) {
       running match {
-        case 0 => print(".")
+        case 0 => println("Pausado")
           Thread.sleep(100)
 
         case 1 => for (v <- viajes) v.mover(dt)
@@ -285,7 +282,7 @@ object Simulacion extends Runnable {
           t += dt
           Thread.sleep(tRefresh*100)
 
-        case 2 => print(".")
+        case 2 => println("Pausado")
           Thread.sleep(100)
 
         case 3 => Grafico.limpiarVehiculos(vehiculos)
