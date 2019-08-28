@@ -25,6 +25,10 @@
             "minTiempoVerde": 20,
             "maxTiempoVerde": 40,
             "tiempoAmarillo": 3
+        },
+        "distanciasFrenadoVehiculos": {
+            "xSemaforoFrenar": 40,
+            "xSemaforoAmarilloContinuar": 20,
         }
     }
 }

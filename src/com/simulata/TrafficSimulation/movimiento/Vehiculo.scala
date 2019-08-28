@@ -19,6 +19,8 @@ abstract case class Vehiculo (private var _placa:String,
                               private val _tipo:String,
                               private var _velActual:Velocidad = new Velocidad(0))
 extends Movil(Punto(0,0), _velCrucero, _velActual, _acele) with MovimientoUniforme {
+  
+  val aceleracionDefinida = _acele
 
   def tipo:String = _tipo
   def placa:String = _placa

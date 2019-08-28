@@ -2,7 +2,11 @@ package com.simulata.TrafficSimulation.neo4J
 
 import com.simulata.TrafficSimulation.movimiento.Vehiculo
 import com.simulata.TrafficSimulation.cartesiano.{Angulo, Punto, Velocidad, Viaje}
+import com.simulata.TrafficSimulation.cartesiano.{Velocidad, Viaje}
+import com.simulata.TrafficSimulation.vias._
 import org.neo4j.driver.v1._
+import scala.collection.mutable.ArrayBuffer
+import java.awt.Color
 
 object Neo4J {
   val url = "bolt://localhost/7687"
@@ -13,6 +17,56 @@ object Neo4J {
     val driver = GraphDatabase.driver(url, AuthTokens.basic(user, pass))
     val session = driver.session
     (driver, session)
+  }
+
+ //las intersecciones se agregan automáticamente al arreglo de intersecciones
+  def leerMallaVial: ArrayBuffer[Via] = {
+    val (driver, session) = getSession
+    val script = s"MATCH (origen:Interseccion)-[:ORIGEN_DE]->(v:Via)<-[:FIN_DE]-(fin:Interseccion) RETURN origen, v ,fin "
+    val result = session.run(script)
+    val vias = ArrayBuffer.empty[Via]
+    while (result.hasNext()) {
+      val values = result.next().values()
+      val o = values.get(0)
+      val v = values.get(1)
+      val f = values.get(2)
+      vias += Via(new Interseccion(o.get("xx").asInt(),o.get("yy").asInt(), Some(o.get("nombre").asString()),getColor(o.get("color").asString())), 
+                  new Interseccion(f.get("xx").asInt,f.get("yy").asInt(), Some(f.get("nombre").asString()),getColor(f.get("color").asString())), 
+                  v.get("v").asInt(), TipoVia(v.get("tipoVia").asString()), getSentidoVia(v.get("sentido").asString()), v.get("numero").asString(), Some(v.get("nombre").asString()), None)
+    }
+    session.close()
+    driver.close()
+    vias
+   } 
+  
+  def leerCamaras: ArrayBuffer[CamaraFotoDeteccion] = {
+    val (driver, session) = getSession
+    val script = s"MATCH (v:Via)<-[:ESTA_EN]-(c:Camara) MATCH (origen:Interseccion)-[:ORIGEN_DE]->(v)<-[:FIN_DE]-(fin:Interseccion) RETURN origen, v, fin, c "
+    val result = session.run(script)
+    val camaras = ArrayBuffer.empty[CamaraFotoDeteccion]
+    while (result.hasNext()) {
+      val values = result.next().values()
+      val o = values.get(0)
+      val v = values.get(1)
+      val f = values.get(2)
+      val c= values.get(4)
+      var q=Via(new Interseccion(o.get("xx").asInt(),o.get("yy").asInt(), Some(o.get("nombre").asString()),getColor(o.get("color").asString())), 
+                  new Interseccion(f.get("xx").asInt,f.get("yy").asInt(), Some(f.get("nombre").asString()),getColor(f.get("color").asString())), 
+                  v.get("v").asInt(), TipoVia(v.get("tipoVia").asString()), getSentidoVia(v.get("sentido").asString()), v.get("numero").asString(), Some(v.get("nombre").asString()), None)
+      val camara= new CamaraFotoDeteccion(q)
+      q.camara_=(camara)
+      camaras+=camara
+    }
+    session.close()
+    driver.close()
+    camaras
+   } 
+  def borrarEstado():Unit = {
+    val (driver, session) = getSession
+    val script = s"CREATE (:Categoria {nombre: 'test'})"
+    session.run(script)
+    session.close()
+    driver.close()
   }
 
   def guardarEstado(viajes: Array[Viaje]): Unit = {
@@ -135,5 +189,23 @@ object Neo4J {
 
     new Viaje(veh, pos, intOr, intDes, inicioViaActual, finViaActual, direccion, distancia, llegoBool)
   }
-
+ //Usados para desempaquetar los atributos color y sentidoVia de neo4j
+   def getColor(s:String):Color = s match{
+      case "Color.BLUE"=>Color.BLUE
+      case "Color.RED"=>Color.RED
+      case "Color.MAGENTA"=>Color.MAGENTA
+      case "Color.CYAN"=>Color.CYAN
+      case "Color.DARK_GRAY"=>Color.DARK_GRAY
+      case "Color.GRAY"=>Color.GRAY
+      case "Color.GREEN"=>Color.GREEN
+      case "Color.ORANGE"=>Color.ORANGE
+      case "Color.YELLOW"=>Color.YELLOW
+      case "Color.BLACK"=>Color.BLACK
+      case "Color.PINK"=>Color.PINK
+      case _=>Color.BLACK
+    }
+    def getSentidoVia(s:String):Sentido = s match{
+      case "dobleVia" => Sentido.dobleVia
+      case "unaVia" => Sentido.unaVia
+    }
 }
