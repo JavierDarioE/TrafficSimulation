@@ -6,6 +6,7 @@ import com.simulata.TrafficSimulation.simulacion.Simulacion
 import com.simulata.TrafficSimulation.vias.{Interseccion, Via}
 import com.simulata.TrafficSimulation.semaforo.Semaforo
 
+import scala.collection.mutable
 import scala.collection.mutable.Queue
 import scala.util.Random
 import com.simulata.TrafficSimulation.json.Json
@@ -13,19 +14,19 @@ import com.simulata.TrafficSimulation.json.Json
 class Viaje(_vehiculo: Vehiculo) {
   //constructor:
   private val random: Random.type = scala.util.Random
-  private val _interseccionOrigen: Interseccion = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
+  private var _interseccionOrigen: Interseccion = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
   private var _interseccionDestino = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
   while (_interseccionOrigen == _interseccionDestino) {
     _interseccionDestino = Simulacion.intersecciones(random.nextInt(Simulacion.intersecciones.length))
   }
 
-  private val nodoOrigen = GrafoVia.grafo.get(_interseccionOrigen)//se genera con el companion object **neo4j**
-  private val nodoDestino = GrafoVia.grafo.get(_interseccionDestino)
-  private val recorrido = nodoOrigen.shortestPathTo(nodoDestino).get.edges.map(_.toOuter.label.asInstanceOf[Via]).toArray
-  private val colaVias = new Queue[Via]()
-  recorrido.foreach(i => colaVias += i) //hasta acá se genera con el companion object **neo4j**
+  private var nodoOrigen = GrafoVia.grafo.get(_interseccionOrigen)
+  private var nodoDestino = GrafoVia.grafo.get(_interseccionDestino)
+  private var recorrido = nodoOrigen.shortestPathTo(nodoDestino).get.edges.map(_.toOuter.label.asInstanceOf[Via]).toArray
+  private var colaVias = new mutable.Queue[Via]()
+  recorrido.foreach(i => colaVias += i)
   
-  _vehiculo.posicion_=(new Punto(_interseccionOrigen.xx, _interseccionOrigen.yy)) //se reasigna con el companion object
+  _vehiculo.posicion_=(new Punto(_interseccionOrigen.xx, _interseccionOrigen.yy))
   _vehiculo.color_=(_interseccionDestino.color)
   private var _direccion: Angulo = Angulo(0)
   private var _via: Via = colaVias.dequeue()
@@ -37,9 +38,45 @@ class Viaje(_vehiculo: Vehiculo) {
 
   Simulacion.viajes :+= this
   //fin del constructor
+  //constructor auxiliar
+  def this(_vehiculo: Vehiculo,
+           pos:Punto,
+           intOrigen: String,
+           intDestino: String,
+           intInicioVia: String,
+           intFinVia: String,
+           dir: Double,
+           dist: Double,
+           llego: Boolean
+          ){
+    this(_vehiculo)
+    _vehiculo.posicion_=(pos)
+    interseccionOrigen_=(getInterseccion(intOrigen))
+    interseccionDestino_=(getInterseccion(intDestino))
+    nodoOrigen = GrafoVia.grafo.get(_interseccionOrigen)
+    nodoDestino = GrafoVia.grafo.get(_interseccionDestino)
+    recorrido = nodoOrigen.shortestPathTo(nodoDestino).get.edges.map(_.toOuter.label.asInstanceOf[Via]).toArray
+    colaVias = new mutable.Queue[Via]()
+    recorrido.foreach(i => colaVias += i)
+    _vehiculo.color_=(_interseccionDestino.color)
+    _direccion = Angulo(dir)
+    var indicador = true
+    while(indicador){
+      _via = colaVias.dequeue()
+      if (_via.origenn.nombre.getOrElse("") ==  intInicioVia){
+        if(_via.finn.nombre.getOrElse("") == intFinVia){
+          indicador = false
+        }
+      }
+    }
+    _distanciaParaRecorrer = dist
+    yaLlego = llego
+  }
 
   //accesores:
+  def interseccionOrigen_= (newInterseccion:Interseccion) = _interseccionOrigen = newInterseccion
   def interseccionOrigen: Interseccion = _interseccionOrigen
+  def interseccionDestino_= (newInterseccion:Interseccion) = _interseccionDestino = newInterseccion
   def interseccionDestino: Interseccion = _interseccionDestino
   def vehiculo: Vehiculo = _vehiculo
   def direccion: Angulo = _direccion
@@ -200,36 +237,46 @@ class Viaje(_vehiculo: Vehiculo) {
   }
 
   def tangenteInversa(x1: Double, x2: Double, y1: Double, y2: Double): Double = {
-    val diferenciaX = x2 - x1
-    val diferenciaY = y2 - y1
+    val difX = x2 - x1
+    val difY = y2 - y1
 
-    if (diferenciaX == 0) {
-      if (diferenciaY > 0) {
+    if (difX == 0) {
+      if (difY > 0) {
         90
       } else {
         270
       }
-    } else if (diferenciaY == 0) {
-      if (diferenciaX > 0) {
+    } else if (difY == 0) {
+      if (difX > 0) {
         0
       } else {
         180
       }
     } else {
-      val m = diferenciaY / diferenciaX
-      val a = scala.math.atan(m).toDegrees
-      if (diferenciaX > 0 && diferenciaY > 0) {
-        a
-      } else if (diferenciaX < 0 && diferenciaY > 0) {
-        a + 180
-      } else if (diferenciaX < 0 && diferenciaY < 0) {
-        a + 180
-      } else if (diferenciaX > 0 && diferenciaY < 0) {
-        360 + a
+      val div = difY / difX
+      val result = scala.math.atan(div).toDegrees
+      if (difX > 0 && difY > 0) {
+        result
+      } else if (difX < 0 && difY > 0) {
+        result + 180
+      } else if (difX < 0 && difY < 0) {
+        result + 180
+      } else if (difX > 0 && difY < 0) {
+        360 + result
       } else {
         0
       }
     }
+  }
+  def getInterseccion(nombre:String): Interseccion = {
+    val tempList = Simulacion.intersecciones.filter(_.nombre.getOrElse("") == nombre)
+    tempList(0)
+  }
+}
+
+object Viaje{
+  def crearViaje(): Unit ={
+
   }
 }
 

@@ -68,4 +68,15 @@ object Vehiculo{
           aMin + r.nextInt((aMax - aMin).toInt)
     )
   }
+
+  def crearVehiculo(vCrucero:Velocidad,
+                    acel:Double,
+                    pl:String,
+                    tipo:String): Vehiculo = tipo match {
+    case "carro" =>new Carro(pl, vCrucero, acel)
+    case "moto" =>new Moto(pl, vCrucero, acel)
+    case "mototaxi" =>new MotoTaxi(pl, vCrucero, acel)
+    case "camion" =>new Camion(pl, vCrucero, acel)
+    case "bus" =>new Bus(pl, vCrucero, acel)
+  }
 }
