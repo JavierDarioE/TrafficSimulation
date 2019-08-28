@@ -186,7 +186,11 @@ class Viaje(_vehiculo: Vehiculo) {
     
     // El semaforo con el que se va a encontrar el vehiculo
     val semaforo = {
-      siguienteInterseccion.nodoSemaforo.semaforos.find(_.via.equals(via)).get
+      siguienteInterseccion.nodoSemaforo.semaforos.find(_.via.equals(via)).getOrElse({
+          val semaforoApano = new Semaforo(via)
+          via.origenn.nodoSemaforo.agregarSemaforo(semaforoApano)
+          semaforoApano
+        })
     }
     
     
@@ -274,14 +278,13 @@ class Viaje(_vehiculo: Vehiculo) {
   }
 }
 
-object Viaje{
-  def crearViaje(): Unit ={
-
-  }
-}
 
 object Viaje {
   
   var xSemaforoFrenar: Double = Json.xSemaforoFrenar
   var xSemaforoAmarilloContinuar: Double = Json.xSemaforoAmarilloContinuar
+  
+  def crearViaje(): Unit ={
+
+  }
 }
