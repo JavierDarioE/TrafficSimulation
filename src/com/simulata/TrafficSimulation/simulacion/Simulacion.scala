@@ -30,7 +30,7 @@ object Simulacion extends Runnable {
   val motoTaxis: Double = Json.motoTaxis
   val dt:Int = Json.dt
   var t = 0
-  val tRefresh: Int = Json.tRefresh
+  val tRefresh: Int = Json.tRefresh * 1000
   val maximo: Int = Json.maximo
   val minimo: Int = Json.minimo
   val velMax: Double = Velocidad.kphTomps(Json.velMax)
@@ -197,6 +197,7 @@ object Simulacion extends Runnable {
   GrafoVia.construir(vias) //construir el grafo representando el sistema de vías.
   Grafico.graficarVias(vias.toArray) //graficar la vías en la ventana.
 
+  var realidad = 0
   var running = 2
   var active = true
 
@@ -262,9 +263,7 @@ object Simulacion extends Runnable {
 
   def eventoF1(): Unit = {
     running match {
-      case 2 => //cargar los datos desde neo4j
-        Grafico.graficarVehiculos(vehiculos)
-        running = 1
+      case 2 => running = 5
       case _ => println("\nno es posible realizar esta acción en estos momentos")
     }
   }
@@ -278,7 +277,7 @@ object Simulacion extends Runnable {
         case 1 => for (v <- viajes) v.mover(dt)
           Grafico.moverVehiculos(vehiculos)
           t += dt
-          Thread.sleep(tRefresh*100)
+          Thread.sleep(tRefresh)
 
         case 2 => println("Pausado")
           Thread.sleep(100)
@@ -292,42 +291,47 @@ object Simulacion extends Runnable {
           borrarDatosSimulacion()
           running = 2
 
+        case 5 => println("iniciando carga de datos")
+          Neo4J.cargarEstado()
+          println("datos cargados")
+          Thread.sleep(3000)
+          Grafico.graficarVehiculos(vehiculos)
+          running = 1
+
         case _ => println("\nvalor de la variable running inválido")
       }
     }
-    Neo4J.borrarDatosGuardados()
-/*
+    //Neo4J.borrarDatosGuardados()
     val resultados = new ResultadosSimulacion
 
     resultados.buses_=(vehiculos.count(_.isInstanceOf[Bus]))
     resultados.camiones_=(vehiculos.count(_.isInstanceOf[Camion]))
     resultados.carros_=(vehiculos.count(_.isInstanceOf[Carro]))
-    resultados.distMaxima_=(vehiculos.map(_.distanciaRecorrida.toInt).max)
-    resultados.distMinima_=(vehiculos.map(_.distanciaRecorrida.toInt).min)
-    resultados.distPromedio_=(vehiculos.map(_.distanciaRecorrida.toInt).sum/vehiculos.length)
+    resultados.distMaxima_=(viajes.map(_.distanciaParaRecorrer.toInt).max)
+    resultados.distMinima_=(viajes.map(_.distanciaParaRecorrer.toInt).min)
+    resultados.distPromedio_=(viajes.map(_.distanciaParaRecorrer.toInt).sum/viajes.length)
     resultados.intersecciones_=(intersecciones.length)
     resultados.longitudPromedio_=(vias.map(_.longitud.toInt).sum/vias.length)
     resultados.motos_=(vehiculos.count(_.isInstanceOf[Moto]))
     resultados.motoTaxis_=(vehiculos.count(_.isInstanceOf[MotoTaxi]))
     resultados.promedioDestino_=(intersecciones.map(_.fin.length).reduce(_+_)/intersecciones.length)
     resultados.promedioOrigen_=(intersecciones.map(_.origenes.length).reduce(_+_)/intersecciones.length)
-    resultados.realidad_=(6)
+    resultados.realidad_=(t*tRefresh)
     resultados.simulacion_=(t)
-    resultados.sinDestino_=(intersecciones.length-vehiculos.map(_.destino).length)
-    resultados.sinOrigen_=(intersecciones.length-vehiculos.map(_.origen).length)
+    resultados.sinDestino_=(intersecciones.length-viajes.map(_.interseccionDestino).length)
+    resultados.sinOrigen_=(intersecciones.length-viajes.map(_.interseccionOrigen).length)
     resultados.total_=(vehiculos.length)
     resultados.viasUnSentido_=(vias.count(_.sentido.tipo == "unaVia"))
     resultados.viasDobleSentido_=(vias.count(_.sentido.tipo == "dobleVia"))
-    resultados.velPromedio_=(vehiculos.map(_.velocidad.magnitud.toInt).reduce(_+_)/vehiculos.length)
+    resultados.velPromedio_=(vehiculos.map(_.velocidadCrucero.magnitud.toInt).reduce(_+_)/vehiculos.length)
     resultados.velMinima_=(vias.map(_.v).min)
     resultados.velMaxima_=(vias.map(_.v).max)
     resultados.vias_=(vias.length)
-    resultados.velocidadMaxima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidad.magnitud.toInt).max))
-    resultados.velocidadMinima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidad.magnitud.toInt).min))
+    resultados.velocidadMaxima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidadActual.magnitud.toInt).max))
+    resultados.velocidadMinima_=(Velocidad.mpsTokph(vehiculos.map(_.velocidadActual.magnitud.toInt).min))
     resultados.cantidad_=(comparendos.length)
     resultados.promedioPorcentajeExceso_=(comparendos.map(x=>(x.vVehiculo*100/x.vMaxVia)-100).sum/comparendos.length)
 
     resultados.guardar()
- */
   }
 }
