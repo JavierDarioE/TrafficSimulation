@@ -5,7 +5,6 @@ import com.simulata.TrafficSimulation.movimiento.Vehiculo
 import com.simulata.TrafficSimulation.simulacion.Simulacion
 import com.simulata.TrafficSimulation.vias.{Interseccion, Via}
 import com.simulata.TrafficSimulation.semaforo.Semaforo
-
 import scala.collection.mutable
 import scala.collection.mutable.Queue
 import scala.util.Random

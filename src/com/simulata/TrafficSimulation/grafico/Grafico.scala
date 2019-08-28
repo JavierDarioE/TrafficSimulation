@@ -7,7 +7,6 @@ import com.simulata.TrafficSimulation.movimiento.Vehiculo
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.geom.Rectangle2D.Double
-
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.ChartFrame
 import org.jfree.chart.JFreeChart

@@ -3,7 +3,6 @@ package com.simulata.TrafficSimulation.movimiento
 import java.awt.Color
 
 import com.simulata.TrafficSimulation.cartesiano._
-import com.simulata.TrafficSimulation.vias._
 
 class Moto (val pl:String,
             private var _vCrucero:Velocidad,

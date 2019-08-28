@@ -1,7 +1,6 @@
 package com.simulata.TrafficSimulation.vias
 
 import java.awt.Color
-
 import com.simulata.TrafficSimulation.cartesiano.Punto
 import com.simulata.TrafficSimulation.movimiento.Vehiculo
 import com.simulata.TrafficSimulation.simulacion.Simulacion

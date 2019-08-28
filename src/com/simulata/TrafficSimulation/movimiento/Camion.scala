@@ -1,13 +1,7 @@
 package com.simulata.TrafficSimulation.movimiento
 
 import java.awt.Color
-
 import com.simulata.TrafficSimulation.cartesiano._
-import com.simulata.TrafficSimulation.vias._
-
-//falta definir el modelo para representarlos*****/
-
-//para poner los get y los set se debe de copiar todo el código, no vi como dejarlo en vehículo
 
 class Camion (val pl:String,
               private var _vCrucero:Velocidad,

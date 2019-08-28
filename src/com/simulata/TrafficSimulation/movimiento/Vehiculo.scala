@@ -1,14 +1,10 @@
 package com.simulata.TrafficSimulation.movimiento
 
-import java.awt.{Color, Shape}
+import java.awt.Color
 
 import com.simulata.TrafficSimulation.cartesiano._
-import com.simulata.TrafficSimulation.vias._
 import com.simulata.TrafficSimulation.simulacion.Simulacion
-import com.simulata.TrafficSimulation.grafico.GrafoVia
-
 import scala.collection.immutable.NumericRange
-import scala.collection.mutable.Queue
 import scala.util.Random
 
 // El atributo velocidad representara la velocidad crucero

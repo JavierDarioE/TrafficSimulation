@@ -3,6 +3,6 @@ import com.simulata.TrafficSimulation.simulacion._
 import com.simulata.TrafficSimulation.vias._
 
 
-case class Comparendo(val vehiculo:Vehiculo,val vVehiculo:Double,val vMaxVia:Double,val camara:CamaraFotoDeteccion) {
+case class Comparendo(vehiculo:Vehiculo, vVehiculo:Double, vMaxVia:Double, camara:CamaraFotoDeteccion) {
   Simulacion.comparendos :+=this
 }

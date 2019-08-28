@@ -1,7 +1,6 @@
 package com.simulata.TrafficSimulation.movimiento
 
 import com.simulata.TrafficSimulation.cartesiano._
-
 import java.awt.Color
 
 class Bus (val pl:String,
