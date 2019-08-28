@@ -28,7 +28,6 @@ object Neo4J {
     //se debe borrar primero lo que hay guardado
     val (driver, session) = getSession
     var id:Int = 0
-    println("pasó por acá")
     viajes.foreach(v => {
       id += 1
       val veh: Vehiculo = v.vehiculo
@@ -38,21 +37,21 @@ object Neo4J {
       val tipo:String = veh.tipo
       val tasaAceleracion = veh.tasaAceleracion
       val velocidad:Velocidad = veh.velocidad
-      val origen = v.via.origenn
-      val fin = v.via.finn
-      println("entró")
+      val origen = v.via.origenn.nombre.getOrElse("Nothing")
+      val fin = v.via.finn.nombre.getOrElse("Nothing")
       val script: String =
         s"""MATCH (intOr:Interseccion {nombre:'${v.interseccionOrigen.nombre.getOrElse("Nothing")}'}),
            |(intDest:Interseccion {nombre:'${v.interseccionDestino.nombre.getOrElse("Nothing")}'}),
-           |(:Interseccion {nombre:'${origen}'})-[:ORIGEN_DE]->(via:Via)<-[:FIN_DE]-(:Interseccion {nombre:'${fin}'})
-           |CREATE (viaje$id:Viaje {direccion:'${v.direccion}', distancia:'${v.distanciaParaRecorrer}'}),
+           |(:Interseccion {nombre:'$origen'})-[:ORIGEN_DE]->(via:Via)<-[:FIN_DE]-(:Interseccion {nombre:'$fin'})
+           |CREATE (viaje$id:Viaje {direccion:'${v.direccion.angulo}', distancia:'${v.distanciaParaRecorrer}'}),
            |(p$id:Posicion {x:'$posicionx', y:'$posiciony'}),
-           |(vel$id:Velocidad {magnitud:'${velocidad.magnitud}', angulo:'${velocidad.angulo}'})
+           |(vel$id:Velocidad {magnitud:'${velocidad.magnitud}', angulo:'${velocidad.angulo.angulo}'}),
            |(vehiculo$id:Vehiculo{placa:'$placa', tasaAceleracion:'$tasaAceleracion', tipo:'$tipo'}),
+           |(intDest)-[:INTERSECCION_DESTINO]->(viaje$id),
            |(intOr)-[:INTERSECCION_ORIGEN]->(viaje$id),
-           |(vaje$id)-[VIAJE_DE]->(vehiculo$id),
-           |(p$id)-[POSICION_DE]->(vehiculo$id),
-           |(via)-[VIA_DE]->(viaje$id)
+           |(viaje$id)-[:VIAJE_DE]->(vehiculo$id),
+           |(p$id)-[:POSICION_DE]->(vehiculo$id),
+           |(via)-[:VIA_DE]->(viaje$id)
            |""".stripMargin
       session.run(script)
     })
@@ -68,10 +67,9 @@ object Neo4J {
     driver.close()
   }
 
-  def scriptInterseccion(interseccion : Interseccion): String = {
-    s"""MATCH (n:Interseccion{nombre:'${interseccion.nombre.getOrElse("Nothing")}'})
-       |CREATE (n)<-[:INTERSECCION_ORIGEN]-()
-       |""".stripMargin
+  def borrarDatosGuardados(interseccion : Interseccion): String = {
+
+    s"""MATCH ()"""
   }
 
 }
