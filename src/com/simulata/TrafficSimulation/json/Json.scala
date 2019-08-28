@@ -12,7 +12,7 @@ object Json{
 
   /* cargar parámetros **/
 
-  val currentDirectory:String = new java.io.File(".").getCanonicalPath //obetnemos el directorio de la app
+  val currentDirectory:String = new java.io.File(".").getCanonicalPath //obtenemos el directorio de la app
   val jsonRaw: String = Source.fromFile(s"$currentDirectory/parámetros.json").getLines.mkString //obtenemos el Json
   val jsonFile:JValue = parse(jsonRaw)
 
@@ -37,6 +37,8 @@ object Json{
   def minTiempoVerde: Int = parametros.semaforos.minTiempoVerde
   def maxTiempoVerde: Int = parametros.semaforos.maxTiempoVerde
   def tiempoAmarillo: Int = parametros.semaforos.tiempoAmarillo
+  def xSemaforoFrenar: Double = parametros.distanciasFrenadoVehiculos.xSemaforoFrenar
+  def xSemaforoAmarilloContinuar: Double = parametros.distanciasFrenadoVehiculos.xSemaforoAmarilloContinuar
 
   /* guardar resultados **/
 
@@ -133,7 +135,8 @@ object Json{
                                   velocidad:Velocidad,
                                   aceleracion: Aceleracion,
                                   proporciones:Proporciones,
-                                  semaforos: Semaforos)
+                                  semaforos: Semaforos,
+                                  distanciasFrenadoVehiculos: DistanciasFrenadoVehiculos)
 
   case class Vehiculo(minimo: Int, maximo: Int)
 
@@ -144,6 +147,8 @@ object Json{
   case class Proporciones(carros: Double, motos: Double, buses: Double, camiones: Double, motoTaxis: Double)
   
   case class Semaforos(minTiempoVerde: Int, maxTiempoVerde: Int, tiempoAmarillo: Int)
+  
+  case class DistanciasFrenadoVehiculos(xSemaforoFrenar: Double, xSemaforoAmarilloContinuar: Double)
 
   case class Data(parametrosSimulacion: ParametrosSimulacion)
 }
