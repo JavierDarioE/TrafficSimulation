@@ -35,8 +35,8 @@ object Neo4J {
       val posiciony = veh.posicion.y
       val placa:String = veh.placa
       val tipo:String = veh.tipo
-      val tasaAceleracion = veh.tasaAceleracion
-      val velocidad:Velocidad = veh.velocidad
+      val tasaAceleracion = veh.aceleracion
+      val velocidad:Velocidad = veh.velocidadActual
       val origen = v.via.origenn.nombre.getOrElse("Nothing")
       val fin = v.via.finn.nombre.getOrElse("Nothing")
       val script: String =

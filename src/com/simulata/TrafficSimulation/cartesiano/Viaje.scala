@@ -68,8 +68,8 @@ class Viaje(_vehiculo: Vehiculo) {
     }
     
     if (vehiculo.posicion == via.origenn.copy()) {
-      direccion = Angulo(tangenteInversa(via.origenn.xx, via.finn.xx, via.origenn.yy, via.finn.yy))
-      siguienteInterseccion = via.finn
+      _direccion = Angulo(tangenteInversa(via.origenn.xx, via.finn.xx, via.origenn.yy, via.finn.yy))
+      _siguienteInterseccion = via.finn
 
     }
     else if (_vehiculo.posicion == _via.finn.copy()) {

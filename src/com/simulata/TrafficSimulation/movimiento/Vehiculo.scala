@@ -16,8 +16,8 @@ abstract case class Vehiculo (private var _placa:String,
                               private var _velCrucero:Velocidad,
                               private var _acele: Double,
                               private var _color: Color,
-                              private var _velActual:Velocidad = new Velocidad(0)
-                              private val _tipo: String)
+                              private val _tipo:String,
+                              private var _velActual:Velocidad = new Velocidad(0))
 extends Movil(Punto(0,0), _velCrucero, _velActual, _acele) with MovimientoUniforme {
 
   def tipo:String = _tipo
