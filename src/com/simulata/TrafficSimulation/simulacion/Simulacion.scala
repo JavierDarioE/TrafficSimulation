@@ -162,7 +162,7 @@ object Simulacion extends Runnable {
   
   // Se crean los semaforos
   vias.foreach(via => {
-    
+
     // Se crea semaforo en el nodo final de la via
     via.finn.nodoSemaforo.agregarSemaforo(new Semaforo(via))
     
@@ -255,9 +255,7 @@ object Simulacion extends Runnable {
 
   def eventoF2(): Unit = {
     running match {
-      case 1 => Neo4J.guardarEstado(viajes)
-        Grafico.limpiarVehiculos(vehiculos)
-        running = 2
+      case 1 => running = 4
       case _ => println("\nno es posible realizar esta acción en estos momentos")
     }
   }
@@ -289,9 +287,15 @@ object Simulacion extends Runnable {
           borrarDatosSimulacion()
           running = 2
 
+        case 4 => Neo4J.guardarEstado(viajes)
+          Grafico.limpiarVehiculos(vehiculos)
+          borrarDatosSimulacion()
+          running = 2
+
         case _ => println("\nvalor de la variable running inválido")
       }
     }
+    Neo4J.borrarDatosGuardados()
 /*
     val resultados = new ResultadosSimulacion
 

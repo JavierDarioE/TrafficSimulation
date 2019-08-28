@@ -109,6 +109,12 @@ object Grafico {
         else if(evento.getKeyCode == KeyEvent.VK_F6){
           Simulacion.eventoF6()
         }
+        else if(evento.getKeyCode == KeyEvent.VK_F2){
+          Simulacion.eventoF2()
+        }
+        else if(evento.getKeyCode == KeyEvent.VK_F1){
+          Simulacion.eventoF1()
+        }
       }
       override def keyReleased(evento: KeyEvent){}
       override def keyTyped(evento: KeyEvent){}

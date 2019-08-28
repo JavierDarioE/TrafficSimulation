@@ -25,7 +25,7 @@ object Neo4J {
   }
 
   def guardarEstado(viajes: Array[Viaje]): Unit = {
-    //se debe borrar primero lo que hay guardado
+    borrarDatosGuardados()
     val (driver, session) = getSession
     var id:Int = 0
     viajes.foreach(v => {
@@ -51,23 +51,34 @@ object Neo4J {
            |(intOr)-[:INTERSECCION_ORIGEN]->(viaje$id),
            |(viaje$id)-[:VIAJE_DE]->(vehiculo$id),
            |(p$id)-[:POSICION_DE]->(vehiculo$id),
-           |(via)-[:VIA_DE]->(viaje$id)
-           |""".stripMargin
+           |(via)-[:VIA_DE]->(viaje$id)""".stripMargin
       session.run(script)
     })
     session.close()
     driver.close()
   }
 
-  def cargarEstado(): Unit = {
+  def borrarDatosGuardados(): Unit = {
     val (driver, session) = getSession
-    val script =s"CREATE (: Categoria {nombre: 'test'})"
-    session.run(script)
+    val scriptRelaciones =
+      s"""MATCH (:Interseccion)-[i1:INTERSECCION_DESTINO]->(:Viaje),
+         |(:Interseccion)-[i2:INTERSECCION_ORIGEN]->(:Viaje),
+         |(:Posicion)-[p:POSICION_DE]->(:Vehiculo),
+         |(:Via)-[v:VIA_DE]->(:Viaje)
+         |DELETE i1, i2, p, v""".stripMargin
+    val scriptNodos =
+      s"""MATCH (v1:Viaje),
+         |(p:Posicion),
+         |(v2: Velocidad),
+         |(v3: Vehiculo)
+         |DELETE  v1, p, v2, v3""".stripMargin
+    session.run(scriptRelaciones)
+    session.run(scriptNodos)
     session.close()
     driver.close()
   }
 
-  def borrarDatosGuardados(interseccion : Interseccion): String = {
+  def cargarEstado(interseccion : Interseccion): String = {
 
     s"""MATCH ()"""
   }
