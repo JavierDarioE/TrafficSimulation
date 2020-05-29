@@ -16,8 +16,8 @@ Note: The app data will be saved once you close the simulation window.
 
 ## Project members
 
-* Javier Darío E
-* Juan Pablo C
-* Simón Álvarez V
+* [JavierDarioE](https://github.com/JavierDarioE)
+* [jpcarvajal](https://github.com/jpcarvajal)
+* [Saymonxp](https://github.com/Saymonxp)
 
 ##### this project follows the [basic Scala stylistic guidelines.](https://docs.scala-lang.org/style/)
