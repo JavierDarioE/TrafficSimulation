@@ -16,7 +16,7 @@ Note: The app data will be saved once you close the simulation window.
 
 ## Project members
 
-* [JavierDarioE](https://github.com/JavierDarioE)
+* [JavierDarioE](https://github.com/JavierDarioE) ([BlackPixl](https://github.com/BlackPixl))
 * [jpcarvajal](https://github.com/jpcarvajal)
 * [Saymonxp](https://github.com/Saymonxp)
 
